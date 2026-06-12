@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: instahelp-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: instahelp
+      POSTGRES_PASSWORD: instahelp_secret
+      POSTGRES_DB: instahelp
+    ports:
+      - '5432:5432'
+    volumes:
+      - instahelp_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U instahelp -d instahelp']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: instahelp-api
+    restart: unless-stopped
+    ports:
+      - '4000:4000'
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://instahelp:instahelp_secret@postgres:5432/instahelp?schema=public
+      API_BASE_URL: http://localhost:4000
+      FRONTEND_URL: http://localhost:4000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/backend/logs
+
+volumes:
+  instahelp_pg_data:

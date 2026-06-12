@@ -1,0 +1,8 @@
+node_modules/
+dist/
+logs/*.log
+uploads/*
+!.gitkeep
+.env
+.env.local
+*.tsbuildinfo

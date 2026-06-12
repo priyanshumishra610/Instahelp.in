@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transaction History — InstaHelp</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/payment.css">
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+</head>
+<body class="pay-page">
+
+  <header class="pay-header">
+    <div class="pay-header-inner" style="max-width:720px;">
+      <a href="index.html" class="pay-back-btn" aria-label="Go back">
+        <i data-lucide="arrow-left" style="width:18px;height:18px;"></i>
+      </a>
+      <div class="pay-header-title">
+        <h1>Transactions</h1>
+        <p>Your payment history</p>
+      </div>
+      <a href="orders.html" style="font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;">Orders</a>
+    </div>
+  </header>
+
+  <div class="tx-page-header pay-enter">
+    <h1>Transaction History</h1>
+  </div>
+
+  <div class="tx-filters pay-enter pay-enter-d1" role="tablist" aria-label="Filter transactions">
+    <button type="button" class="tx-filter-btn active" data-filter="all">All</button>
+    <button type="button" class="tx-filter-btn" data-filter="success">Success</button>
+    <button type="button" class="tx-filter-btn" data-filter="pending">Pending</button>
+    <button type="button" class="tx-filter-btn" data-filter="failed">Failed</button>
+  </div>
+
+  <div class="tx-list" id="txList" role="list"></div>
+
+  <div class="tx-empty" id="txEmpty" hidden>
+    <div class="tx-empty-icon">📋</div>
+    <p>No transactions yet</p>
+    <a href="/plans" class="pay-btn pay-btn-primary" style="margin-top:16px;display:inline-flex;">Choose a Plan</a>
+  </div>
+
+  <script src="js/transactions.js"></script>
+  <script src="js/payment.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var currentFilter = 'all';
+    var txList = document.getElementById('txList');
+    var txEmpty = document.getElementById('txEmpty');
+
+    function formatDate(iso) {
+      try {
+        return new Date(iso).toLocaleString('en-IN', {
+          day: 'numeric', month: 'short', year: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        });
+      } catch (e) { return iso; }
+    }
+
+    function renderTransactions() {
+      var txs = InstaHelpTransactions.filterTransactions(currentFilter);
+      txList.innerHTML = '';
+
+      if (!txs.length) {
+        txEmpty.hidden = false;
+        return;
+      }
+      txEmpty.hidden = true;
+
+      txs.forEach(function (tx) {
+        var status = (tx.status || 'pending').toLowerCase();
+        var card = document.createElement('article');
+        card.className = 'tx-card pay-enter';
+        card.setAttribute('role', 'listitem');
+        card.innerHTML =
+          '<div class="tx-status-dot ' + status + '" aria-hidden="true"></div>' +
+          '<div class="tx-card-body">' +
+            '<div class="tx-card-top">' +
+              '<strong>' + (tx.service || 'Service') + '</strong>' +
+              '<span class="tx-amount">' + InstaHelpPayment.formatINR(tx.amount) + '</span>' +
+            '</div>' +
+            '<div class="tx-meta">' +
+              '<span class="tx-badge ' + status + '">' + status + '</span>' +
+              '<span>' + (tx.vendor || '') + '</span>' +
+              '<span>' + formatDate(tx.date) + '</span>' +
+            '</div>' +
+            '<div class="tx-meta" style="margin-top:4px;">' +
+              '<span>Order: ' + (tx.orderId || '—') + '</span>' +
+              '<span>ID: ' + (tx.transactionId || '—') + '</span>' +
+            '</div>' +
+          '</div>';
+        txList.appendChild(card);
+      });
+    }
+
+    document.querySelectorAll('.tx-filter-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.tx-filter-btn').forEach(function (b) {
+          b.classList.remove('active');
+        });
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        renderTransactions();
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.lucide) lucide.createIcons();
+      renderTransactions();
+    });
+  })();
+  </script>
+</body>
+</html>

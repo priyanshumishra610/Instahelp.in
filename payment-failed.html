@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Failed — InstaHelp</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/payment.css">
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+</head>
+<body class="pay-page">
+
+  <div class="pay-status-page pay-enter">
+    <div class="pay-status-icon-wrap">
+      <div class="pay-status-circle failed" aria-hidden="true">
+        <i data-lucide="x-circle" style="width:56px;height:56px;color:var(--pay-red);"></i>
+      </div>
+    </div>
+
+    <h1>Payment Failed</h1>
+    <p class="pay-status-sub">Don't worry — no amount has been deducted</p>
+
+    <div class="pay-fail-reasons">
+      <h3>Possible Reasons</h3>
+      <ul>
+        <li>
+          <i data-lucide="wifi-off" style="width:16px;height:16px;color:var(--gray-400);"></i>
+          Network Issue — unstable internet connection
+        </li>
+        <li>
+          <i data-lucide="ban" style="width:16px;height:16px;color:var(--gray-400);"></i>
+          Payment Cancelled — you closed the payment window
+        </li>
+        <li>
+          <i data-lucide="alert-triangle" style="width:16px;height:16px;color:var(--gray-400);"></i>
+          Gateway Error — temporary issue with payment provider
+        </li>
+      </ul>
+    </div>
+
+    <div class="pay-status-actions">
+      <a href="pay.html" class="pay-btn pay-btn-purple" id="retryBtn">
+        <i data-lucide="refresh-cw" style="width:18px;height:18px;"></i>
+        Retry Payment
+      </a>
+      <a href="index.html" class="pay-btn pay-btn-outline">
+        <i data-lucide="home" style="width:18px;height:18px;"></i>
+        Back To Home
+      </a>
+      <a href="#" class="pay-btn pay-btn-outline" id="supportBtn">
+        <i data-lucide="headphones" style="width:18px;height:18px;"></i>
+        Contact Support
+      </a>
+    </div>
+  </div>
+
+  <script src="js/payment-config.js"></script>
+  <script src="js/orders.js"></script>
+  <script src="js/transactions.js"></script>
+  <script src="js/payment.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.lucide) lucide.createIcons();
+
+      var pending = InstaHelpPayment.getPendingTransaction();
+      if (pending) {
+        InstaHelpPayment.markPaymentFailed('user_cancelled_or_failed');
+      }
+
+      var settings = InstaHelpPaymentConfig.getSettings();
+      var supportBtn = document.getElementById('supportBtn');
+      var phone = (settings.supportNumber || '+917022702220').replace(/\D/g, '');
+      var email = settings.supportEmail || 'mail@instahelp.in';
+
+      supportBtn.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(
+        'Hi InstaHelp, my payment failed. Order: ' + (pending && pending.orderId || 'N/A') + '. Please help.'
+      );
+      supportBtn.target = '_blank';
+      supportBtn.rel = 'noopener noreferrer';
+    });
+  })();
+  </script>
+</body>
+</html>

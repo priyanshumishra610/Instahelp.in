@@ -1,0 +1,14 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+backend/node_modules/
+backend/dist/
+backend/logs/*.log
+backend/uploads/*
+!backend/uploads/.gitkeep
+node_modules/
+*.tsbuildinfo

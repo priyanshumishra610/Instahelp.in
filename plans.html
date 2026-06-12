@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plans — InstaHelp</title>
+  <meta name="description" content="Choose your InstaHelp plan. Fixed pricing with secure PhonePe checkout.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/plans.css">
+</head>
+<body class="plans-page">
+
+  <nav class="plans-nav">
+    <a href="/" class="plans-nav-brand">InstaHelp</a>
+    <a href="/">← Back to home</a>
+  </nav>
+
+  <header class="plans-hero">
+    <h1>Plans that grow with you</h1>
+    <div class="plans-audience-toggle" role="tablist" aria-label="Plan audience">
+      <button type="button" class="plans-audience-btn active" data-audience="individual" role="tab" aria-selected="true">Individual</button>
+      <button type="button" class="plans-audience-btn" data-audience="business" role="tab" aria-selected="false">Business &amp; Vendors</button>
+    </div>
+  </header>
+
+  <div class="plans-grid" id="plansGrid" role="list"></div>
+
+  <p class="plans-footer-note" id="plansFooterNote">
+    *Usage limits apply. Prices include platform fees &amp; GST at checkout. Secure payments via PhonePe or Razorpay.
+  </p>
+
+  <!-- Payment method modal (shown after Get Pro / Get Max) -->
+  <div class="plans-pay-modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payModalTitle" hidden>
+    <div class="plans-pay-modal-backdrop" id="payModalBackdrop"></div>
+    <div class="plans-pay-modal-card">
+      <button type="button" class="plans-pay-modal-close" id="payModalClose" aria-label="Close">&times;</button>
+      <h2 id="payModalTitle">Complete your purchase</h2>
+      <p class="plans-pay-modal-plan" id="payModalPlan">—</p>
+      <p class="plans-pay-modal-price" id="payModalPrice">—</p>
+
+      <p class="plans-gateway-label">Pay with</p>
+      <div class="plans-pay-modal-gateways" role="radiogroup" aria-label="Payment method">
+        <button type="button" class="plans-gateway-pick" data-gateway="PHONEPE">
+          <span class="gw-logo-wrap" aria-hidden="true">
+            <img src="image/phonepe-logo.svg" alt="" class="gw-logo gw-logo-phonepe" width="88" height="27">
+          </span>
+          <span>
+            <strong>PhonePe</strong>
+            <small>UPI · Wallet · Cards</small>
+          </span>
+        </button>
+        <button type="button" class="plans-gateway-pick" data-gateway="RAZORPAY">
+          <span class="gw-logo-wrap" aria-hidden="true">
+            <img src="image/razorpay-logo.svg" alt="" class="gw-logo gw-logo-razorpay" width="100" height="21">
+          </span>
+          <span>
+            <strong>Razorpay</strong>
+            <small>UPI · Cards · Netbanking</small>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="plans-toast" id="plansToast" role="status"></div>
+
+  <div class="plans-loading-overlay" id="plansLoading" aria-live="polite" aria-busy="true">
+    <div class="plans-spinner" aria-hidden="true"></div>
+    <p>Redirecting to PhonePe…</p>
+  </div>
+
+  <script src="js/payment-config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/phonepe.js"></script>
+  <script src="js/orders.js"></script>
+  <script src="js/transactions.js"></script>
+  <script src="js/payment.js"></script>
+  <script src="js/razorpay-checkout.js"></script>
+  <script src="js/plans.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var audience = 'individual';
+    var availableGateways = ['PHONEPE', 'RAZORPAY'];
+    var pendingTier = null;
+    var paying = false;
+
+    var grid = document.getElementById('plansGrid');
+    var toast = document.getElementById('plansToast');
+    var loading = document.getElementById('plansLoading');
+    var payModal = document.getElementById('payModal');
+    var payModalBackdrop = document.getElementById('payModalBackdrop');
+    var payModalClose = document.getElementById('payModalClose');
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(function () { toast.classList.remove('show'); }, 3200);
+    }
+
+    function renderPriceBlock(plan) {
+      var price = plan.price === 0 ? 0 : InstaHelpPlans.getPlanPrice(plan, 'monthly');
+      var meta = plan.price === 0 ? 'Free forever' : 'INR / month · billed monthly';
+      return (
+        '<div class="plans-price-zone">' +
+          '<div class="plans-price-row">' +
+            '<span class="plans-price">' + InstaHelpPlans.formatINR(price) + '</span>' +
+            '<span class="plans-price-meta">' + meta + '</span>' +
+          '</div>' +
+        '</div>'
+      );
+    }
+
+    function featuresLabelFor(tier) {
+      if (tier === 'free') return '';
+      if (audience === 'business') {
+        return tier === 'pro'
+          ? 'Everything in Starter, plus:'
+          : 'Everything in Growth, plus:';
+      }
+      return tier === 'pro' ? 'Everything in Free, plus:' : 'Everything in Pro, plus:';
+    }
+
+    function renderCard(tier, plan) {
+      var featuresHtml = plan.features.map(function (f) {
+        return '<li>' + f + '</li>';
+      }).join('');
+
+      var label = featuresLabelFor(tier);
+      var featuresLabel = label ? '<p class="plans-features-label">' + label + '</p>' : '<p class="plans-features-label">&nbsp;</p>';
+
+      var ctaClass = plan.ctaType === 'pay' ? 'plans-cta plans-cta-solid' : 'plans-cta plans-cta-outline';
+      var ctaTag = plan.ctaType === 'link'
+        ? '<a href="' + plan.href + '" class="' + ctaClass + '" style="text-align:center;text-decoration:none;display:block;line-height:1.2;">' + plan.cta + '</a>'
+        : '<button type="button" class="' + ctaClass + '" data-pay-tier="' + tier + '">' + plan.cta + '</button>';
+
+      return (
+        '<article class="plans-card" role="listitem" data-tier="' + tier + '">' +
+          '<h2>' + plan.name + '</h2>' +
+          '<p class="plans-card-tagline">' + plan.tagline + '</p>' +
+          '<div class="plans-card-body">' +
+            renderPriceBlock(plan) +
+            '<div class="plans-cta-zone">' +
+              ctaTag +
+              '<p class="plans-cta-note">' + (plan.note || '&nbsp;') + '</p>' +
+            '</div>' +
+            featuresLabel +
+            '<ul class="plans-features">' + featuresHtml + '</ul>' +
+          '</div>' +
+        '</article>'
+      );
+    }
+
+    function render() {
+      var plans = InstaHelpPlans.getPlans(audience);
+      grid.innerHTML =
+        renderCard('free', plans.free) +
+        renderCard('pro', plans.pro) +
+        renderCard('max', plans.max);
+
+      grid.querySelectorAll('[data-pay-tier]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          openPayModal(btn.getAttribute('data-pay-tier'));
+        });
+      });
+    }
+
+    function openPayModal(tier) {
+      if (paying) return;
+
+      var plans = InstaHelpPlans.getPlans(audience);
+      var plan = plans[tier];
+      if (!plan || plan.ctaType !== 'pay') return;
+
+      var settings = InstaHelpPaymentConfig.getSettings();
+      if (!settings.paymentsEnabled) {
+        showToast('Payments are temporarily unavailable.');
+        return;
+      }
+
+      pendingTier = tier;
+      var price = InstaHelpPlans.getPlanPrice(plan, 'monthly');
+      document.getElementById('payModalPlan').textContent = plan.serviceName || plan.name;
+      document.getElementById('payModalPrice').textContent = InstaHelpPlans.formatINR(price) + ' / month';
+
+      payModal.querySelectorAll('.plans-gateway-pick').forEach(function (btn) {
+        var gw = btn.getAttribute('data-gateway');
+        var enabled = availableGateways.indexOf(gw) !== -1;
+        btn.disabled = !enabled;
+        btn.style.display = enabled ? 'flex' : 'none';
+      });
+
+      payModal.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePayModal() {
+      payModal.hidden = true;
+      document.body.style.overflow = '';
+      pendingTier = null;
+    }
+
+    function startPayment(tier, paymentGateway) {
+      if (paying) return;
+
+      var plans = InstaHelpPlans.getPlans(audience);
+      var plan = plans[tier];
+      if (!plan || plan.ctaType !== 'pay') return;
+
+      var order = InstaHelpPlans.buildOrderPayload(plan, 'monthly');
+      order.provider = paymentGateway;
+      var settings = InstaHelpPaymentConfig.getSettings();
+
+      if (!settings.paymentsEnabled) {
+        showToast('Payments are temporarily unavailable.');
+        return;
+      }
+
+      if (availableGateways.indexOf(paymentGateway) === -1) {
+        showToast(paymentGateway + ' is not available. Choose another payment method.');
+        return;
+      }
+
+      closePayModal();
+      paying = true;
+      loading.classList.add('show');
+      loading.querySelector('p').textContent = paymentGateway === 'RAZORPAY'
+        ? 'Opening Razorpay checkout…'
+        : 'Redirecting to PhonePe…';
+
+      var result = InstaHelpPayment.initiateCheckout(order, { provider: paymentGateway });
+
+      function done(res) {
+        if (res && res.ok && res.provider === 'RAZORPAY') {
+          paying = false;
+          loading.classList.remove('show');
+          return;
+        }
+        if (!res || !res.ok) {
+          paying = false;
+          loading.classList.remove('show');
+          showToast((res && res.error) || (res && res.errors && res.errors.join(' ')) || 'Payment could not be started.');
+          InstaHelpPayment.clearPayLock();
+        }
+      }
+
+      if (result && typeof result.then === 'function') {
+        result.then(done);
+      } else {
+        done(result);
+      }
+    }
+
+    payModal.querySelectorAll('.plans-gateway-pick').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled || !pendingTier) return;
+        startPayment(pendingTier, btn.getAttribute('data-gateway'));
+      });
+    });
+
+    payModalClose.addEventListener('click', closePayModal);
+    payModalBackdrop.addEventListener('click', closePayModal);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !payModal.hidden) closePayModal();
+    });
+
+    if (InstaHelpAPI) {
+      InstaHelpAPI.getPaymentGateways().then(function (res) {
+        if (res.data && res.data.gateways && res.data.gateways.length) {
+          availableGateways = res.data.gateways.map(function (g) { return g.id; });
+        }
+      }).catch(function () {});
+    }
+
+    document.querySelectorAll('.plans-audience-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        audience = btn.getAttribute('data-audience');
+        document.querySelectorAll('.plans-audience-btn').forEach(function (b) {
+          var on = b === btn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        render();
+      });
+    });
+
+    render();
+  })();
+  </script>
+</body>
+</html>

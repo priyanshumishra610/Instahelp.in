@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InstaHelp® | We'll Get It Done — India's On-Demand Concierge</title>
+<meta name="description" content="InstaHelp® — India's on-demand digital Assistant since 2015. One call, one team, actually done. Bangalore, Mumbai, Delhi, Hyderabad & 30+ cities.">
+<meta name="theme-color" content="#FFD600">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ─── TOKENS ─── */
+:root{
+  --ink:#0B0C0E;
+  --ink2:#3D3F45;
+  --ink3:#7A7D86;
+  --bg:#FAFAF8;
+  --white:#FFFFFF;
+  --yellow:#FFD600;
+  --yellow-d:#E6BE00;
+  --green:#00C48C;
+  --blue:#1A6FFF;
+  --coral:#FF5C5C;
+  --lavender:#7B6FFF;
+  --card-bg:#F4F4F0;
+  --border:#E6E6E0;
+  --radius:18px;
+  --radius-sm:10px;
+  --font-head:'Syne',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+  --shadow: 0 2px 12px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.04);
+  --shadow-md: 0 8px 32px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06);
+  --shadow-xl: 0 20px 60px rgba(0,0,0,.13), 0 4px 16px rgba(0,0,0,.07);
+}
+
+/* ─── RESET ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.55;overflow-x:hidden}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+
+/* ─── UTILITY ─── */
+.container{max-width:1160px;margin:0 auto;padding:0 24px}
+.section{padding:96px 0}
+
+/* ─── ANIMATIONS ─── */
+@keyframes floatUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes dotPop{0%,100%{transform:scale(1)}50%{transform:scale(1.6)}}
+@keyframes counterUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .65s cubic-bezier(.22,1,.36,1), transform .65s cubic-bezier(.22,1,.36,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal-d1{transition-delay:.08s}
+.reveal-d2{transition-delay:.16s}
+.reveal-d3{transition-delay:.24s}
+.reveal-d4{transition-delay:.32s}
+
+/* ─── HEADER ─── */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(250,250,248,0.88);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;gap:24px;
+}
+.logo{
+  font-family:var(--font-head);font-weight:800;font-size:1.35rem;
+  letter-spacing:-.02em;color:var(--ink);
+}
+.logo span{color:var(--yellow-d)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-size:.9rem;font-weight:500;color:var(--ink2);transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{
+  display:flex;align-items:center;gap:12px;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 22px;border-radius:50px;font-weight:600;font-size:.9rem;
+  transition:all .22s cubic-bezier(.22,1,.36,1);
+}
+.btn-yellow{background:var(--yellow);color:var(--ink)}
+.btn-yellow:hover{background:var(--yellow-d);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.btn-outline{border:1.5px solid var(--border);color:var(--ink2)}
+.btn-outline:hover{border-color:var(--ink);color:var(--ink)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;padding:6px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:.3s}
+
+/* ─── HERO ─── */
+.hero{
+  padding:72px 0 0;
+  overflow:hidden;
+  min-height:92vh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.hero-top{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:48px;align-items:start;
+  padding-bottom:48px;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--yellow);color:var(--ink);
+  padding:6px 14px;border-radius:50px;
+  font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:24px;
+  animation:floatUp .5s ease both;
+}
+.hero-eyebrow-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--ink);
+  animation:dotPop 1.8s infinite;
+}
+.hero h1{
+  font-family:var(--font-head);font-size:clamp(2.6rem,5.2vw,4.2rem);font-weight:800;
+  line-height:1.1;letter-spacing:-.03em;color:var(--ink);
+  animation:floatUp .6s .1s ease both;
+  margin-bottom:24px;
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(135deg,#FF5C5C,#FF8A00);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:1.05rem;color:var(--ink2);line-height:1.65;
+  animation:floatUp .6s .2s ease both;
+  max-width:520px;margin-bottom:36px;
+}
+.hero-sub strong{color:var(--ink)}
+.hero-actions{
+  display:flex;flex-wrap:wrap;gap:12px;
+  animation:floatUp .6s .3s ease both;
+  margin-bottom:40px;
+}
+.btn-hero-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--ink);color:var(--white);
+  padding:14px 28px;border-radius:50px;font-weight:600;font-size:1rem;
+  transition:all .25s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 4px 16px rgba(0,0,0,.22);
+}
+.btn-hero-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.btn-hero-wa{
+  display:inline-flex;align-items:center;gap:10px;
+  background:#25D366;color:var(--white);
+  padding:14px 28px;border-radius:50px;font-weight:600;font-size:1rem;
+  transition:all .25s cubic-bezier(.22,1,.36,1);
+}
+.btn-hero-wa:hover{transform:translateY(-2px);background:#1ebe5a;box-shadow:0 8px 28px rgba(37,211,102,.35)}
+.btn-icon{
+  width:20px;height:20px;flex-shrink:0;
+}
+
+/* Trust bar in hero */
+.hero-trust{
+  display:flex;flex-wrap:wrap;gap:20px;
+  animation:floatUp .6s .4s ease both;
+}
+.hero-trust-item{
+  display:flex;align-items:center;gap:8px;
+  font-size:.87rem;font-weight:500;color:var(--ink3);
+}
+.hero-trust-icon{
+  width:18px;height:18px;flex-shrink:0;color:var(--green);
+}
+
+/* ─── HERO VISUAL COLUMN ─── */
+.hero-visual{
+  position:relative;
+  animation:floatUp .7s .15s ease both;
+}
+.hero-card-stack{
+  position:relative;
+  height:540px;
+}
+/* Main big image card */
+.hc-main{
+  position:absolute;top:0;left:0;right:0;
+  height:380px;border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow-xl);
+}
+.hc-main img{width:100%;height:100%;object-fit:cover}
+.hc-main-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom, transparent 50%, rgba(11,12,14,.7));
+}
+.hc-main-badge{
+  position:absolute;bottom:20px;left:20px;right:20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.hc-badge-pill{
+  background:rgba(255,255,255,.15);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.2);
+  color:#fff;padding:8px 16px;border-radius:50px;font-size:.85rem;font-weight:600;
+}
+.hc-badge-rating{
+  display:flex;align-items:center;gap:6px;
+  background:var(--yellow);color:var(--ink);
+  padding:8px 14px;border-radius:50px;font-size:.85rem;font-weight:700;
+}
+/* Floating mini cards */
+.hc-float{
+  position:absolute;
+  background:var(--white);border-radius:var(--radius-sm);
+  box-shadow:var(--shadow-md);padding:14px 18px;
+  animation:floatUp .8s ease both;
+}
+.hc-float-1{
+  bottom:120px;left:-24px;
+  display:flex;align-items:center;gap:12px;
+  animation-delay:.5s;
+}
+.hc-float-2{
+  bottom:0;right:-16px;width:200px;
+  animation-delay:.65s;
+}
+.hc-float-3{
+  top:24px;right:-20px;
+  animation-delay:.45s;
+}
+.hcf-avatar{
+  width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;
+}
+.hcf-meta{display:flex;flex-direction:column}
+.hcf-name{font-size:.85rem;font-weight:600;color:var(--ink)}
+.hcf-sub{font-size:.75rem;color:var(--ink3)}
+.hcf-done{
+  display:flex;align-items:center;gap:6px;
+  font-size:.75rem;font-weight:700;color:var(--green);margin-top:6px;
+}
+.hcf-done-icon{width:14px;height:14px;flex-shrink:0}
+.hcf-stat{text-align:center}
+.hcf-stat-num{font-family:var(--font-head);font-size:1.5rem;font-weight:800;color:var(--ink)}
+.hcf-stat-lbl{font-size:.72rem;color:var(--ink3);margin-top:2px}
+.hcf-live{
+  display:flex;align-items:center;gap:6px;
+  font-size:.75rem;font-weight:600;color:var(--coral);
+}
+.hcf-live-dot{width:8px;height:8px;border-radius:50%;background:var(--coral);animation:dotPop 1.2s infinite}
+.hcf-status-icon{width:22px;height:22px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+
+/* ─── MARQUEE / TICKER ─── */
+.ticker-wrap{
+  background:var(--ink);overflow:hidden;padding:14px 0;
+}
+.ticker-inner{
+  display:flex;gap:0;width:max-content;
+  animation:marquee 35s linear infinite;
+}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-item{
+  display:flex;align-items:center;gap:12px;
+  color:rgba(255,255,255,.85);font-size:.88rem;font-weight:500;
+  padding:0 32px;white-space:nowrap;
+}
+.ticker-sep{color:var(--yellow);font-size:1rem;margin:0 -4px}
+
+/* ─── HOW IT WORKS ─── */
+.how{background:var(--white)}
+.how-inner{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+}
+.section-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:16px;
+}
+.section-eyebrow-line{width:24px;height:2px;background:var(--yellow-d);border-radius:2px}
+.section-title{
+  font-family:var(--font-head);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;
+  letter-spacing:-.025em;line-height:1.12;color:var(--ink);margin-bottom:16px;
+}
+.section-sub{font-size:1rem;color:var(--ink2);line-height:1.65;margin-bottom:40px}
+
+.steps-list{display:flex;flex-direction:column;gap:0}
+.step-item{
+  display:flex;gap:20px;padding:24px 0;
+  border-bottom:1px solid var(--border);
+  transition:background .2s;cursor:default;
+}
+.step-item:last-child{border-bottom:none}
+.step-item:hover .step-num{background:var(--yellow);color:var(--ink)}
+.step-num{
+  width:44px;height:44px;border-radius:50%;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-head);font-weight:800;font-size:1rem;color:var(--ink3);
+  flex-shrink:0;transition:all .25s;
+}
+.step-content{}
+.step-title{font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:4px}
+.step-desc{font-size:.9rem;color:var(--ink3);line-height:1.55}
+
+/* How visual */
+.how-visual{position:relative}
+.how-phone-wrap{
+  position:relative;border-radius:32px;overflow:hidden;
+  box-shadow:var(--shadow-xl);
+  aspect-ratio:9/16;max-height:580px;
+  background:var(--ink);
+}
+.how-phone-wrap img{width:100%;height:100%;object-fit:cover;opacity:.9}
+.how-phone-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(11,12,14,.85) 0%, transparent 60%);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:28px;
+}
+.how-chat-bubble{
+  background:rgba(255,255,255,.12);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:16px 16px 4px 16px;
+  padding:14px 18px;
+  font-size:.87rem;color:#fff;margin-bottom:10px;
+  max-width:280px;
+  animation:floatUp .7s ease both;
+}
+.how-chat-bubble.received{
+  border-radius:16px 16px 16px 4px;
+  background:rgba(37,211,102,.18);margin-left:auto;
+}
+.how-chat-meta{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:4px}
+.how-float-card{
+  position:absolute;top:32px;right:-24px;
+  background:var(--white);border-radius:var(--radius-sm);
+  box-shadow:var(--shadow-md);padding:16px 20px;width:180px;
+  animation:floatUp .8s .4s ease both;
+}
+.how-float-label{font-size:.72rem;color:var(--ink3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.how-float-value{font-family:var(--font-head);font-size:1.6rem;font-weight:800;color:var(--green)}
+.how-float-change{font-size:.75rem;color:var(--green);margin-top:2px}
+
+/* ─── SERVICES GRID ─── */
+.services-section{background:var(--bg)}
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-top:48px;
+}
+.svc-card{
+  background:var(--white);border-radius:var(--radius);
+  overflow:hidden;cursor:pointer;
+  box-shadow:var(--shadow);
+  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s;
+  position:relative;
+}
+.svc-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-xl)}
+.svc-card:hover .svc-img img{transform:scale(1.07)}
+.svc-card.tall{grid-row:span 2}
+.svc-card.wide{grid-column:span 2}
+.svc-img{
+  overflow:hidden;
+  height:180px;position:relative;
+}
+.svc-card.tall .svc-img{height:calc(360px + 16px + 180px - 120px)}
+.svc-img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .55s cubic-bezier(.22,1,.36,1);
+}
+.svc-color-overlay{
+  position:absolute;inset:0;
+  mix-blend-mode:multiply;opacity:.3;
+}
+.svc-body{padding:18px 20px 22px}
+.svc-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;margin-bottom:10px;flex-shrink:0;
+}
+.svc-name{font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:6px}
+.svc-desc{font-size:.82rem;color:var(--ink3);line-height:1.5;margin-bottom:12px}
+.svc-tags{display:flex;flex-wrap:wrap;gap:5px}
+.svc-tag{
+  font-size:.73rem;font-weight:500;color:var(--ink2);
+  background:var(--card-bg);border-radius:50px;
+  padding:3px 10px;border:1px solid var(--border);
+}
+.svc-arrow{
+  position:absolute;top:16px;right:16px;
+  width:32px;height:32px;border-radius:50%;
+  background:var(--white);box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:translateX(6px);
+  transition:all .25s;
+}
+.svc-card:hover .svc-arrow{opacity:1;transform:none}
+
+/* ─── TESTIMONIALS ─── */
+.testimonials{background:var(--ink);color:#fff}
+.testi-header{text-align:center;margin-bottom:56px}
+.testi-title{
+  font-family:var(--font-head);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;
+  letter-spacing:-.025em;color:#fff;margin-bottom:12px;
+}
+.testi-sub{color:rgba(255,255,255,.55);font-size:1rem}
+.testi-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.testi-card{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);
+  border-radius:var(--radius);padding:28px;
+  transition:background .25s, transform .25s;
+}
+.testi-card:hover{background:rgba(255,255,255,.1);transform:translateY(-4px)}
+.testi-stars{display:flex;gap:3px;margin-bottom:16px}
+.testi-star{color:var(--yellow);font-size:.9rem}
+.testi-text{font-size:.93rem;line-height:1.65;color:rgba(255,255,255,.8);margin-bottom:20px}
+.testi-user{display:flex;align-items:center;gap:12px}
+.testi-avatar{
+  width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;
+  border:2px solid rgba(255,255,255,.15);
+}
+.testi-user-name{font-weight:600;font-size:.88rem;color:#fff}
+.testi-user-city{font-size:.78rem;color:rgba(255,255,255,.45)}
+.testi-service-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(255,214,0,.12);border:1px solid rgba(255,214,0,.2);
+  color:var(--yellow);font-size:.72rem;font-weight:600;
+  padding:3px 10px;border-radius:50px;margin-bottom:14px;
+}
+
+/* ─── STATS ─── */
+.stats-section{background:var(--yellow);padding:72px 0}
+.stats-inner{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:32px;
+  text-align:center;
+}
+.stat-item{padding:8px}
+.stat-num{
+  font-family:var(--font-head);font-size:clamp(2.4rem,4.5vw,3.4rem);font-weight:800;
+  color:var(--ink);line-height:1;letter-spacing:-.03em;margin-bottom:8px;
+}
+.stat-label{font-size:.9rem;font-weight:500;color:rgba(11,12,14,.65)}
+
+/* ─── CITIES ─── */
+.cities-section{background:var(--white)}
+.cities-scroll-wrap{
+  overflow-x:auto;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  margin-top:40px;
+  padding-bottom:8px;
+}
+.cities-scroll-wrap::-webkit-scrollbar{display:none}
+.cities-row{
+  display:flex;flex-wrap:wrap;gap:10px;
+  justify-content:center;
+}
+.city-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--card-bg);border:1.5px solid var(--border);
+  border-radius:50px;padding:8px 18px;
+  font-size:.85rem;font-weight:500;color:var(--ink2);
+  cursor:pointer;transition:all .22s;white-space:nowrap;
+}
+.city-pill:hover{background:var(--ink);color:#fff;border-color:var(--ink);transform:translateY(-2px)}
+.city-pill.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.city-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* ─── CONTACT / FORM ─── */
+.contact-section{background:var(--bg)}
+.contact-inner{
+  display:grid;grid-template-columns:1fr 1.1fr;gap:64px;align-items:start;
+}
+.contact-left{}
+.contact-channels{
+  display:flex;flex-direction:column;gap:16px;margin-top:36px;
+}
+.contact-channel{
+  display:flex;align-items:center;gap:16px;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);padding:18px 20px;
+  transition:all .25s;cursor:pointer;
+}
+.contact-channel:hover{border-color:var(--ink);box-shadow:var(--shadow-md);transform:translateX(4px)}
+.ch-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:1.2rem;
+}
+.ch-title{font-weight:700;font-size:.95rem;color:var(--ink);margin-bottom:2px}
+.ch-sub{font-size:.82rem;color:var(--ink3)}
+.ch-arrow{margin-left:auto;color:var(--ink3)}
+
+/* Form */
+.form-card{
+  background:var(--white);border-radius:var(--radius);
+  padding:36px;box-shadow:var(--shadow-md);
+}
+.form-title{font-family:var(--font-head);font-weight:800;font-size:1.5rem;color:var(--ink);margin-bottom:6px}
+.form-sub{font-size:.9rem;color:var(--ink3);margin-bottom:28px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+label{font-size:.82rem;font-weight:600;color:var(--ink2)}
+input,select,textarea{
+  width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 14px;font-size:.9rem;font-family:var(--font-body);
+  background:var(--bg);color:var(--ink);
+  transition:border-color .2s;outline:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--ink);background:var(--white)}
+textarea{resize:vertical;min-height:110px}
+select{appearance:none;cursor:pointer}
+.btn-submit{
+  width:100%;padding:15px;border-radius:50px;
+  background:var(--ink);color:#fff;font-weight:700;font-size:1rem;
+  font-family:var(--font-head);letter-spacing:-.01em;
+  transition:all .25s cubic-bezier(.22,1,.36,1);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-submit:hover{background:#1a1c21;transform:translateY(-2px);box-shadow:var(--shadow-xl)}
+.form-consent{font-size:.78rem;color:var(--ink3);margin-top:16px;text-align:center;line-height:1.5}
+
+/* ─── FOOTER ─── */
+footer{background:#0B0C0E;color:rgba(255,255,255,.65);padding:64px 0 32px}
+.footer-inner{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-brand-name{
+  font-family:var(--font-head);font-weight:800;font-size:1.3rem;
+  color:#fff;margin-bottom:12px;
+}
+.footer-brand-desc{font-size:.85rem;line-height:1.65;color:rgba(255,255,255,.45);margin-bottom:20px}
+.footer-col-title{
+  font-weight:700;font-size:.85rem;color:#fff;
+  text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px;
+}
+.footer-links{display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:.85rem;color:rgba(255,255,255,.5);transition:color .2s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:28px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.footer-copy{font-size:.8rem;color:rgba(255,255,255,.35)}
+.footer-legal{display:flex;gap:20px;flex-wrap:wrap}
+.footer-legal a{font-size:.8rem;color:rgba(255,255,255,.35);transition:color .2s}
+.footer-legal a:hover{color:rgba(255,255,255,.7)}
+.footer-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:50px;padding:6px 14px;font-size:.78rem;color:rgba(255,255,255,.55);
+}
+.footer-badge-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:dotPop 2s infinite}
+
+/* ─── FLOATING WA BUTTON ─── */
+.fab{
+  position:fixed;bottom:28px;right:28px;z-index:200;
+  width:58px;height:58px;border-radius:50%;
+  background:#25D366;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(37,211,102,.45);
+  transition:all .25s cubic-bezier(.22,1,.36,1);
+  animation:floatUp .7s 1s ease both;
+}
+.fab:hover{transform:scale(1.12);box-shadow:0 8px 32px rgba(37,211,102,.55)}
+.fab svg{width:26px;height:26px;fill:#fff}
+.fab-pulse{
+  position:absolute;inset:-6px;border-radius:50%;
+  border:2px solid rgba(37,211,102,.4);
+  animation:pulse 2s infinite;
+}
+
+/* ─── COMPARISON STRIP ─── */
+.vs-section{background:var(--card-bg);padding:64px 0}
+.vs-inner{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;max-width:900px;margin:0 auto}
+.vs-col{background:var(--white);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow)}
+.vs-col.highlight{background:var(--ink);color:#fff}
+.vs-col-title{font-family:var(--font-head);font-weight:800;font-size:1.1rem;margin-bottom:20px}
+.vs-col.highlight .vs-col-title{color:#fff}
+.vs-list{display:flex;flex-direction:column;gap:12px}
+.vs-list-item{display:flex;align-items:flex-start;gap:10px;font-size:.88rem;color:var(--ink2);line-height:1.45}
+.vs-col.highlight .vs-list-item{color:rgba(255,255,255,.75)}
+.vs-icon{width:18px;height:18px;flex-shrink:0;margin-top:1px}
+.vs-vs{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--ink);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-head);font-weight:800;font-size:.9rem;
+  flex-shrink:0;
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1024px){
+  .services-grid{grid-template-columns:repeat(3,1fr)}
+  .footer-inner{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .hero-top{grid-template-columns:1fr}
+  .hero-visual{display:none}
+  .how-inner{grid-template-columns:1fr}
+  .how-phone-wrap{max-height:360px}
+  .testi-grid{grid-template-columns:1fr}
+  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .contact-inner{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .vs-inner{grid-template-columns:1fr}
+  .vs-vs{display:none}
+  nav .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  .footer-inner{grid-template-columns:1fr}
+  .section{padding:64px 0}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .services-grid{grid-template-columns:1fr}
+  .svc-card.wide,.svc-card.tall{grid-column:span 1;grid-row:span 1}
+  .stats-inner{grid-template-columns:1fr 1fr}
+}
+
+/* ─── PHOTO BACKGROUNDS using Picsum ─── */
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="container nav-inner">
+    <a href="/" class="logo">Insta<span>Help®</span></a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="tel:+917022702220" class="btn btn-outline">
+        <svg viewBox="0 0 24 24" class="btn-icon" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+        Call us
+      </a>
+      <a href="#contact" class="btn btn-yellow">Get it done</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-top">
+
+      <!-- Left copy -->
+      <div class="hero-copy">
+        <div class="hero-eyebrow">
+          <div class="hero-eyebrow-dot"></div>
+          India's On-Demand Concierge · Since 2015
+        </div>
+        <h1>
+          Stop searching.<br>
+          Start getting<br>
+          <em>things done.</em>
+        </h1>
+        <p class="hero-sub">
+          <strong>Plumber? CA? Packers? Photographer?</strong><br>
+          Skip JustDial's paid rankings and Google's endless scrolling.
+          Tell InstaHelp what you need — we find, vet, and co-ordinate the right provider.
+          One team. One number. Actually done.
+        </p>
+        <div class="hero-actions">
+          <a href="tel:+917022702220" class="btn-hero-primary">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+            70227 02220
+          </a>
+          <a href="https://wa.me/917022702220?text=Hi%20InstaHelp%2C%20I%20need%20help%20with..." class="btn-hero-wa" target="_blank" rel="noopener">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp us
+          </a>
+        </div>
+        <div class="hero-trust">
+          <div class="hero-trust-item">
+            <svg class="hero-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            11+ Years Active
+          </div>
+          <div class="hero-trust-item">
+            <svg class="hero-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Thousands of Tasks Done
+          </div>
+          <div class="hero-trust-item">
+            <svg class="hero-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Available 24/7
+          </div>
+          <div class="hero-trust-item">
+            <svg class="hero-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            30+ Indian Cities
+          </div>
+        </div>
+      </div>
+
+      <!-- Right visual card stack -->
+      <div class="hero-visual">
+        <div class="hero-card-stack">
+          <!-- Main image -->
+          <div class="hc-main">
+            <img src="https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?w=700&q=80&fit=crop" alt="Plumber fixing pipes — professional home service" loading="eager">
+            <div class="hc-main-overlay"></div>
+            <div class="hc-main-badge">
+              <span class="hc-badge-pill">🔧 Home Services</span>
+              <span class="hc-badge-rating">⭐ 4.9 · Vetted</span>
+            </div>
+          </div>
+
+          <!-- Float 1: provider card -->
+          <div class="hc-float hc-float-1">
+            <img class="hcf-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80&fit=crop&crop=face" alt="Provider avatar">
+            <div class="hcf-meta">
+              <div class="hcf-name">Rajesh Kumar</div>
+              <div class="hcf-sub">Licensed Electrician · Bangalore</div>
+              <div class="hcf-done">
+                <svg class="hcf-done-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Task confirmed
+              </div>
+            </div>
+          </div>
+
+          <!-- Float 2: stat card -->
+          <div class="hc-float hc-float-2">
+            <div class="hcf-live">
+              <div class="hcf-live-dot"></div>
+              Live requests
+            </div>
+            <div class="hcf-stat" style="margin-top:8px">
+              <div class="hcf-stat-num">247</div>
+              <div class="hcf-stat-lbl">Tasks this week across India</div>
+            </div>
+          </div>
+
+          <!-- Float 3: trust badge -->
+          <div class="hc-float hc-float-3" style="display:flex;align-items:center;gap:10px">
+            <div class="hcf-status-icon">✓</div>
+            <div>
+              <div class="hcf-name">Trademark #3299283</div>
+              <div class="hcf-sub">Class 35 · Since 2015</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ticker / marquee -->
+  <div class="ticker-wrap">
+    <div class="ticker-inner" id="ticker">
+      <span class="ticker-item">🔧 Plumbers <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">⚡ Electricians <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">📦 Packers & Movers <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">📸 Photographers <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">📊 CA & GST <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">🧹 Deep Cleaning <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">🏠 Home Tutors <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">🎨 Graphic Designers <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">🚗 Drivers & Rentals <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">🌿 Pest Control <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">💻 Web Developers <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">👰 Wedding Services <span class="ticker-sep">·</span></span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item">🔧 Plumbers <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">⚡ Electricians <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">📦 Packers & Movers <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">📸 Photographers <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">📊 CA & GST <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">🧹 Deep Cleaning <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">🏠 Home Tutors <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">🎨 Graphic Designers <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">🚗 Drivers & Rentals <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">🌿 Pest Control <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">💻 Web Developers <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">👰 Wedding Services <span class="ticker-sep">·</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- VS STRIP -->
+<div class="vs-section">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:36px">
+      <div class="section-eyebrow" style="justify-content:center">
+        <div class="section-eyebrow-line"></div>
+        Why InstaHelp
+        <div class="section-eyebrow-line"></div>
+      </div>
+      <h2 class="section-title" style="text-align:center">The smarter alternative</h2>
+    </div>
+    <div class="vs-inner reveal">
+      <div class="vs-col">
+        <div class="vs-col-title">😤 JustDial / Google</div>
+        <ul class="vs-list">
+          <li class="vs-list-item">
+            <svg class="vs-icon" viewBox="0 0 24 24" fill="none" stroke="#FF5C5C" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Paid rankings hide the best providers
+          </li>
+          <li class="vs-list-item">
+            <svg class="vs-icon" viewBox="0 0 24 24" fill="none" stroke="#FF5C5C" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            You make 10+ calls to compare quotes
+          </li>
+          <li class="vs-list-item">
+            <svg class="vs-icon" viewBox="0 0 24 24" fill="none" stroke="#FF5C5C" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            No vetting — anyone can list
+          </li>
+          <li class="vs-list-item">
+            <svg class="vs-icon" viewBox="0 0 24 24" fill="none" stroke="#FF5C5C" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Coordination is entirely on you
+          </li>
+        </ul>
+      </div>
+      <div class="vs-vs">VS</div>
+      <div class="vs-col highlight">
+        <div class="vs-col-title">✨ InstaHelp</div>
+        <ul class="vs-list">
+          <li class="vs-list-item">
+            <svg class="vs-icon" viewBox="0 0 24 24" fill="none" stroke="#FFD600" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Unbiased, curated provider matches
+          </li>
+          <li class="vs-list-item">
+            <svg class="vs-icon" viewBox="0 0 24 24" fill="none" stroke="#FFD600" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            One message, we handle everything
+          </li>
+          <li class="vs-list-item">
+            <svg class="vs-icon" viewBox="0 0 24 24" fill="none" stroke="#FFD600" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Vetted, verified independent pros
+          </li>
+          <li class="vs-list-item">
+            <svg class="vs-icon" viewBox="0 0 24 24" fill="none" stroke="#FFD600" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Full coordination &amp; follow-up by us
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section how" id="how-it-works">
+  <div class="container">
+    <div class="how-inner">
+      <div class="reveal">
+        <div class="section-eyebrow">
+          <div class="section-eyebrow-line"></div>
+          How it works
+        </div>
+        <h2 class="section-title">Three steps to<br>actually done</h2>
+        <p class="section-sub">No browsing listings. No cold-calling strangers. Just tell us what you need and we handle the rest — start to finish.</p>
+
+        <div class="steps-list">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-title">Tell us your need</div>
+              <div class="step-desc">WhatsApp, call, or fill the form. Describe what you need — any category, any city. The more detail, the faster we match.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-title">We find & vet providers</div>
+              <div class="step-desc">Our team curates verified, independent professionals matched to your exact requirement — no SEO rankings, no paid spots.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-title">We coordinate end-to-end</div>
+              <div class="step-desc">Scheduling, follow-up, issue resolution — InstaHelp manages the process so you don't have to make a dozen calls.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">✓</div>
+            <div class="step-content">
+              <div class="step-title">Actually done</div>
+              <div class="step-desc">You get the outcome, not just a list of phone numbers. We confirm completion and check satisfaction.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone visual -->
+      <div class="how-visual reveal reveal-d2">
+        <div class="how-phone-wrap">
+          <img src="https://images.unsplash.com/photo-1586769852044-692d6e3703f0?w=500&q=80&fit=crop" alt="Person using WhatsApp on phone" loading="lazy">
+          <div class="how-phone-overlay">
+            <div class="how-chat-bubble">
+              Hi InstaHelp, I need a plumber for a leaking pipe in my apartment in Koramangala today 🔧
+              <div class="how-chat-meta">You · just now</div>
+            </div>
+            <div class="how-chat-bubble received">
+              Got it! I've matched you with Suresh (4.9★, 200+ jobs in Koramangala). He can be there by 3 PM. Shall I confirm? ✅
+              <div class="how-chat-meta">InstaHelp · 2 min</div>
+            </div>
+          </div>
+        </div>
+        <div class="how-float-card">
+          <div class="how-float-label">Avg. response</div>
+          <div class="how-float-value">&lt;5 min</div>
+          <div class="how-float-change">↑ 24/7 availability</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="container">
+    <div class="stats-inner">
+      <div class="stat-item reveal">
+        <div class="stat-num" data-target="11">11+</div>
+        <div class="stat-label">Years operating across India</div>
+      </div>
+      <div class="stat-item reveal reveal-d1">
+        <div class="stat-num">30+</div>
+        <div class="stat-label">Cities covered pan-India</div>
+      </div>
+      <div class="stat-item reveal reveal-d2">
+        <div class="stat-num">1000s</div>
+        <div class="stat-label">Tasks completed & coordinated</div>
+      </div>
+      <div class="stat-item reveal reveal-d3">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Availability, every day</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES GRID -->
+<section class="section services-section" id="services">
+  <div class="container">
+    <div class="section-eyebrow reveal">
+      <div class="section-eyebrow-line"></div>
+      Every category
+    </div>
+    <h2 class="section-title reveal">Whatever you need,<br>we source it.</h2>
+    <p class="section-sub reveal" style="max-width:580px">From fixing a leaking tap to finding a CA for your startup — InstaHelp coordinates providers across every category of life and work.</p>
+
+    <div class="services-grid">
+
+      <div class="svc-card tall reveal">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80&fit=crop" alt="Home services plumber" loading="lazy">
+          <div class="svc-color-overlay" style="background:#1A6FFF"></div>
+        </div>
+        <div class="svc-body">
+          <div class="svc-icon" style="background:#EEF3FF">🔧</div>
+          <div class="svc-name">Home & Personal Services</div>
+          <div class="svc-desc">Plumbers, electricians, deep cleaning, AC repair, handymen & more — arranged and coordinated.</div>
+          <div class="svc-tags">
+            <span class="svc-tag">Plumbers</span>
+            <span class="svc-tag">Electricians</span>
+            <span class="svc-tag">Deep Cleaning</span>
+            <span class="svc-tag">AC Service</span>
+            <span class="svc-tag">Pest Control</span>
+          </div>
+        </div>
+        <div class="svc-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+      <div class="svc-card reveal reveal-d1">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80&fit=crop" alt="Business and finance CA professional" loading="lazy">
+          <div class="svc-color-overlay" style="background:#7B6FFF"></div>
+        </div>
+        <div class="svc-body">
+          <div class="svc-icon" style="background:#F0EEFF">📊</div>
+          <div class="svc-name">Business & Professional</div>
+          <div class="svc-desc">CA, GST, company registration, legal, recruitment & HR support.</div>
+          <div class="svc-tags">
+            <span class="svc-tag">CA & GST</span>
+            <span class="svc-tag">Legal</span>
+            <span class="svc-tag">Recruitment</span>
+          </div>
+        </div>
+        <div class="svc-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <div class="svc-card reveal reveal-d2">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&q=80&fit=crop" alt="Tech and digital marketing developer" loading="lazy">
+          <div class="svc-color-overlay" style="background:#00C48C"></div>
+        </div>
+        <div class="svc-body">
+          <div class="svc-icon" style="background:#E5FBF4">💻</div>
+          <div class="svc-name">Tech & Creative</div>
+          <div class="svc-desc">Web dev, apps, SEO, social media marketing, UI/UX & IT support.</div>
+          <div class="svc-tags">
+            <span class="svc-tag">Web Dev</span>
+            <span class="svc-tag">SEO</span>
+            <span class="svc-tag">Design</span>
+          </div>
+        </div>
+        <div class="svc-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <div class="svc-card wide reveal">
+        <div style="display:grid;grid-template-columns:1fr 1fr;height:100%">
+          <div class="svc-img" style="height:100%;min-height:180px">
+            <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&q=80&fit=crop" alt="Wedding and events photography" loading="lazy">
+          </div>
+          <div class="svc-body" style="display:flex;flex-direction:column;justify-content:center">
+            <div class="svc-icon" style="background:#FFF3E0">🎉</div>
+            <div class="svc-name">Events & Travel</div>
+            <div class="svc-desc">Weddings, photographers, packers, tours, airport pickup & visa.</div>
+            <div class="svc-tags">
+              <span class="svc-tag">Weddings</span>
+              <span class="svc-tag">Packers</span>
+              <span class="svc-tag">Tours</span>
+            </div>
+          </div>
+        </div>
+        <div class="svc-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <div class="svc-card reveal reveal-d1">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80&fit=crop" alt="Tutor with student education" loading="lazy">
+          <div class="svc-color-overlay" style="background:#FF5C5C"></div>
+        </div>
+        <div class="svc-body">
+          <div class="svc-icon" style="background:#FFF0F0">📚</div>
+          <div class="svc-name">Education & Tutoring</div>
+          <div class="svc-desc">Home tutors, NEET/JEE coaching, music, languages & skill training.</div>
+          <div class="svc-tags">
+            <span class="svc-tag">Home Tutors</span>
+            <span class="svc-tag">NEET/JEE</span>
+            <span class="svc-tag">Music</span>
+          </div>
+        </div>
+        <div class="svc-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <div class="svc-card reveal reveal-d2">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1565793623516-f70bd90df8d9?w=400&q=80&fit=crop" alt="Manufacturing industrial suppliers" loading="lazy">
+          <div class="svc-color-overlay" style="background:#FFD600"></div>
+        </div>
+        <div class="svc-body">
+          <div class="svc-icon" style="background:#FFFBE6">🏭</div>
+          <div class="svc-name">Manufacturers & Suppliers</div>
+          <div class="svc-desc">Packaging, printing, garments, CNC, raw materials & bulk sourcing.</div>
+          <div class="svc-tags">
+            <span class="svc-tag">Packaging</span>
+            <span class="svc-tag">Garments</span>
+            <span class="svc-tag">CNC</span>
+          </div>
+        </div>
+        <div class="svc-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <div class="svc-card reveal">
+        <div class="svc-img">
+          <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80&fit=crop" alt="Wellness fitness trainer" loading="lazy">
+          <div class="svc-color-overlay" style="background:#00C48C"></div>
+        </div>
+        <div class="svc-body">
+          <div class="svc-icon" style="background:#E5FBF4">🧘</div>
+          <div class="svc-name">Personal Care & Wellness</div>
+          <div class="svc-desc">Elder care, fitness trainers, yoga, salon at home & pet care.</div>
+          <div class="svc-tags">
+            <span class="svc-tag">Elder Care</span>
+            <span class="svc-tag">Fitness</span>
+            <span class="svc-tag">Salon</span>
+          </div>
+        </div>
+        <div class="svc-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <!-- Anything else card -->
+      <div class="svc-card reveal reveal-d1" style="background:var(--ink);color:#fff">
+        <div class="svc-body" style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:28px">
+          <div style="font-size:2.5rem;margin-bottom:12px">🪄</div>
+          <div class="svc-name" style="color:#fff;font-size:1.2rem;margin-bottom:8px">Anything else?</div>
+          <div class="svc-desc" style="color:rgba(255,255,255,.6)">If it exists in India, we can probably find it. Just ask — no category is too unusual.</div>
+          <div style="margin-top:20px">
+            <a href="https://wa.me/917022702220?text=Hi%20InstaHelp%2C%20I%20need%20something%20unusual..." class="btn btn-yellow" style="display:inline-flex">Ask us →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials" id="testimonials">
+  <div class="container">
+    <div class="testi-header reveal">
+      <div class="section-eyebrow" style="color:rgba(255,255,255,.4);justify-content:center">
+        <div class="section-eyebrow-line" style="background:var(--yellow-d)"></div>
+        Real customers
+        <div class="section-eyebrow-line" style="background:var(--yellow-d)"></div>
+      </div>
+      <h2 class="testi-title">What people are saying</h2>
+      <p class="testi-sub">Thousands of tasks completed across India since 2015</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-service-tag">🔧 Home Services · Bangalore</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I needed a plumber urgently in Koramangala. Instead of calling 10 JustDial numbers, I WhatsApp'd InstaHelp. They had someone at my door in 2 hours. Legitimate game-changer."</p>
+        <div class="testi-user">
+          <img class="testi-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80&fit=crop&crop=face" alt="Customer">
+          <div>
+            <div class="testi-user-name">Arjun M.</div>
+            <div class="testi-user-city">Koramangala, Bangalore</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-d1">
+        <div class="testi-service-tag">📊 CA Services · Mumbai</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Found a really solid CA through InstaHelp for our GST filing. They vetted him, handled the introduction, and followed up to make sure everything was completed. Fantastic service."</p>
+        <div class="testi-user">
+          <img class="testi-avatar" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&q=80&fit=crop&crop=face" alt="Customer">
+          <div>
+            <div class="testi-user-name">Priya S.</div>
+            <div class="testi-user-city">Powai, Mumbai</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-d2">
+        <div class="testi-service-tag">📦 Packers & Movers · Delhi</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"We were relocating from Gurgaon to Pune and didn't know where to start. InstaHelp found us a reliable packers & movers team, negotiated the price, and tracked the move. Saved us so much stress."</p>
+        <div class="testi-user">
+          <img class="testi-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80&fit=crop&crop=face" alt="Customer">
+          <div>
+            <div class="testi-user-name">Rahul & Neha K.</div>
+            <div class="testi-user-city">Gurgaon → Pune</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CITIES -->
+<section class="section cities-section">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:12px" class="reveal">
+      <div class="section-eyebrow" style="justify-content:center">
+        <div class="section-eyebrow-line"></div>
+        Coverage
+        <div class="section-eyebrow-line"></div>
+      </div>
+      <h2 class="section-title">Serving 30+ cities across India</h2>
+      <p class="section-sub" style="max-width:500px;margin:0 auto">Popular with residents of large apartment complexes and gated communities.</p>
+    </div>
+    <div class="cities-row reveal" style="margin-top:36px">
+      <div class="city-pill active"><div class="city-pill-dot"></div>Bangalore</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Mumbai</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Delhi NCR</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Hyderabad</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Chennai</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Pune</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Kolkata</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Ahmedabad</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Jaipur</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Lucknow</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Chandigarh</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Kochi</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Gurgaon</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Noida</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Indore</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Coimbatore</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Mysore</div>
+      <div class="city-pill"><div class="city-pill-dot"></div>Goa</div>
+      <div class="city-pill" style="background:var(--card-bg);border-color:var(--yellow);color:var(--ink2)">+ more →</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <!-- Left -->
+      <div class="reveal">
+        <div class="section-eyebrow">
+          <div class="section-eyebrow-line"></div>
+          Get in touch
+        </div>
+        <h2 class="section-title">Ready to get<br>things done?</h2>
+        <p class="section-sub">Skip the browsing. Tell us what you need and our team will get back to you within minutes.</p>
+
+        <div class="contact-channels">
+          <a href="https://wa.me/917022702220?text=Hi%20InstaHelp%2C%20I%20need%20help%20with..." class="contact-channel" target="_blank" rel="noopener">
+            <div class="ch-icon" style="background:#E7FBF0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </div>
+            <div>
+              <div class="ch-title">WhatsApp</div>
+              <div class="ch-sub">+91 70227 02220 · Fastest response</div>
+            </div>
+            <svg class="ch-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="tel:+917022702220" class="contact-channel">
+            <div class="ch-icon" style="background:#EEF3FF">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A6FFF" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+            </div>
+            <div>
+              <div class="ch-title">Call us</div>
+              <div class="ch-sub">70227 02220 · Available 24/7</div>
+            </div>
+            <svg class="ch-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a href="mailto:mail@instahelp.in" class="contact-channel">
+            <div class="ch-icon" style="background:#FFF0F0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF5C5C" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="ch-title">Email</div>
+              <div class="ch-sub">mail@instahelp.in</div>
+            </div>
+            <svg class="ch-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-card reveal reveal-d1">
+        <div class="form-title">Get it done today</div>
+        <div class="form-sub">Tell us your task. We'll handle the rest.</div>
+        <form id="contactForm" action="https://script.google.com/macros/s/AKfycbyfIH5kq_gP2hPt8KSO1HFJuGfJgAtk9g1mHX4TXONxlIRWqHnxJVyixKsyPrwT5UlF/exec" method="POST" target="ihGsheetFrame" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullname">Your name</label>
+              <input type="text" name="fullname" id="fullname" placeholder="Rahul Sharma" required maxlength="60" autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone / WhatsApp</label>
+              <input type="tel" name="phone" id="phone" placeholder="+91 98765 43210" maxlength="15" autocomplete="tel">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" name="email" id="email" placeholder="rahul@example.com" maxlength="100" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="service">Service category</label>
+            <select name="service" id="service">
+              <option value="">Select a category…</option>
+              <option>Home & Personal Services</option>
+              <option>Business & Professional</option>
+              <option>Tech & Creative</option>
+              <option>Events & Travel</option>
+              <option>Education & Tutoring</option>
+              <option>Manufacturers & Suppliers</option>
+              <option>Personal Care & Wellness</option>
+              <option>Real Estate</option>
+              <option>Deals & Buying Assistance</option>
+              <option>Something Else</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Describe your need</label>
+            <textarea name="message" id="message" placeholder="E.g. I need a plumber for a leaking kitchen tap in Koramangala, Bangalore. Available this weekend." required maxlength="1000"></textarea>
+          </div>
+          <input type="hidden" name="form_id" value="new_homepage_v2">
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send request
+          </button>
+          <div class="form-consent">By submitting, you agree to our <a href="term.html" style="color:var(--blue)">Terms</a> & <a href="privacy.html" style="color:var(--blue)">Privacy Policy</a></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">InstaHelp®</div>
+        <div class="footer-brand-desc">India's on-demand digital concierge since 2015. One team, one number, actually done. Registered trademark Class 35 (No. 3299283).</div>
+        <div class="footer-badge">
+          <div class="footer-badge-dot"></div>
+          Operating since April 2015 · Bengaluru
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-links">
+          <a href="#services">Home Services</a>
+          <a href="#services">Business & CA</a>
+          <a href="#services">Tech & Creative</a>
+          <a href="#services">Events & Travel</a>
+          <a href="#services">Manufacturers</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <div class="footer-links">
+          <a href="#how-it-works">How it works</a>
+          <a href="https://www.instahelp.co">instahelp.co</a>
+          <a href="https://trawel.in">Trawel.in</a>
+          <a href="#contact">Contact us</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <div class="footer-links">
+          <a href="term.html">Terms of Service</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="refund.html">Refund Policy</a>
+          <a href="legal.html">Legal</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2015–2026 InstaHelp (Singhvee Family). All rights reserved. TM Reg. No. 3299283.</div>
+      <div class="footer-legal">
+        <a href="https://www.instahelp.in">instahelp.in</a>
+        <a href="https://www.instahelp.co">instahelp.co</a>
+        <a href="tel:+917022702220">+91 70227 02220</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/917022702220?text=Hi%20InstaHelp%2C%20I%20need%20assistance." class="fab" target="_blank" rel="noopener" aria-label="WhatsApp InstaHelp">
+  <div class="fab-pulse"></div>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<iframe id="ihGsheetFrame" name="ihGsheetFrame" title="Form submission" aria-hidden="true" tabindex="-1" style="position:absolute;width:0;height:0;border:0;left:0;bottom:0"></iframe>
+
+<script>
+// ─── REVEAL ON SCROLL ───
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => io.observe(el));
+
+// ─── CITY PILLS ───
+document.querySelectorAll('.city-pill').forEach(pill => {
+  pill.addEventListener('click', function(){
+    document.querySelectorAll('.city-pill').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// ─── FORM SUBMIT ───
+const form = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
+if(form){
+  form.addEventListener('submit', function(e){
+    const name = document.getElementById('fullname').value.trim();
+    const msg = document.getElementById('message').value.trim();
+    if(!name || !msg){
+      e.preventDefault();
+      alert('Please fill in your name and describe your need.');
+      return;
+    }
+    submitBtn.textContent = 'Sending…';
+    submitBtn.disabled = true;
+    setTimeout(()=>{
+      submitBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Sent! We\'ll be in touch.';
+      submitBtn.style.background = 'var(--green)';
+    }, 1800);
+  });
+}
+
+// ─── MOBILE NAV ───
+document.querySelector('.nav-hamburger')?.addEventListener('click', function(){
+  const nav = document.querySelector('.nav-links');
+  if(!nav) return;
+  const isOpen = nav.style.display === 'flex';
+  nav.style.display = isOpen ? '' : 'flex';
+  nav.style.flexDirection = 'column';
+  nav.style.position = 'absolute';
+  nav.style.top = '64px';
+  nav.style.left = '0';
+  nav.style.right = '0';
+  nav.style.background = 'var(--white)';
+  nav.style.padding = '20px 24px';
+  nav.style.borderBottom = '1px solid var(--border)';
+  nav.style.zIndex = '99';
+  if(isOpen) nav.style.display = 'none';
+});
+
+// ─── STEP HOVER ANIMATION ───
+document.querySelectorAll('.step-item').forEach(step => {
+  step.addEventListener('mouseenter', function(){
+    this.style.background = 'rgba(255,214,0,0.04)';
+    this.style.paddingLeft = '8px';
+    this.style.transition = 'all .2s';
+  });
+  step.addEventListener('mouseleave', function(){
+    this.style.background = '';
+    this.style.paddingLeft = '';
+  });
+});
+</script>
+</body>
+</html>

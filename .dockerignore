@@ -1,0 +1,13 @@
+backend/node_modules
+backend/dist
+backend/logs
+backend/uploads
+backend/.env
+backend/.env.*
+.git
+.gitignore
+**/*.md
+**/.DS_Store
+**/node_modules
+**/.cursor
+**/agent-transcripts

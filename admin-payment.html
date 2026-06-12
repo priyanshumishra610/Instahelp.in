@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhonePe Setup — InstaHelp Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/payment.css">
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+</head>
+<body class="admin-page">
+
+  <div class="admin-shell">
+
+    <!-- PhonePe Header -->
+    <div class="pp-admin-hero pay-enter">
+      <div class="pp-admin-brand">
+        <img src="image/phonepe-logo.svg" alt="PhonePe" class="pp-admin-logo-img" width="120" height="36">
+        <div>
+          <h1>PhonePe Setup</h1>
+          <p>Configure InstaHelp payment gateway</p>
+        </div>
+      </div>
+      <div class="pp-status-pill" id="statusPill">
+        <span class="pp-status-dot" id="statusDot"></span>
+        <span id="statusText">Checking…</span>
+      </div>
+    </div>
+
+    <!-- Quick Start -->
+    <div class="admin-form-card pay-enter pay-enter-d1" id="setupGuide">
+      <h2>Quick Start</h2>
+      <ol class="pp-steps">
+        <li>Log in to <a href="https://business.phonepe.com" target="_blank" rel="noopener">PhonePe Business</a></li>
+        <li>Create a <strong>Payment Link</strong> for your service amount</li>
+        <li>Paste the link below (Live or Sandbox)</li>
+        <li>Set redirect URLs to your success &amp; failure pages</li>
+        <li>Click <strong>Save &amp; Start PhonePe</strong></li>
+      </ol>
+    </div>
+
+    <form id="adminForm" novalidate>
+
+      <!-- Environment -->
+      <div class="admin-form-card pay-enter pay-enter-d1">
+        <h2>Environment</h2>
+
+        <div class="pp-env-toggle" role="radiogroup" aria-label="PhonePe environment">
+          <label class="pp-env-option">
+            <input type="radio" name="environment" value="production" id="envProduction" checked>
+            <span class="pp-env-card">
+              <strong>🟢 Live</strong>
+              <small>Real payments</small>
+            </span>
+          </label>
+          <label class="pp-env-option">
+            <input type="radio" name="environment" value="sandbox" id="envSandbox">
+            <span class="pp-env-card">
+              <strong>🧪 Sandbox</strong>
+              <small>Test payments</small>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Merchant -->
+      <div class="admin-form-card pay-enter pay-enter-d2">
+        <h2>Merchant Details</h2>
+
+        <div class="admin-field">
+          <label for="businessName">Business Name</label>
+          <input type="text" id="businessName" placeholder="InstaHelp" maxlength="100" required>
+        </div>
+
+        <div class="admin-field">
+          <label for="merchantName">PhonePe Merchant Display Name</label>
+          <input type="text" id="merchantName" placeholder="InstaHelp Payments" maxlength="100">
+        </div>
+
+        <div class="admin-field">
+          <label for="merchantId">Merchant ID <span class="pp-optional">(optional)</span></label>
+          <input type="text" id="merchantId" placeholder="MERCHANT_xxx" maxlength="60">
+        </div>
+
+        <div class="admin-field">
+          <label for="supportNumber">Support Number</label>
+          <input type="tel" id="supportNumber" placeholder="+91 70227 02220" maxlength="20">
+        </div>
+
+        <div class="admin-field">
+          <label for="supportEmail">Support Email</label>
+          <input type="email" id="supportEmail" placeholder="mail@instahelp.in" maxlength="100">
+        </div>
+      </div>
+
+      <!-- PhonePe Links -->
+      <div class="admin-form-card pay-enter pay-enter-d2">
+        <h2>PhonePe Payment Links</h2>
+        <p class="pp-field-hint">Paste links from PhonePe Business dashboard. Must be a phonepe.com URL.</p>
+
+        <div class="admin-field" id="liveLinkField">
+          <label for="paymentLink">Live Payment Link</label>
+          <input type="url" id="paymentLink" placeholder="https://phonepe.com/pay/..." autocomplete="off">
+        </div>
+
+        <div class="admin-field" id="testLinkField">
+          <label for="testPaymentLink">Sandbox / Test Payment Link</label>
+          <input type="url" id="testPaymentLink" placeholder="https://mercury-uat.phonepe.com/..." autocomplete="off">
+        </div>
+
+        <div class="admin-field">
+          <label for="successUrl">Success Redirect URL</label>
+          <input type="text" id="successUrl" placeholder="payment-success.html">
+          <span class="pp-field-hint">Set same URL in PhonePe dashboard → Redirect URL</span>
+        </div>
+
+        <div class="admin-field">
+          <label for="failureUrl">Failure Redirect URL</label>
+          <input type="text" id="failureUrl" placeholder="payment-failed.html">
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="admin-form-card pay-enter pay-enter-d3">
+        <h2>Controls</h2>
+
+        <div class="admin-toggle-row">
+          <div class="admin-toggle-label">
+            <strong>Enable PhonePe Payments</strong>
+            <span>Allow customers to pay via PhonePe</span>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" id="phonepeEnabled" checked>
+            <span class="admin-switch-slider"></span>
+          </label>
+        </div>
+
+        <div class="admin-toggle-row">
+          <div class="admin-toggle-label">
+            <strong>Enable All Payments</strong>
+            <span>Master switch for checkout</span>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" id="paymentsEnabled" checked>
+            <span class="admin-switch-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Backend API Mode -->
+      <div class="admin-form-card pay-enter pay-enter-d3" id="apiSection">
+        <h2>Backend API Mode</h2>
+        <p class="pp-field-hint">Use the InstaHelp Node.js backend with official PhonePe SDK. Credentials are stored encrypted on the server — never in the browser.</p>
+
+        <div class="admin-field">
+          <label for="apiBaseUrl">Backend API URL</label>
+          <input type="url" id="apiBaseUrl" placeholder="http://localhost:4001">
+        </div>
+
+        <div class="admin-field">
+          <label for="apiMode">Integration Mode</label>
+          <select id="apiMode" style="width:100%;padding:12px;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);font-family:inherit;">
+            <option value="payment_link">Payment Link (Legacy)</option>
+            <option value="pg_api" selected>PhonePe SDK Checkout (Recommended)</option>
+          </select>
+        </div>
+
+        <div class="admin-field" id="serverCredsHint">
+          <p class="pp-field-hint">PhonePe Client ID, Client Secret, and Webhook credentials are configured via <code>PUT /api/admin/payment-settings</code> (admin JWT required). Use the backend README for setup.</p>
+        </div>
+
+        <button type="button" class="admin-save-btn pp-test-btn" id="testBackendBtn" style="background:var(--pay-teal);margin-top:10px;">
+          Test Backend Connection
+        </button>
+      </div>
+
+      <button type="submit" class="admin-save-btn pp-save-btn">
+        Save &amp; Start PhonePe
+      </button>
+      <button type="button" class="admin-save-btn pp-test-btn" id="testPhonePeBtn" style="background:var(--pay-purple);margin-top:10px;">
+        Test Connection
+      </button>
+    </form>
+
+    <p class="pp-admin-footer">
+      <a href="/plans">View Plans</a>
+      &nbsp;·&nbsp;
+      <a href="pay.html">Test Redirect</a>
+      &nbsp;·&nbsp;
+      <a href="transactions.html">Transactions</a>
+      &nbsp;·&nbsp;
+      <a href="https://developer.phonepe.com" target="_blank" rel="noopener">PhonePe Docs</a>
+      &nbsp;·&nbsp;
+      <a href="index.html">Home</a>
+    </p>
+  </div>
+
+  <div class="admin-toast" id="adminToast" role="status">Settings saved</div>
+
+  <script src="js/payment-config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/phonepe.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var form = document.getElementById('adminForm');
+    var toast = document.getElementById('adminToast');
+    var statusPill = document.getElementById('statusPill');
+    var statusDot = document.getElementById('statusDot');
+    var statusText = document.getElementById('statusText');
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(function () { toast.classList.remove('show'); }, 3000);
+    }
+
+    function updateStatusUI() {
+      var status = InstaHelpPhonePe.getStatus();
+      statusText.textContent = status.message;
+      statusPill.className = 'pp-status-pill pp-state-' + status.state;
+      statusDot.className = 'pp-status-dot pp-state-' + status.state;
+
+      var env = document.querySelector('input[name="environment"]:checked');
+      var isSandbox = env && env.value === 'sandbox';
+      document.getElementById('liveLinkField').style.opacity = isSandbox ? '0.5' : '1';
+      document.getElementById('testLinkField').style.opacity = isSandbox ? '1' : '0.7';
+    }
+
+    function loadForm() {
+      var s = InstaHelpPaymentConfig.getSettings();
+      var pp = s.phonepe;
+
+      document.getElementById('businessName').value = s.businessName || '';
+      document.getElementById('merchantName').value = pp.merchantName || '';
+      document.getElementById('merchantId').value = pp.merchantId || '';
+      document.getElementById('supportNumber').value = s.supportNumber || '';
+      document.getElementById('supportEmail').value = s.supportEmail || '';
+      document.getElementById('paymentLink').value = pp.paymentLink || '';
+      document.getElementById('testPaymentLink').value = pp.testPaymentLink || '';
+      document.getElementById('successUrl').value = pp.successUrl || '';
+      document.getElementById('failureUrl').value = pp.failureUrl || '';
+      document.getElementById('phonepeEnabled').checked = pp.enabled !== false;
+      document.getElementById('paymentsEnabled').checked = s.paymentsEnabled !== false;
+      document.getElementById('apiBaseUrl').value = s.apiBaseUrl || 'http://localhost:4001';
+      document.getElementById('apiMode').value = s.apiMode === 'backend' || pp.apiMode === 'pg_api' ? 'pg_api' : 'payment_link';
+
+      if (pp.environment === 'sandbox') {
+        document.getElementById('envSandbox').checked = true;
+      } else {
+        document.getElementById('envProduction').checked = true;
+      }
+
+      updateStatusUI();
+    }
+
+    function getFormData() {
+      var env = document.querySelector('input[name="environment"]:checked');
+      return {
+        businessName: document.getElementById('businessName').value.trim(),
+        supportNumber: document.getElementById('supportNumber').value.trim(),
+        supportEmail: document.getElementById('supportEmail').value.trim(),
+        paymentsEnabled: document.getElementById('paymentsEnabled').checked,
+        apiMode: document.getElementById('apiMode').value === 'pg_api' ? 'backend' : 'payment_link',
+        apiBaseUrl: document.getElementById('apiBaseUrl').value.trim(),
+        phonepe: {
+          enabled: document.getElementById('phonepeEnabled').checked,
+          environment: env ? env.value : 'production',
+          merchantId: document.getElementById('merchantId').value.trim(),
+          merchantName: document.getElementById('merchantName').value.trim(),
+          paymentLink: document.getElementById('paymentLink').value.trim(),
+          testPaymentLink: document.getElementById('testPaymentLink').value.trim(),
+          successUrl: document.getElementById('successUrl').value.trim(),
+          failureUrl: document.getElementById('failureUrl').value.trim(),
+          apiMode: document.getElementById('apiMode').value
+        }
+      };
+    }
+
+    function validateForm(data) {
+      var pp = data.phonepe;
+      var isApiMode = data.apiMode === 'backend' || pp.apiMode === 'pg_api';
+
+      if (isApiMode) {
+        if (!data.apiBaseUrl) {
+          showToast('Please set the Backend API URL');
+          return false;
+        }
+        return true;
+      }
+
+      var link = pp.environment === 'sandbox'
+        ? (pp.testPaymentLink || pp.paymentLink)
+        : pp.paymentLink;
+
+      if (!link) {
+        showToast('Please add a PhonePe payment link');
+        return false;
+      }
+      if (!InstaHelpPhonePe.isValidPhonePeLink(link)) {
+        showToast('Link must be a valid PhonePe URL (phonepe.com)');
+        return false;
+      }
+      return true;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = getFormData();
+      if (!validateForm(data)) return;
+
+      InstaHelpPaymentConfig.saveSettings(data);
+      InstaHelpPhonePe.initPhonePe();
+      updateStatusUI();
+      showToast('PhonePe configured & started ✓');
+    });
+
+    document.getElementById('testBackendBtn').addEventListener('click', function () {
+      var data = getFormData();
+      InstaHelpPaymentConfig.saveSettings(data);
+      if (data.apiBaseUrl) InstaHelpAPI.setApiBase(data.apiBaseUrl);
+      InstaHelpAPI.healthCheck().then(function (res) {
+        showToast(res.status === 'ok' ? 'Backend connected ✓' : 'Backend degraded');
+      }).catch(function () {
+        showToast('Cannot reach backend at ' + (data.apiBaseUrl || 'localhost:4001'));
+      });
+    });
+
+    document.getElementById('testPhonePeBtn').addEventListener('click', function () {
+      var data = getFormData();
+      InstaHelpPaymentConfig.saveSettings(data);
+      var status = InstaHelpPhonePe.initPhonePe();
+      updateStatusUI();
+
+      if (status.configured) {
+        showToast('PhonePe connection OK — ' + status.environment + ' mode');
+      } else {
+        showToast(status.message);
+      }
+    });
+
+    document.querySelectorAll('input[name="environment"]').forEach(function (radio) {
+      radio.addEventListener('change', updateStatusUI);
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.lucide) lucide.createIcons();
+      loadForm();
+      InstaHelpPhonePe.initPhonePe();
+    });
+  })();
+  </script>
+</body>
+</html>
