@@ -122,17 +122,29 @@
     if (!message) {
       el.hidden = true;
       el.textContent = '';
-      el.className = 'hp-alert';
+      el.className = 'portal-alert';
       return;
     }
     el.hidden = false;
     el.textContent = message;
-    el.className = 'hp-alert show ' + (type || 'error');
+    el.className = 'portal-alert show ' + (type || 'error');
   }
 
   function showLoading(show) {
     var overlay = document.getElementById('payLoadingOverlay');
     if (overlay) overlay.classList.toggle('show', !!show);
+  }
+
+  function brandInitials(name) {
+    var parts = String(name || 'IH').trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return 'IH';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (el && text) el.textContent = text;
   }
 
   function bindPayPortal() {
@@ -150,15 +162,26 @@
     if (query.service) form.dataset.prefillService = query.service;
     if (query.vendor) form.dataset.prefillVendor = query.vendor;
 
-    document.getElementById('businessName').textContent = settings.businessName || 'InstaHelp';
-    document.title = 'Pay Online — ' + (settings.businessName || 'InstaHelp');
+    var businessName = settings.businessName || 'InstaHelp';
+    setText('businessName', businessName);
+    setText('sidebarBusinessName', businessName);
+    setText('footerBusinessName', businessName);
+    document.title = 'Pay Online — ' + businessName;
 
-    var supportPhone = document.getElementById('supportPhone');
-    var supportEmail = document.getElementById('supportEmail');
-    if (supportPhone) supportPhone.textContent = settings.supportNumber || '';
-    if (supportEmail) {
-      supportEmail.textContent = settings.supportEmail || '';
-      supportEmail.href = 'mailto:' + (settings.supportEmail || '');
+    var mark = document.getElementById('brandMark');
+    if (mark) mark.textContent = brandInitials(businessName);
+
+    var sidebarPhone = document.getElementById('sidebarSupportPhone');
+    if (sidebarPhone && settings.supportNumber) {
+      sidebarPhone.textContent = settings.supportNumber;
+    }
+
+    var footerContact = document.getElementById('footerContact');
+    if (footerContact) {
+      var parts = [];
+      if (settings.supportNumber) parts.push(settings.supportNumber);
+      if (settings.supportEmail) parts.push(settings.supportEmail);
+      footerContact.textContent = parts.join(' · ');
     }
 
     if (query.amount) document.getElementById('payAmount').value = query.amount;
@@ -169,7 +192,11 @@
 
     var pp = settings.phonepe || {};
     if (pp.environment === 'sandbox') {
-      document.getElementById('testModeBanner').hidden = false;
+      var banner = document.getElementById('testModeBanner');
+      if (banner) {
+        banner.hidden = false;
+        banner.textContent = 'Test mode — payments are for demonstration only';
+      }
     }
 
     function refreshFees() {

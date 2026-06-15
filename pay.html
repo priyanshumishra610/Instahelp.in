@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pay Online — InstaHelp</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#1a3a5c">
+  <meta name="theme-color" content="#050505">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,156 +13,223 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="css/payment.css">
 </head>
-<body class="pay-page hp-page">
+<body class="pay-page portal-page">
 
-  <div id="testModeBanner" class="pay-test-banner" hidden>
-    Sandbox mode — test payments only
+  <div id="testModeBanner" class="portal-test-banner" hidden>
   </div>
 
-  <header class="hp-header">
-    <div class="hp-header-inner">
-      <a href="index.html" class="hp-brand">
-        <img src="image/phonepe-logo.svg" alt="PhonePe" class="hp-brand-logo" width="120" height="32">
+  <div class="portal-bg" aria-hidden="true">
+    <div class="portal-bg-orb portal-bg-orb--1"></div>
+    <div class="portal-bg-orb portal-bg-orb--2"></div>
+    <div class="portal-bg-grid"></div>
+  </div>
+
+  <div class="portal-shell pay-enter">
+
+    <aside class="portal-sidebar">
+      <a href="index.html" class="portal-brand">
+        <span class="portal-mark" id="brandMark">IH</span>
+        <span class="portal-brand-text">
+          <strong id="sidebarBusinessName">InstaHelp</strong>
+          <small>Official Payment Portal</small>
+        </span>
       </a>
-      <span class="hp-secure-tag">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Secure Payment
-      </span>
-    </div>
-  </header>
 
-  <main class="hp-main pay-enter">
-    <section class="hp-hero">
-      <p class="hp-eyebrow">Secure Online Payment</p>
-      <h1 id="businessName">InstaHelp</h1>
-      <p class="hp-subtitle">Enter the amount you wish to pay and proceed to checkout.</p>
-    </section>
+      <div class="portal-sidebar-body">
+        <p class="portal-sidebar-eyebrow">Secure checkout</p>
+        <h1 class="portal-sidebar-title">Pay any amount,<br>anytime.</h1>
+        <p class="portal-sidebar-desc">Complete your payment safely. You'll receive instant confirmation once the transaction is successful.</p>
 
-    <form id="payPortalForm" class="hp-card" novalidate>
-      <div id="payFormAlert" class="hp-alert" role="alert" hidden></div>
-
-      <div class="hp-currency-row" aria-label="Currency">
-        <span class="hp-currency active" aria-current="true">INR</span>
-        <span class="hp-currency muted" title="Only INR payments are supported">USD</span>
-        <span class="hp-currency muted" title="Only INR payments are supported">AED</span>
+        <ul class="portal-trust-list">
+          <li>
+            <span class="portal-trust-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <div>
+              <strong>Bank-grade encryption</strong>
+              <span>256-bit SSL protected checkout</span>
+            </div>
+          </li>
+          <li>
+            <span class="portal-trust-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </span>
+            <div>
+              <strong>Instant confirmation</strong>
+              <span>Receipt sent to your email</span>
+            </div>
+          </li>
+          <li>
+            <span class="portal-trust-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+            <div>
+              <strong>Need help?</strong>
+              <span id="sidebarSupportPhone"></span>
+            </div>
+          </li>
+        </ul>
       </div>
 
-      <div class="hp-field hp-field-amount">
-        <label for="payAmount">Amount to Pay</label>
-        <div class="hp-amount-wrap">
-          <span class="hp-currency-symbol">₹</span>
-          <input
-            type="text"
-            inputmode="decimal"
-            id="payAmount"
-            name="amount"
-            placeholder="0.00"
-            autocomplete="off"
-            required
-            aria-describedby="amountHint"
-          >
-        </div>
-        <span id="amountHint" class="hp-hint">Enter amount in Indian Rupees (INR)</span>
-      </div>
-
-      <div class="hp-field-row">
-        <div class="hp-field">
-          <label for="payName">Your Name <span class="hp-optional">(optional)</span></label>
-          <input type="text" id="payName" name="name" placeholder="Full name" maxlength="100" autocomplete="name">
-        </div>
-        <div class="hp-field">
-          <label for="payPhone">Mobile <span class="hp-optional">(optional)</span></label>
-          <input type="tel" id="payPhone" name="phone" placeholder="+91 98765 43210" maxlength="20" autocomplete="tel">
+      <div class="portal-sidebar-foot">
+        <div class="portal-pay-methods">
+          <span>UPI</span>
+          <span>Cards</span>
+          <span>Net Banking</span>
         </div>
       </div>
+    </aside>
 
-      <div class="hp-field">
-        <label for="payEmail">Email <span class="hp-optional">(optional)</span></label>
-        <input type="email" id="payEmail" name="email" placeholder="you@example.com" maxlength="100" autocomplete="email">
-      </div>
-
-      <div class="hp-field">
-        <label for="payNote">Reference / Booking ID <span class="hp-optional">(optional)</span></label>
-        <input type="text" id="payNote" name="note" placeholder="Booking reference, invoice number, etc." maxlength="120">
-      </div>
-
-      <div class="hp-fees">
-        <h2 class="hp-fees-title">Fees Structure</h2>
-        <div class="hp-fees-table">
-          <div class="hp-fees-row">
-            <span>Payment Amount</span>
-            <span data-fee="amount">₹0</span>
-          </div>
-          <div class="hp-fees-row">
-            <span>Convenience Fee (2%)</span>
-            <span data-fee="convenience">₹0</span>
-          </div>
-          <div class="hp-fees-row">
-            <span>GST on Convenience Fee (18%)</span>
-            <span data-fee="gst">₹0</span>
-          </div>
-          <div class="hp-fees-row hp-fees-total">
-            <span>Total Payable</span>
-            <span data-fee="total">₹0</span>
-          </div>
+    <main class="portal-main">
+      <header class="portal-main-header">
+        <div>
+          <p class="portal-step">Step 1 of 1</p>
+          <h2 id="businessName">Payment Details</h2>
         </div>
-      </div>
+        <span class="portal-secure-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Secure
+        </span>
+      </header>
 
-      <button type="submit" class="hp-submit" id="submitBtn" disabled>
-        Submit Payment
-      </button>
+      <form id="payPortalForm" class="portal-form" novalidate>
+        <div id="payFormAlert" class="portal-alert" role="alert" hidden></div>
 
-      <p class="hp-powered">
-        Powered by PhonePe · UPI · Cards · Net Banking
-      </p>
-    </form>
-  </main>
+        <section class="portal-section">
+          <div class="portal-amount-block">
+            <label for="payAmount" class="portal-label">Amount <span class="portal-inr-badge">INR</span></label>
+            <div class="portal-amount-field">
+              <span class="portal-rupee" aria-hidden="true">₹</span>
+              <input
+                type="text"
+                inputmode="decimal"
+                id="payAmount"
+                name="amount"
+                placeholder="0"
+                autocomplete="off"
+                required
+                aria-describedby="amountHint"
+              >
+            </div>
+            <p id="amountHint" class="portal-field-hint">Minimum ₹1 · Maximum ₹5,00,000</p>
+          </div>
+        </section>
 
-  <footer class="hp-footer">
-    <div class="hp-footer-grid">
-      <div class="hp-footer-block">
-        <h3>Contact Us</h3>
-        <p id="supportPhone"></p>
-        <p><a id="supportEmail" href="#"></a></p>
-      </div>
-      <div class="hp-footer-block">
-        <h3>Policies</h3>
-        <nav class="hp-footer-links">
-          <a href="index.html#about">About Us</a>
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="term.html">Terms &amp; Conditions</a>
-          <a href="refund.html">Refund Policy</a>
-        </nav>
-      </div>
-    </div>
+        <section class="portal-section portal-section--details">
+          <button type="button" class="portal-details-toggle" id="detailsToggle" aria-expanded="false" aria-controls="optionalDetails">
+            <span>Guest &amp; reference details</span>
+            <svg class="portal-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
 
-    <div class="hp-trust-bar">
-      <span>256-bit SSL Secured</span>
-      <span>PCI DSS Compliant</span>
-      <span>UPI · Visa · Mastercard</span>
-    </div>
+          <div class="portal-details-panel" id="optionalDetails" hidden>
+            <div class="portal-field-grid">
+              <div class="portal-field">
+                <label for="payName">Full name</label>
+                <input type="text" id="payName" name="name" placeholder="As on booking" maxlength="100" autocomplete="name">
+              </div>
+              <div class="portal-field">
+                <label for="payPhone">Mobile</label>
+                <input type="tel" id="payPhone" name="phone" placeholder="+91 98765 43210" maxlength="20" autocomplete="tel">
+              </div>
+            </div>
+            <div class="portal-field">
+              <label for="payEmail">Email address</label>
+              <input type="email" id="payEmail" name="email" placeholder="For payment receipt" maxlength="100" autocomplete="email">
+            </div>
+            <div class="portal-field">
+              <label for="payNote">Booking / invoice reference</label>
+              <input type="text" id="payNote" name="note" placeholder="e.g. INV-2026-0042" maxlength="120">
+            </div>
+          </div>
+        </section>
 
-    <p class="hp-copyright">Copyright © <span id="payYear"></span> · Secure payment gateway</p>
-  </footer>
+        <section class="portal-summary" aria-labelledby="summaryTitle">
+          <h3 id="summaryTitle" class="portal-summary-title">Payment summary</h3>
+          <dl class="portal-summary-rows">
+            <div class="portal-summary-row">
+              <dt>Subtotal</dt>
+              <dd data-fee="amount">₹0</dd>
+            </div>
+            <div class="portal-summary-row">
+              <dt>Processing fee <span class="portal-fee-tag">2%</span></dt>
+              <dd data-fee="convenience">₹0</dd>
+            </div>
+            <div class="portal-summary-row">
+              <dt>GST on processing fee</dt>
+              <dd data-fee="gst">₹0</dd>
+            </div>
+            <div class="portal-summary-row portal-summary-row--total">
+              <dt>Total due</dt>
+              <dd data-fee="total">₹0</dd>
+            </div>
+          </dl>
+        </section>
 
-  <div class="pay-loading-overlay" id="payLoadingOverlay" aria-live="polite" aria-busy="true">
-    <img src="image/phonepe-logo.svg" alt="PhonePe" class="pay-brand-logo" width="160" height="48">
-    <div class="pay-spinner" aria-hidden="true"></div>
-    <p class="pay-loading-text">Redirecting to secure checkout…</p>
-    <p class="pay-loading-sub">Please do not close or refresh this page</p>
+        <button type="submit" class="portal-submit" id="submitBtn" disabled>
+          <span>Proceed to Pay</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+
+        <p class="portal-legal">
+          By proceeding, you agree to our
+          <a href="term.html">Terms</a> and
+          <a href="privacy.html">Privacy Policy</a>.
+        </p>
+      </form>
+
+      <footer class="portal-main-footer">
+        <p id="footerContact"></p>
+        <p class="portal-copy">© <span id="payYear"></span> <span id="footerBusinessName">InstaHelp</span></p>
+      </footer>
+    </main>
   </div>
 
-  <script src="js/runtime-bootstrap.js?v=4"></script>
-  <script src="js/payment-config.js?v=4"></script>
-  <script src="js/api.js?v=4"></script>
+  <div class="portal-loading" id="payLoadingOverlay" aria-live="polite" aria-busy="true">
+    <div class="portal-loading-card">
+      <div class="portal-loading-ring" aria-hidden="true"></div>
+      <p class="portal-loading-title">Opening secure checkout</p>
+      <p class="portal-loading-sub">Please don't close this window</p>
+    </div>
+  </div>
+
+  <script src="js/runtime-bootstrap.js?v=5"></script>
+  <script src="js/payment-config.js?v=5"></script>
+  <script src="js/api.js?v=5"></script>
   <script src="js/phonepe.js"></script>
   <script src="js/razorpay-checkout.js"></script>
   <script src="js/orders.js"></script>
   <script src="js/transactions.js"></script>
-  <script src="js/payment.js?v=4"></script>
-  <script src="js/pay-form.js?v=1"></script>
+  <script src="js/payment.js?v=5"></script>
+  <script src="js/pay-form.js?v=2"></script>
   <script>
     document.getElementById('payYear').textContent = new Date().getFullYear();
+
+    (function () {
+      var toggle = document.getElementById('detailsToggle');
+      var panel = document.getElementById('optionalDetails');
+      if (!toggle || !panel) return;
+
+      function hasPrefill() {
+        return ['payName', 'payPhone', 'payEmail', 'payNote'].some(function (id) {
+          var el = document.getElementById(id);
+          return el && el.value.trim();
+        });
+      }
+
+      function setOpen(open) {
+        panel.hidden = !open;
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        toggle.classList.toggle('is-open', open);
+      }
+
+      toggle.addEventListener('click', function () {
+        setOpen(panel.hidden);
+      });
+
+      document.addEventListener('DOMContentLoaded', function () {
+        if (hasPrefill()) setOpen(true);
+      });
+    })();
   </script>
 </body>
 </html>
