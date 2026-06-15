@@ -151,7 +151,9 @@
 
     if (errors.length) return { ok: false, errors: errors };
 
-    if (Config && Config.getSettings().apiBaseUrl) {
+    if (API && Config && Config.resolveApiBaseUrl) {
+      API.setApiBase(Config.resolveApiBaseUrl());
+    } else if (Config && Config.getSettings().apiBaseUrl) {
       API.setApiBase(Config.getSettings().apiBaseUrl);
     }
 

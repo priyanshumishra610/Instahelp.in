@@ -7,6 +7,50 @@
   'use strict';
 
   var STORAGE_KEY = 'paymentSettings';
+  var PRODUCTION_API_BASE = 'https://instahelp-in.onrender.com';
+
+  function isProductionSiteHost(host) {
+    return host === 'www.instahelp.in' || host === 'instahelp.in' || host === 'instahelp-in.onrender.com';
+  }
+
+  function isLocalApiUrl(url) {
+    return /localhost|127\.0\.0\.1/.test(url || '');
+  }
+
+  function resolveApiBaseUrl() {
+    if (global.INSTAHELP_API_BASE) {
+      return String(global.INSTAHELP_API_BASE).replace(/\/$/, '');
+    }
+
+    var host = global.location && global.location.hostname;
+    var origin = global.location && global.location.origin;
+
+    if (host === 'instahelp-in.onrender.com' && origin) {
+      return origin.replace(/\/$/, '');
+    }
+    if (host === 'www.instahelp.in' || host === 'instahelp.in') {
+      return PRODUCTION_API_BASE;
+    }
+
+    var storedApi = global.localStorage && global.localStorage.getItem('instahelp_api_base');
+    if (storedApi && !(isProductionSiteHost(host) && isLocalApiUrl(storedApi))) {
+      return storedApi.replace(/\/$/, '');
+    }
+
+    var stored = readRaw();
+    if (stored && stored.apiBaseUrl && !(isProductionSiteHost(host) && isLocalApiUrl(stored.apiBaseUrl))) {
+      return stored.apiBaseUrl.replace(/\/$/, '');
+    }
+
+    if (host === 'localhost' || host === '127.0.0.1') {
+      var port = global.location.port;
+      if (port === '4000' || port === '4001') return origin.replace(/\/$/, '');
+      return 'http://localhost:4001';
+    }
+
+    if (origin) return origin.replace(/\/$/, '');
+    return PRODUCTION_API_BASE;
+  }
 
   var DEFAULTS = {
     businessName: 'InstaHelp',
@@ -69,6 +113,7 @@
       settings.apiMode = stored.apiMode || settings.apiMode;
       settings.apiBaseUrl = stored.apiBaseUrl || settings.apiBaseUrl;
     }
+    settings.apiBaseUrl = resolveApiBaseUrl();
     return settings;
   }
 
@@ -134,6 +179,8 @@
     saveSettings: saveSettings,
     resetSettings: resetSettings,
     isValidUrl: isValidUrl,
-    resolveUrl: resolveUrl
+    resolveUrl: resolveUrl,
+    resolveApiBaseUrl: resolveApiBaseUrl,
+    PRODUCTION_API_BASE: PRODUCTION_API_BASE
   };
 })(typeof window !== 'undefined' ? window : this);

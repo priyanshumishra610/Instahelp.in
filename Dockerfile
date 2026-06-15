@@ -20,6 +20,7 @@ RUN apk add --no-cache openssl wget
 WORKDIR /app/backend
 
 ENV NODE_ENV=production
+ENV STATIC_ROOT=/app
 
 COPY backend/package*.json ./
 COPY backend/prisma ./prisma/

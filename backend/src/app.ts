@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import fs from 'fs';
 import path from 'path';
 import { corsOrigins } from './config/env';
 import { globalRateLimiter } from './middleware/rateLimit';
@@ -54,7 +55,28 @@ export function createApp() {
 
   app.use('/api', apiRoutes);
 
-  const frontendPath = path.join(__dirname, '../../');
+  function resolveFrontendPath(): string {
+    if (process.env.STATIC_ROOT) {
+      return path.resolve(process.env.STATIC_ROOT);
+    }
+
+    const candidates = [
+      path.join(__dirname, '../../'),
+      path.join(__dirname, '../../../'),
+      path.join(process.cwd(), '..'),
+      path.join(process.cwd()),
+    ];
+
+    for (const dir of candidates) {
+      if (fs.existsSync(path.join(dir, 'index.html'))) {
+        return dir;
+      }
+    }
+
+    return path.join(__dirname, '../../');
+  }
+
+  const frontendPath = resolveFrontendPath();
 
   const htmlPages: Record<string, string> = {
     '/plans': 'plans.html',

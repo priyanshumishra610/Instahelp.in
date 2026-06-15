@@ -159,7 +159,7 @@
 
         <div class="admin-field">
           <label for="apiBaseUrl">Backend API URL</label>
-          <input type="url" id="apiBaseUrl" placeholder="http://localhost:4001">
+          <input type="url" id="apiBaseUrl" placeholder="https://instahelp-in.onrender.com">
         </div>
 
         <div class="admin-field">
@@ -248,7 +248,7 @@
       document.getElementById('failureUrl').value = pp.failureUrl || '';
       document.getElementById('phonepeEnabled').checked = pp.enabled !== false;
       document.getElementById('paymentsEnabled').checked = s.paymentsEnabled !== false;
-      document.getElementById('apiBaseUrl').value = s.apiBaseUrl || 'http://localhost:4001';
+      document.getElementById('apiBaseUrl').value = s.apiBaseUrl || 'https://instahelp-in.onrender.com';
       document.getElementById('apiMode').value = s.apiMode === 'backend' || pp.apiMode === 'pg_api' ? 'pg_api' : 'payment_link';
 
       if (pp.environment === 'sandbox') {

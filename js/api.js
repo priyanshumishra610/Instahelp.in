@@ -9,6 +9,10 @@
   var API_BASE_KEY = 'instahelp_api_base';
 
   function getApiBase() {
+    var Config = global.InstaHelpPaymentConfig;
+    if (Config && Config.resolveApiBaseUrl) {
+      return Config.resolveApiBaseUrl();
+    }
     var stored = localStorage.getItem(API_BASE_KEY);
     if (stored) return stored.replace(/\/$/, '');
     if (global.INSTAHELP_API_BASE) return String(global.INSTAHELP_API_BASE).replace(/\/$/, '');
@@ -23,6 +27,12 @@
       }
     }
     return 'http://localhost:4001';
+  }
+
+  function syncApiBase() {
+    var base = getApiBase();
+    localStorage.setItem(API_BASE_KEY, base);
+    return base;
   }
 
   function setApiBase(url) {
@@ -56,7 +66,8 @@
       method: method,
       headers: headers,
       body: body ? JSON.stringify(body) : undefined,
-      credentials: 'same-origin'
+      credentials: 'omit',
+      mode: 'cors'
     }).then(function (res) {
       return res.json().then(function (data) {
         if (!res.ok) {
@@ -150,6 +161,7 @@
     TOKEN_KEY: TOKEN_KEY,
     API_BASE_KEY: API_BASE_KEY,
     getApiBase: getApiBase,
+    syncApiBase: syncApiBase,
     setApiBase: setApiBase,
     getToken: getToken,
     setToken: setToken,
@@ -169,4 +181,10 @@
     updateAdminPaymentSettings: updateAdminPaymentSettings,
     healthCheck: healthCheck
   };
+
+  if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', function () {
+      if (global.InstaHelpPaymentConfig) syncApiBase();
+    });
+  }
 })(typeof window !== 'undefined' ? window : this);
