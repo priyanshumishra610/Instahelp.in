@@ -1,9 +1,10 @@
 import { createApp } from './app';
 import { connectDatabase, disconnectDatabase } from './config/database';
-import { env } from './config/env';
+import { env, assertProductionDatabaseUrl } from './config/env';
 import { logger } from './config/logger';
 
 async function main() {
+  assertProductionDatabaseUrl();
   await connectDatabase();
 
   const app = createApp();

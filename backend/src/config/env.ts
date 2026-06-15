@@ -41,3 +41,29 @@ if (!parsed.success) {
 export const env = parsed.data;
 
 export const corsOrigins = env.CORS_ORIGINS.split(',').map((o) => o.trim()).filter(Boolean);
+
+/** Direct db.*.supabase.co:5432 is IPv6-only and fails on Render and most hosts. */
+export function assertProductionDatabaseUrl(): void {
+  if (env.NODE_ENV !== 'production') return;
+
+  const url = process.env.DATABASE_URL ?? '';
+  const directHost = /db\.[a-z0-9]+\.supabase\.co:5432/i.test(url);
+  const usesPooler = /\.pooler\.supabase\.com/i.test(url);
+
+  if (directHost && !usesPooler) {
+    console.error(
+      '\n[InstaHelp] Invalid DATABASE_URL for production.\n' +
+        'Use Supabase pooler URLs (see backend/render.env.example).\n' +
+        'Do not use db.*.supabase.co:5432 on Render.\n'
+    );
+    process.exit(1);
+  }
+
+  if (!process.env.DIRECT_URL && env.NODE_ENV === 'production') {
+    console.error(
+      '\n[InstaHelp] DIRECT_URL is required in production for Prisma migrations.\n' +
+        'Set it to the Supabase session pooler URL (port 5432).\n'
+    );
+    process.exit(1);
+  }
+}
