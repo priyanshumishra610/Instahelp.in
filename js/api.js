@@ -13,9 +13,15 @@
     if (Config && Config.resolveApiBaseUrl) {
       return Config.resolveApiBaseUrl();
     }
+    if (global.INSTAHELP_API_BASE) {
+      return String(global.INSTAHELP_API_BASE).replace(/\/$/, '');
+    }
+
+    var host = global.location && global.location.hostname;
     var stored = localStorage.getItem(API_BASE_KEY);
-    if (stored) return stored.replace(/\/$/, '');
-    if (global.INSTAHELP_API_BASE) return String(global.INSTAHELP_API_BASE).replace(/\/$/, '');
+    if (stored && !(host && /instahelp\.in|onrender\.com/.test(host) && /localhost|127\.0\.0\.1/.test(stored))) {
+      return stored.replace(/\/$/, '');
+    }
     if (global.location && global.location.origin) {
       var host = global.location.hostname;
       var port = global.location.port;
@@ -78,6 +84,11 @@
         }
         return data;
       });
+    }).catch(function (err) {
+      if (err && err.name === 'TypeError') {
+        throw new Error('Cannot reach payment server at ' + getApiBase() + '. Try again in a moment.');
+      }
+      throw err;
     });
   }
 
