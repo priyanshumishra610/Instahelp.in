@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
+    "sync:public": "sh ../scripts/sync-public.sh",
     "postinstall": "prisma generate",
     "start": "node dist/index.js",
     "start:prod": "prisma migrate deploy && node dist/index.js",

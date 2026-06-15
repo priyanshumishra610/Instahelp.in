@@ -20,7 +20,7 @@ RUN apk add --no-cache openssl wget
 WORKDIR /app/backend
 
 ENV NODE_ENV=production
-ENV STATIC_ROOT=/app
+ENV STATIC_ROOT=/app/public
 
 COPY backend/package*.json ./
 COPY backend/prisma ./prisma/
@@ -30,16 +30,8 @@ COPY --from=builder /app/backend/dist ./dist
 COPY --from=builder /app/backend/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/backend/node_modules/@prisma ./node_modules/@prisma
 COPY backend/prisma ./prisma/
+COPY backend/public /app/public
 
-# Frontend static assets (served from /app via path.join(__dirname, '../../'))
-WORKDIR /app
-COPY index.html plans.html pay.html orders.html transactions.html admin-payment.html ./
-COPY payment-success.html payment-failed.html pricing.html favicon.svg style.css ./
-COPY js ./js
-COPY css ./css
-COPY image ./image
-
-WORKDIR /app/backend
 RUN mkdir -p logs uploads
 
 EXPOSE 4000

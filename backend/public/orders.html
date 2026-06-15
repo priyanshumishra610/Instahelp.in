@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders — InstaHelp</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/payment.css">
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+</head>
+<body class="pay-page">
+
+  <header class="pay-header">
+    <div class="pay-header-inner" style="max-width:720px;">
+      <a href="index.html" class="pay-back-btn" aria-label="Go back">
+        <i data-lucide="arrow-left" style="width:18px;height:18px;"></i>
+      </a>
+      <div class="pay-header-title">
+        <h1>My Orders</h1>
+        <p>Service bookings &amp; payments</p>
+      </div>
+      <a href="transactions.html" style="font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;">Transactions</a>
+    </div>
+  </header>
+
+  <div class="tx-page-header pay-enter">
+    <h1>Order History</h1>
+  </div>
+
+  <div class="tx-filters pay-enter pay-enter-d1" role="tablist">
+    <button type="button" class="tx-filter-btn active" data-filter="all">All</button>
+    <button type="button" class="tx-filter-btn" data-filter="success">Completed</button>
+    <button type="button" class="tx-filter-btn" data-filter="pending">Pending</button>
+    <button type="button" class="tx-filter-btn" data-filter="failed">Failed</button>
+  </div>
+
+  <div class="tx-list" id="ordersList" role="list"></div>
+
+  <div class="tx-empty" id="ordersEmpty" hidden>
+    <div class="tx-empty-icon">📦</div>
+    <p>No orders yet</p>
+    <a href="/plans" class="pay-btn pay-btn-primary" style="margin-top:16px;display:inline-flex;">View Plans</a>
+  </div>
+
+  <script src="js/orders.js"></script>
+  <script src="js/payment.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var currentFilter = 'all';
+    var ordersList = document.getElementById('ordersList');
+    var ordersEmpty = document.getElementById('ordersEmpty');
+
+    function formatDate(iso) {
+      try {
+        return new Date(iso).toLocaleString('en-IN', {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+      } catch (e) { return iso; }
+    }
+
+    function renderOrders() {
+      var orders = InstaHelpOrders.getAllOrders();
+      if (currentFilter !== 'all') {
+        orders = orders.filter(function (o) {
+          return (o.status || '').toLowerCase() === currentFilter;
+        });
+      }
+
+      ordersList.innerHTML = '';
+
+      if (!orders.length) {
+        ordersEmpty.hidden = false;
+        return;
+      }
+      ordersEmpty.hidden = true;
+
+      orders.forEach(function (order) {
+        var status = (order.status || 'pending').toLowerCase();
+        var card = document.createElement('article');
+        card.className = 'tx-card pay-enter';
+        card.setAttribute('role', 'listitem');
+        card.innerHTML =
+          '<div class="tx-status-dot ' + status + '" aria-hidden="true"></div>' +
+          '<div class="tx-card-body">' +
+            '<div class="tx-card-top">' +
+              '<strong>' + (order.serviceName || 'Service') + '</strong>' +
+              '<span class="tx-amount">' + InstaHelpPayment.formatINR(order.amount) + '</span>' +
+            '</div>' +
+            '<div class="tx-meta">' +
+              '<span class="tx-badge ' + status + '">' + status + '</span>' +
+              '<span>' + (order.vendorName || '') + '</span>' +
+              '<span>Qty: ' + (order.quantity || 1) + '</span>' +
+            '</div>' +
+            '<div class="tx-meta" style="margin-top:4px;">' +
+              '<span>' + (order.orderId || '—') + '</span>' +
+              '<span>' + formatDate(order.date) + '</span>' +
+            '</div>' +
+          '</div>';
+        ordersList.appendChild(card);
+      });
+    }
+
+    document.querySelectorAll('.tx-filter-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.tx-filter-btn').forEach(function (b) {
+          b.classList.remove('active');
+        });
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        renderOrders();
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.lucide) lucide.createIcons();
+      renderOrders();
+    });
+  })();
+  </script>
+</body>
+</html>

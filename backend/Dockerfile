@@ -19,6 +19,7 @@ RUN apk add --no-cache openssl wget
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV STATIC_ROOT=/app/public
 
 COPY package*.json ./
 COPY prisma ./prisma/
@@ -27,6 +28,7 @@ RUN npm ci --omit=dev --ignore-scripts
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY public ./public
 
 RUN mkdir -p logs uploads
 

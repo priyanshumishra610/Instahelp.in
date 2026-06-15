@@ -9,6 +9,7 @@ import { sanitizeInput } from './middleware/sanitizeInput';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import apiRoutes from './routes';
 import { prisma } from './config/database';
+import { logger } from './config/logger';
 
 export function createApp() {
   const app = express();
@@ -61,8 +62,10 @@ export function createApp() {
     }
 
     const candidates = [
+      path.join(__dirname, '../../public'),
       path.join(__dirname, '../../'),
-      path.join(__dirname, '../../../'),
+      path.join(process.cwd(), 'public'),
+      path.join(process.cwd(), '..', 'public'),
       path.join(process.cwd(), '..'),
       path.join(process.cwd()),
     ];
@@ -77,6 +80,23 @@ export function createApp() {
   }
 
   const frontendPath = resolveFrontendPath();
+  const indexPath = path.join(frontendPath, 'index.html');
+
+  if (fs.existsSync(indexPath)) {
+    logger.info(`Serving frontend from ${frontendPath}`);
+  } else {
+    logger.error(`Frontend not found — index.html missing at ${indexPath}`);
+  }
+
+  function sendPage(res: express.Response, next: express.NextFunction, file: string): void {
+    const absolute = path.join(frontendPath, file);
+    res.sendFile(absolute, (err) => {
+      if (err) {
+        logger.error(`Failed to send ${file}`, { path: absolute, error: err.message });
+        next(err);
+      }
+    });
+  }
 
   const htmlPages: Record<string, string> = {
     '/plans': 'plans.html',
@@ -90,8 +110,8 @@ export function createApp() {
   };
 
   for (const [route, file] of Object.entries(htmlPages)) {
-    app.get(route, (_req, res) => {
-      res.sendFile(path.join(frontendPath, file));
+    app.get(route, (_req, res, next) => {
+      sendPage(res, next, file);
     });
     app.get(`${route}.html`, (_req, res) => {
       res.redirect(301, route);
@@ -100,8 +120,8 @@ export function createApp() {
 
   app.use(express.static(frontendPath));
 
-  app.get('/', (_req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
+  app.get('/', (_req, res, next) => {
+    sendPage(res, next, 'index.html');
   });
 
   app.use(notFoundHandler);
