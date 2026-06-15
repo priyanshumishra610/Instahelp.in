@@ -44,6 +44,10 @@
     sessionStorage.setItem(PENDING_ORDER_KEY, JSON.stringify(order));
   }
 
+  function getPendingOrderPublic() {
+    return getPendingOrder();
+  }
+
   function getDefaultOrder() {
     return {
       serviceName: 'Home Deep Cleaning',
@@ -379,6 +383,8 @@
     markPaymentFailed: markPaymentFailed,
     isPayLocked: isPayLocked,
     clearPayLock: clearPayLock,
-    getDefaultOrder: getDefaultOrder
+    getDefaultOrder: getDefaultOrder,
+    setPendingOrder: setPendingOrder,
+    getPendingOrder: getPendingOrderPublic
   };
 })(typeof window !== 'undefined' ? window : this);

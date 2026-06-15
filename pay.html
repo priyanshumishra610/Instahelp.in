@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting to PhonePe — InstaHelp</title>
+  <title>Pay Online — InstaHelp</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#5f259f">
+  <meta name="theme-color" content="#1a3a5c">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,114 +13,156 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="css/payment.css">
 </head>
-<body class="pay-page">
+<body class="pay-page hp-page">
 
   <div id="testModeBanner" class="pay-test-banner" hidden>
-    PhonePe Sandbox — test payments only
+    Sandbox mode — test payments only
   </div>
 
-  <div class="pay-status-page pay-enter" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;">
-    <div class="pay-loading-overlay show" id="loadingOverlay" style="position:relative;background:transparent;backdrop-filter:none;">
-      <img src="image/phonepe-logo.svg" alt="PhonePe" class="pay-brand-logo" width="160" height="48">
-      <div class="pay-spinner" aria-hidden="true"></div>
-      <p class="pay-loading-text" id="statusText">Redirecting to PhonePe Secure Checkout…</p>
-      <p class="pay-loading-sub" id="statusSub">Powered by PhonePe Payment Gateway</p>
+  <header class="hp-header">
+    <div class="hp-header-inner">
+      <a href="index.html" class="hp-brand">
+        <img src="image/phonepe-logo.svg" alt="PhonePe" class="hp-brand-logo" width="120" height="32">
+      </a>
+      <span class="hp-secure-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Secure Payment
+      </span>
+    </div>
+  </header>
+
+  <main class="hp-main pay-enter">
+    <section class="hp-hero">
+      <p class="hp-eyebrow">Secure Online Payment</p>
+      <h1 id="businessName">InstaHelp</h1>
+      <p class="hp-subtitle">Enter the amount you wish to pay and proceed to checkout.</p>
+    </section>
+
+    <form id="payPortalForm" class="hp-card" novalidate>
+      <div id="payFormAlert" class="hp-alert" role="alert" hidden></div>
+
+      <div class="hp-currency-row" aria-label="Currency">
+        <span class="hp-currency active" aria-current="true">INR</span>
+        <span class="hp-currency muted" title="Only INR payments are supported">USD</span>
+        <span class="hp-currency muted" title="Only INR payments are supported">AED</span>
+      </div>
+
+      <div class="hp-field hp-field-amount">
+        <label for="payAmount">Amount to Pay</label>
+        <div class="hp-amount-wrap">
+          <span class="hp-currency-symbol">₹</span>
+          <input
+            type="text"
+            inputmode="decimal"
+            id="payAmount"
+            name="amount"
+            placeholder="0.00"
+            autocomplete="off"
+            required
+            aria-describedby="amountHint"
+          >
+        </div>
+        <span id="amountHint" class="hp-hint">Enter amount in Indian Rupees (INR)</span>
+      </div>
+
+      <div class="hp-field-row">
+        <div class="hp-field">
+          <label for="payName">Your Name <span class="hp-optional">(optional)</span></label>
+          <input type="text" id="payName" name="name" placeholder="Full name" maxlength="100" autocomplete="name">
+        </div>
+        <div class="hp-field">
+          <label for="payPhone">Mobile <span class="hp-optional">(optional)</span></label>
+          <input type="tel" id="payPhone" name="phone" placeholder="+91 98765 43210" maxlength="20" autocomplete="tel">
+        </div>
+      </div>
+
+      <div class="hp-field">
+        <label for="payEmail">Email <span class="hp-optional">(optional)</span></label>
+        <input type="email" id="payEmail" name="email" placeholder="you@example.com" maxlength="100" autocomplete="email">
+      </div>
+
+      <div class="hp-field">
+        <label for="payNote">Reference / Booking ID <span class="hp-optional">(optional)</span></label>
+        <input type="text" id="payNote" name="note" placeholder="Booking reference, invoice number, etc." maxlength="120">
+      </div>
+
+      <div class="hp-fees">
+        <h2 class="hp-fees-title">Fees Structure</h2>
+        <div class="hp-fees-table">
+          <div class="hp-fees-row">
+            <span>Payment Amount</span>
+            <span data-fee="amount">₹0</span>
+          </div>
+          <div class="hp-fees-row">
+            <span>Convenience Fee (2%)</span>
+            <span data-fee="convenience">₹0</span>
+          </div>
+          <div class="hp-fees-row">
+            <span>GST on Convenience Fee (18%)</span>
+            <span data-fee="gst">₹0</span>
+          </div>
+          <div class="hp-fees-row hp-fees-total">
+            <span>Total Payable</span>
+            <span data-fee="total">₹0</span>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="hp-submit" id="submitBtn" disabled>
+        Submit Payment
+      </button>
+
+      <p class="hp-powered">
+        Powered by PhonePe · UPI · Cards · Net Banking
+      </p>
+    </form>
+  </main>
+
+  <footer class="hp-footer">
+    <div class="hp-footer-grid">
+      <div class="hp-footer-block">
+        <h3>Contact Us</h3>
+        <p id="supportPhone"></p>
+        <p><a id="supportEmail" href="#"></a></p>
+      </div>
+      <div class="hp-footer-block">
+        <h3>Policies</h3>
+        <nav class="hp-footer-links">
+          <a href="index.html#about">About Us</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="term.html">Terms &amp; Conditions</a>
+          <a href="refund.html">Refund Policy</a>
+        </nav>
+      </div>
     </div>
 
-    <div id="payAlert" class="pay-alert error" role="alert" style="max-width:420px;margin:24px auto 0;"></div>
-
-    <div class="pay-status-actions" id="errorActions" hidden style="margin-top:24px;">
-      <a href="index.html" class="pay-btn pay-btn-outline">Back To Home</a>
-      <button type="button" class="pay-btn pay-btn-purple" id="retryBtn">Try Again</button>
+    <div class="hp-trust-bar">
+      <span>256-bit SSL Secured</span>
+      <span>PCI DSS Compliant</span>
+      <span>UPI · Visa · Mastercard</span>
     </div>
+
+    <p class="hp-copyright">Copyright © <span id="payYear"></span> · Secure payment gateway</p>
+  </footer>
+
+  <div class="pay-loading-overlay" id="payLoadingOverlay" aria-live="polite" aria-busy="true">
+    <img src="image/phonepe-logo.svg" alt="PhonePe" class="pay-brand-logo" width="160" height="48">
+    <div class="pay-spinner" aria-hidden="true"></div>
+    <p class="pay-loading-text">Redirecting to secure checkout…</p>
+    <p class="pay-loading-sub">Please do not close or refresh this page</p>
   </div>
 
-  <script src="js/runtime-bootstrap.js?v=3"></script>
-  <script src="js/payment-config.js?v=3"></script>
-  <script src="js/api.js?v=3"></script>
+  <script src="js/runtime-bootstrap.js?v=4"></script>
+  <script src="js/payment-config.js?v=4"></script>
+  <script src="js/api.js?v=4"></script>
   <script src="js/phonepe.js"></script>
+  <script src="js/razorpay-checkout.js"></script>
   <script src="js/orders.js"></script>
   <script src="js/transactions.js"></script>
-  <script src="js/payment.js"></script>
+  <script src="js/payment.js?v=4"></script>
+  <script src="js/pay-form.js?v=1"></script>
   <script>
-  (function () {
-    'use strict';
-
-    var statusText = document.getElementById('statusText');
-    var statusSub = document.getElementById('statusSub');
-    var payAlert = document.getElementById('payAlert');
-    var errorActions = document.getElementById('errorActions');
-    var loadingOverlay = document.getElementById('loadingOverlay');
-    var started = false;
-
-    function showError(msg) {
-      loadingOverlay.classList.remove('show');
-      payAlert.textContent = msg;
-      payAlert.className = 'pay-alert show error';
-      errorActions.hidden = false;
-    }
-
-    function startCheckout() {
-      if (started || InstaHelpPayment.isPayLocked()) return;
-      started = true;
-
-      var settings = InstaHelpPaymentConfig.getSettings();
-      var pp = settings.phonepe || {};
-      var useApi = settings.apiMode === 'backend' || pp.apiMode === 'pg_api';
-
-      if (pp.environment === 'sandbox' || (useApi && settings.apiBaseUrl)) {
-        document.getElementById('testModeBanner').hidden = !(pp.environment === 'sandbox');
-      }
-
-      if (!settings.paymentsEnabled || !pp.enabled) {
-        showError('Payments are temporarily unavailable. Please contact support.');
-        return;
-      }
-
-      if (useApi) {
-        statusText.textContent = 'Connecting to PhonePe Payment Gateway…';
-        statusSub.textContent = 'You will be redirected to PhonePe\'s secure checkout page';
-      } else {
-        statusText.textContent = 'Redirecting to PhonePe…';
-      }
-
-      var order = InstaHelpPayment.resolveOrderInput();
-      var totals = InstaHelpPayment.calculateTotals(order);
-      var errors = InstaHelpPayment.validateOrder(order, totals);
-      if (errors.length) {
-        showError(errors.join(' '));
-        started = false;
-        return;
-      }
-
-      var result = InstaHelpPayment.processPayment(order, { redirectDelay: useApi ? 400 : 800 });
-
-      function onResult(res) {
-        if (!res || !res.ok) {
-          started = false;
-          showError((res && res.error) || (res && res.errors && res.errors.join(' ')) || 'Could not start PhonePe checkout.');
-          InstaHelpPayment.clearPayLock();
-        }
-      }
-
-      if (result && typeof result.then === 'function') {
-        result.then(onResult);
-      } else {
-        onResult(result);
-      }
-    }
-
-    document.getElementById('retryBtn').addEventListener('click', function () {
-      payAlert.className = 'pay-alert';
-      errorActions.hidden = true;
-      loadingOverlay.classList.add('show');
-      started = false;
-      InstaHelpPayment.clearPayLock();
-      startCheckout();
-    });
-
-    document.addEventListener('DOMContentLoaded', startCheckout);
-  })();
+    document.getElementById('payYear').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
