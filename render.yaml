@@ -14,6 +14,8 @@ services:
         value: 4000
       - key: DATABASE_URL
         sync: false
+      - key: DIRECT_URL
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: ENCRYPTION_KEY
