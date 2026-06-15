@@ -10,6 +10,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/plans.css">
+  <script>
+    window.INSTAHELP_API_BASE = 'https://instahelp-in.onrender.com';
+    (function () {
+      var api = window.INSTAHELP_API_BASE;
+      var host = location.hostname;
+      if (host !== 'instahelp.in' && host !== 'www.instahelp.in') return;
+      try {
+        localStorage.setItem('instahelp_api_base', api);
+        var raw = localStorage.getItem('paymentSettings');
+        if (raw) {
+          var s = JSON.parse(raw);
+          s.apiBaseUrl = api;
+          s.apiMode = s.apiMode || 'backend';
+          localStorage.setItem('paymentSettings', JSON.stringify(s));
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body class="plans-page">
 

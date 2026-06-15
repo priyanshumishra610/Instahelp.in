@@ -1,13 +1,15 @@
-# Netlify — frontend only; API runs on Render
+# Netlify build settings — connect this repo and deploy from main branch.
+# Site settings → Build & deploy → Link repository → Instahelp.in
+
 [build]
   publish = "."
 
 [[headers]]
   for = "/js/*"
   [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+    Cache-Control = "no-cache, no-store, must-revalidate"
 
 [[headers]]
   for = "/*.html"
   [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+    Cache-Control = "no-cache, no-store, must-revalidate"
