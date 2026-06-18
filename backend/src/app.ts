@@ -107,6 +107,7 @@ export function createApp() {
     '/payment-success': 'payment-success.html',
     '/payment-failed': 'payment-failed.html',
     '/pricing': 'pricing.html',
+    '/giftcards': 'giftcards.html',
   };
 
   for (const [route, file] of Object.entries(htmlPages)) {

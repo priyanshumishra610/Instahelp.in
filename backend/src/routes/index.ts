@@ -5,6 +5,7 @@ import paymentRoutes from './payment.routes';
 import transactionRoutes from './transaction.routes';
 import vendorRoutes from './vendor.routes';
 import adminRoutes from './admin.routes';
+import hubbleRoutes from './hubble.routes';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/payments', paymentRoutes);
 router.use('/transactions', transactionRoutes);
 router.use('/vendors', vendorRoutes);
 router.use('/admin', adminRoutes);
+router.use('/hubble', hubbleRoutes);
 
 export default router;

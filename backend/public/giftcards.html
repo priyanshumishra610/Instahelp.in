@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gift Cards — InstaHelp</title>
+  <meta name="description" content="Buy gift cards from 450+ brands on InstaHelp.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/giftcards.css">
+  <script src="js/runtime-bootstrap.js"></script>
+  <script src="js/api.js"></script>
+</head>
+<body class="giftcards-page">
+
+  <header role="banner">
+    <a href="/" class="logo" aria-label="InstaHelp Home"><span>InstaHelp<span>&reg;</span></span></a>
+    <nav class="nav-links" role="navigation" aria-label="Main navigation">
+      <a href="/#services">Categories</a>
+      <a href="/#how-it-works">How it works</a>
+      <a href="/plans">Plans</a>
+      <a href="/giftcards" aria-current="page">Gift Cards</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/#contact-section">Contact</a>
+    </nav>
+    <a href="tel:+917022702220" class="btn-primary" aria-label="Call InstaHelp">Get it done</a>
+  </header>
+
+  <main class="giftcards-main">
+    <div id="sdk-container" class="giftcards-sdk-container">
+      <div id="loading-spinner" class="giftcards-loading giftcards-overlay" role="status" aria-live="polite">
+        <div class="giftcards-spinner" aria-hidden="true"></div>
+        <p>Loading gift cards…</p>
+      </div>
+
+      <div id="error-state" class="giftcards-error giftcards-overlay" hidden>
+        <p id="error-message">Unable to load gift cards. Please try again.</p>
+        <button type="button" id="retry-btn" class="btn-primary">Retry</button>
+        <a href="/" class="giftcards-back-link">← Back to home</a>
+      </div>
+
+      <div id="phone-gate" class="giftcards-phone-gate giftcards-overlay" hidden>
+        <h2>Continue to Gift Cards</h2>
+        <p>Enter your mobile number — same as the InstaHelp app — to open the store.</p>
+        <form id="phone-gate-form" class="giftcards-phone-form">
+          <label for="gc_phone">Mobile number</label>
+          <input id="gc_phone" name="phoneNumber" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10-digit mobile number" maxlength="10" required>
+          <label for="gc_name">Name (optional)</label>
+          <input id="gc_name" name="name" type="text" autocomplete="name" placeholder="Your name">
+          <button type="submit" class="btn-primary">Open Gift Cards</button>
+        </form>
+      </div>
+
+      <iframe
+        id="hubble-sdk"
+        title="InstaHelp Gift Cards"
+        class="giftcards-iframe"
+        hidden
+        allow="clipboard-write *; payment *"
+      ></iframe>
+    </div>
+  </main>
+
+  <script src="js/giftcards.js"></script>
+</body>
+</html>
