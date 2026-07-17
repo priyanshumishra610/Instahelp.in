@@ -11,6 +11,12 @@ import apiRoutes from './routes';
 import { prisma } from './config/database';
 import { logger } from './config/logger';
 
+function isAllowedCorsOrigin(origin: string): boolean {
+  if (corsOrigins.includes('*') || corsOrigins.includes(origin)) return true;
+  if (/^https:\/\/([a-z0-9-]+--)?[a-z0-9-]+\.netlify\.(app|live)$/i.test(origin)) return true;
+  return false;
+}
+
 export function createApp() {
   const app = express();
 
@@ -26,10 +32,10 @@ export function createApp() {
   app.use(
     cors({
       origin: (origin, callback) => {
-        if (!origin || corsOrigins.includes(origin) || corsOrigins.includes('*')) {
+        if (!origin || isAllowedCorsOrigin(origin)) {
           callback(null, true);
         } else {
-          callback(null, corsOrigins[0]);
+          callback(new Error(`CORS blocked for origin: ${origin}`));
         }
       },
       credentials: true,
@@ -108,6 +114,7 @@ export function createApp() {
     '/payment-failed': 'payment-failed.html',
     '/pricing': 'pricing.html',
     '/giftcards': 'giftcards.html',
+    '/app-waitlist': 'app-waitlist.html',
   };
 
   for (const [route, file] of Object.entries(htmlPages)) {

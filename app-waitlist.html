@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join the App Waitlist — InstaHelp</title>
+  <meta name="description" content="The InstaHelp app is coming soon. Join the waitlist for early access on iOS and Android.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/app-waitlist.css">
+</head>
+<body class="waitlist-page">
+
+  <header role="banner">
+    <a href="/" class="logo" aria-label="InstaHelp Home"><span>InstaHelp<span>&reg;</span></span></a>
+    <nav class="nav-links" role="navigation" aria-label="Main navigation">
+      <a href="/#services">Categories</a>
+      <a href="/#how-it-works">How it works</a>
+      <a href="/plans">Plans</a>
+      <a href="/giftcards">Gift Cards</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/#contact-section">Contact</a>
+    </nav>
+    <a href="tel:+917022702220" class="btn-primary" aria-label="Call InstaHelp">Get it done</a>
+  </header>
+
+  <main class="waitlist-main">
+    <div class="waitlist-card">
+      <div class="waitlist-badge" role="status">
+        <span class="waitlist-badge-dot" aria-hidden="true"></span>
+        Coming soon
+      </div>
+
+      <h1>InstaHelp app is on the way</h1>
+      <p class="waitlist-lead">
+        We're building the InstaHelp app for iPhone and Android.
+        Join the waitlist and we'll notify you the moment it's live.
+      </p>
+
+      <div class="waitlist-store-preview" aria-hidden="true">
+        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1276550400&h=7e5b6854c6198813303862660d13ed7c" alt="" loading="lazy">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="" style="height:44px;" loading="lazy">
+      </div>
+
+      <div id="waitlistFormWrap">
+        <p class="waitlist-platform-label">Which platform do you want?</p>
+        <div class="waitlist-platforms" role="group" aria-label="Choose platform">
+          <button type="button" class="waitlist-platform" data-platform="ios" aria-pressed="false">
+            <span class="waitlist-platform-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            </span>
+            <span>iOS</span>
+          </button>
+          <button type="button" class="waitlist-platform" data-platform="android" aria-pressed="false">
+            <span class="waitlist-platform-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85a.637.637 0 0 0-.83.22l-1.88 3.24a11.43 11.43 0 0 0-8.94 0L5.65 5.67a.643.643 0 0 0-.87-.2.564.564 0 0 0-.22.83l1.84 3.18C2.92 11.03 1 14.22 1 17.87h22c0-3.65-1.92-6.84-5.4-8.39zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
+            </span>
+            <span>Android</span>
+          </button>
+          <button type="button" class="waitlist-platform" data-platform="both" aria-pressed="false">
+            <span class="waitlist-platform-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            </span>
+            <span>Both</span>
+          </button>
+        </div>
+
+        <form id="waitlistForm" class="waitlist-form" novalidate>
+          <div style="position:absolute;left:-9999px;" aria-hidden="true">
+            <input type="text" name="honeypot" tabindex="-1" autocomplete="off">
+          </div>
+          <input type="hidden" name="platform" id="waitlistPlatform" value="both">
+
+          <div class="form-row">
+            <input type="text" name="name" placeholder="Your name" required maxlength="60" autocomplete="name" aria-label="Full name">
+            <input type="tel" name="phone" placeholder="Phone / WhatsApp" required maxlength="15" autocomplete="tel" aria-label="Phone number">
+          </div>
+          <input type="email" name="email" placeholder="Email address" required maxlength="100" autocomplete="email" aria-label="Email address" style="width:100%;margin-bottom:12px;">
+
+          <button type="submit" class="waitlist-submit">Join the waitlist</button>
+          <p class="waitlist-note">No spam — just a one-time ping when the app goes live.</p>
+        </form>
+      </div>
+
+      <div id="waitlistSuccess" class="waitlist-success" hidden>
+        <div class="waitlist-success-icon" aria-hidden="true">✓</div>
+        <h2>You're on the list!</h2>
+        <p>We'll notify you at launch for <strong id="waitlistSuccessPlatform">your chosen platform</strong>. Need help before then? Call or WhatsApp us anytime.</p>
+        <a href="/" class="waitlist-submit" style="display:inline-block;text-align:center;text-decoration:none;">Back to home</a>
+      </div>
+    </div>
+
+    <a href="/" class="waitlist-back">← Back to InstaHelp</a>
+  </main>
+
+  <iframe name="ihGsheetFrame" id="ihGsheetFrame" title="Form submission" hidden></iframe>
+  <script src="js/app-waitlist.js"></script>
+</body>
+</html>

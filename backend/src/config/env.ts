@@ -21,7 +21,9 @@ const envSchema = z.object({
   PHONEPE_CLIENT_ID: z.string().optional(),
   PHONEPE_CLIENT_SECRET: z.string().optional(),
   PHONEPE_CLIENT_VERSION: z.coerce.number().default(1),
-  PHONEPE_ENVIRONMENT: z.enum(['sandbox', 'production']).default('sandbox'),
+  PHONEPE_ENVIRONMENT: z
+    .enum(['sandbox', 'production'])
+    .default(process.env.NODE_ENV === 'production' ? 'production' : 'sandbox'),
   PHONEPE_WEBHOOK_USERNAME: z.string().optional(),
   PHONEPE_WEBHOOK_PASSWORD: z.string().optional(),
   RAZORPAY_KEY_ID: z.string().optional(),

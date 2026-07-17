@@ -4,6 +4,25 @@
 [build]
   publish = "."
 
+# Proxy API calls to Render backend (avoids CORS "failed to fetch" on Netlify).
+# Change the URL below if your primary backend is on Railway instead.
+[[redirects]]
+  from = "/api/*"
+  to = "https://instahelp-in.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/health"
+  to = "https://instahelp-in.onrender.com/health"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/app-waitlist"
+  to = "/app-waitlist.html"
+  status = 200
+
 [[headers]]
   for = "/js/*"
   [headers.values]

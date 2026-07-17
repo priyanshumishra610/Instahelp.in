@@ -1591,25 +1591,48 @@ footer .instaHelp-city-pill:hover {
   }
 
   .hero-inner {
-    column-gap: var(--space-16);
-    row-gap: var(--space-32);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
     padding: var(--space-32) var(--gutter) var(--space-32);
   }
 
-  /* On mobile: copy first, form second */
+  /* Flatten copy column so we can reorder: headline → form → actions */
   .hero-copy {
-    grid-column: 1 / -1;
-    order: 1;
+    display: contents;
   }
 
+  .hero-pill { order: 1; }
+  .hero-copy h1 { order: 2; }
+
   .hero-form-wrap {
-    grid-column: 1 / -1;
-    order: 2;
+    grid-column: unset;
+    order: 3;
     margin-top: 0;
   }
 
-  .hero-copy h1 { letter-spacing: -1.5px; }
+  .hero-contacts { order: 4; }
+  .app-buttons { order: 5; }
+
+  .hero-copy h1 { letter-spacing: -1.5px; margin-bottom: var(--space-16); }
   .hero-copy .hero-sub { font-size: 15px; }
+
+  /* Mobile: hide long marketing copy — keep headline + actions only */
+  .hero-copy .hero-sub,
+  .hero-copy .hero-coverage,
+  .hero-copy .trust-strip {
+    display: none;
+  }
+
+  .hero-copy .hero-contacts {
+    margin-top: 0;
+  }
+
+  .hero-copy .app-buttons {
+    margin-top: var(--space-12);
+    padding: 0;
+    justify-content: flex-start;
+  }
 
   .form-row { grid-template-columns: 1fr; }
 

@@ -17,6 +17,14 @@
     return /localhost|127\.0\.0\.1/.test(url || '');
   }
 
+  function isNetlifyHost(host) {
+    return /\.netlify\.(app|live)$/i.test(host || '');
+  }
+
+  function usesNetlifyApiProxy(host) {
+    return isNetlifyHost(host) || host === 'instahelp.in' || host === 'www.instahelp.in';
+  }
+
   function resolveApiBaseUrl() {
     if (global.INSTAHELP_API_BASE) {
       return String(global.INSTAHELP_API_BASE).replace(/\/$/, '');
@@ -28,6 +36,11 @@
     if (host === 'instahelp-in.onrender.com' && origin) {
       return origin.replace(/\/$/, '');
     }
+
+    if (usesNetlifyApiProxy(host) && origin) {
+      return origin.replace(/\/$/, '');
+    }
+
     if (host === 'www.instahelp.in' || host === 'instahelp.in') {
       return PRODUCTION_API_BASE;
     }

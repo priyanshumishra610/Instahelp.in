@@ -1,0 +1,6 @@
+# Proxy API to Render backend (PhonePe callback, webhooks, checkout).
+/api/*  https://instahelp-in.onrender.com/api/:splat  200!
+/health  https://instahelp-in.onrender.com/health  200!
+
+# Pretty URL for app waitlist page
+/app-waitlist  /app-waitlist.html  200

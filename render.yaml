@@ -32,6 +32,8 @@ services:
         value: "false"
       - key: PHONEPE_ENVIRONMENT
         value: production
+      - key: PHONEPE_CLIENT_VERSION
+        value: "1"
       - key: PHONEPE_CLIENT_ID
         sync: false
       - key: PHONEPE_CLIENT_SECRET

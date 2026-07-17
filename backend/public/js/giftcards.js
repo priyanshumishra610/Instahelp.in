@@ -18,6 +18,9 @@
     if (window.InstaHelpAPI && window.InstaHelpAPI.getApiBase) {
       return window.InstaHelpAPI.getApiBase();
     }
+    if (window.InstaHelpPaymentConfig && window.InstaHelpPaymentConfig.resolveApiBaseUrl) {
+      return window.InstaHelpPaymentConfig.resolveApiBaseUrl();
+    }
     if (window.INSTAHELP_API_BASE) return window.INSTAHELP_API_BASE.replace(/\/$/, '');
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       return 'http://localhost:4000';

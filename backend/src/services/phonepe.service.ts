@@ -48,6 +48,24 @@ export async function getPaymentAccountCredentials(
   ownerType: OwnerType,
   ownerId: string
 ): Promise<PhonePeCredentials> {
+  function fromEnv(): PhonePeCredentials | null {
+    if (!env.PHONEPE_CLIENT_ID || !env.PHONEPE_CLIENT_SECRET) return null;
+    return {
+      clientId: env.PHONEPE_CLIENT_ID,
+      clientSecret: env.PHONEPE_CLIENT_SECRET,
+      clientVersion: env.PHONEPE_CLIENT_VERSION,
+      environment: env.PHONEPE_ENVIRONMENT,
+      webhookUsername: env.PHONEPE_WEBHOOK_USERNAME,
+      webhookPassword: env.PHONEPE_WEBHOOK_PASSWORD,
+    };
+  }
+
+  // Admin checkout: env vars from Render/host are source of truth (avoids stale DB overrides).
+  if (ownerType === OwnerType.ADMIN) {
+    const envCreds = fromEnv();
+    if (envCreds) return envCreds;
+  }
+
   const account = await prisma.paymentAccount.findFirst({
     where: {
       ownerType,
@@ -58,27 +76,27 @@ export async function getPaymentAccountCredentials(
   });
 
   if (account?.clientId && account.saltKey) {
-    return {
-      clientId: account.clientId,
-      clientSecret: decrypt(account.saltKey),
-      clientVersion: parseInt(account.saltIndex ?? '1', 10) || 1,
-      environment: account.environment as 'sandbox' | 'production',
-      merchantId: account.merchantId ?? undefined,
-      webhookUsername: account.webhookUser ? decrypt(account.webhookUser) : undefined,
-      webhookPassword: account.webhookPass ? decrypt(account.webhookPass) : undefined,
-    };
+    try {
+      return {
+        clientId: account.clientId,
+        clientSecret: decrypt(account.saltKey),
+        clientVersion: parseInt(account.saltIndex ?? '1', 10) || 1,
+        environment: account.environment as 'sandbox' | 'production',
+        merchantId: account.merchantId ?? undefined,
+        webhookUsername: account.webhookUser ? decrypt(account.webhookUser) : undefined,
+        webhookPassword: account.webhookPass ? decrypt(account.webhookPass) : undefined,
+      };
+    } catch (err) {
+      logger.error('Failed to decrypt PhonePe credentials from database; falling back to env', {
+        ownerType,
+        ownerId,
+        err,
+      });
+    }
   }
 
-  if (env.PHONEPE_CLIENT_ID && env.PHONEPE_CLIENT_SECRET) {
-    return {
-      clientId: env.PHONEPE_CLIENT_ID,
-      clientSecret: env.PHONEPE_CLIENT_SECRET,
-      clientVersion: env.PHONEPE_CLIENT_VERSION,
-      environment: env.PHONEPE_ENVIRONMENT,
-      webhookUsername: env.PHONEPE_WEBHOOK_USERNAME,
-      webhookPassword: env.PHONEPE_WEBHOOK_PASSWORD,
-    };
-  }
+  const envCreds = fromEnv();
+  if (envCreds) return envCreds;
 
   throw new NotFoundError(
     'PhonePe payment account not configured. Set credentials in admin payment settings.'
@@ -109,7 +127,7 @@ export async function upsertPaymentAccount(
     clientId: data.clientId,
     saltKey: secret ? encrypt(secret) : undefined,
     saltIndex: version,
-    environment: data.environment ?? 'sandbox',
+    environment: data.environment ?? env.PHONEPE_ENVIRONMENT ?? 'production',
     webhookUser: data.webhookUsername ? encrypt(data.webhookUsername) : undefined,
     webhookPass: data.webhookPassword ? encrypt(data.webhookPassword) : undefined,
     isActive: data.isActive ?? true,
