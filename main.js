@@ -52,8 +52,94 @@ function recordQuickHelpWhatsAppOpen(topic) {
 
 let qhSelectedTopic = '';
 
+function formatAddressFromParts(addr) {
+  if (!addr) return '';
+  const parts = [
+    addr.house_number,
+    addr.road || addr.residential || addr.pedestrian,
+    addr.suburb || addr.neighbourhood || addr.quarter,
+    addr.city || addr.town || addr.village || addr.county,
+    addr.state,
+    addr.postcode
+  ].filter(Boolean);
+  return parts.join(', ');
+}
+
+function formatCityFromParts(addr) {
+  if (!addr) return '';
+  return (
+    addr.city ||
+    addr.town ||
+    addr.village ||
+    addr.county ||
+    addr.state_district ||
+    addr.state ||
+    ''
+  );
+}
+
+async function reverseGeocode(lat, lon, mode) {
+  const r = await fetch(
+    'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' +
+      lat +
+      '&lon=' +
+      lon,
+    { headers: { 'Accept-Language': 'en' } }
+  );
+  const j = await r.json();
+  const addr = j.address || {};
+  if (mode === 'city') {
+    const city = formatCityFromParts(addr);
+    return city || j.display_name || lat.toFixed(4) + ', ' + lon.toFixed(4);
+  }
+  return formatAddressFromParts(addr) || j.display_name || lat.toFixed(4) + ', ' + lon.toFixed(4);
+}
+
+function fillAddressInput(inputId, buttonId, options) {
+  const opts = options || {};
+  const input = document.getElementById(inputId);
+  if (!input || (input.value.trim() && !opts.force)) return;
+
+  const btn = buttonId ? document.getElementById(buttonId) : null;
+
+  if (!navigator.geolocation) {
+    if (opts.alertOnFail) alert('Location is not supported in this browser. Please type your address.');
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+
+  navigator.geolocation.getCurrentPosition(
+    async (pos) => {
+      try {
+        input.value = await reverseGeocode(
+          pos.coords.latitude,
+          pos.coords.longitude,
+          opts.mode || 'full'
+        );
+      } catch (err) {
+        if (opts.alertOnFail) alert('Could not detect address. Please type it manually.');
+      }
+      if (btn) btn.disabled = false;
+    },
+    () => {
+      if (btn) btn.disabled = false;
+      if (opts.alertOnFail) alert('Location permission denied. Please type your address.');
+    },
+    { enableHighAccuracy: true, timeout: 12000, maximumAge: 600000 }
+  );
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) lucide.createIcons();
+
+  const heroDetect = document.getElementById('heroDetectAddress');
+  if (heroDetect) {
+    heroDetect.addEventListener('click', () => {
+      fillAddressInput('exact_address', 'heroDetectAddress', { alertOnFail: true, force: true });
+    });
+  }
+  fillAddressInput('exact_address', 'heroDetectAddress', { alertOnFail: false });
 
   const qhModal = document.getElementById('quickHelpModal');
   const qhForm  = document.getElementById('quickHelpForm');
@@ -135,49 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (qhDetect) {
     qhDetect.addEventListener('click', () => {
-      if (!navigator.geolocation) {
-        alert('Location is not supported in this browser. Type your city instead.');
-        return;
-      }
-      qhDetect.disabled = true;
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          try {
-            const lat = pos.coords.latitude;
-            const lon = pos.coords.longitude;
-            const r = await fetch(
-              'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' +
-                lat +
-                '&lon=' +
-                lon,
-              { headers: { 'Accept-Language': 'en' } }
-            );
-            const j = await r.json();
-            const addr = j.address || {};
-            const city =
-              addr.city ||
-              addr.town ||
-              addr.village ||
-              addr.county ||
-              addr.state_district ||
-              addr.state ||
-              '';
-            const locInput = document.getElementById('qh_location');
-            if (locInput) {
-              locInput.value =
-                city || lat.toFixed(4) + ', ' + lon.toFixed(4);
-            }
-          } catch (err) {
-            alert('Could not resolve city. Please type your location.');
-          }
-          qhDetect.disabled = false;
-        },
-        () => {
-          qhDetect.disabled = false;
-          alert('Location permission denied. You can still type your city.');
-        },
-        { enableHighAccuracy: false, timeout: 12000, maximumAge: 600000 }
-      );
+      fillAddressInput('qh_location', 'qhDetectLoc', { alertOnFail: true, force: true, mode: 'city' });
     });
   }
 });
@@ -289,6 +333,12 @@ function secureSubmitForm(e) {
     return;
   }
 
+  const addressEl = form.querySelector('[name="address"]');
+  if (addressEl && !addressEl.value.trim()) {
+    addressEl.focus();
+    return;
+  }
+
   btn.textContent = 'Sending…';
   btn.disabled = true;
 
@@ -322,6 +372,7 @@ function secureSubmitForm(e) {
     name:     g('fullname'),
     email:    g('email'),
     phone:    g('phone'),
+    address:  g('address'),
     service:  g('service'),
     message:  g('message'),
 
@@ -400,6 +451,7 @@ function secureSubmitForm(e) {
       'Name: ' + data.name + '\n' +
       'Phone: ' + data.phone + '\n' +
       'Email: ' + data.email + '\n' +
+      'Address: ' + data.address + '\n' +
       'Service: ' + data.service + '\n\n' +
       'Message:\n' + data.message + '\n\n' +
       '— sent from instahelp.in fallback —'
@@ -422,6 +474,7 @@ function secureSubmitForm(e) {
     setV('landing_page', window.location.href);
     setV('confusion_referral_flag', window._ih_referrer_confusion ? 'YES' : 'no');
   })();
+  fillAddressInput('exact_address', 'heroDetectAddress', { alertOnFail: false });
 
   showNotif();
 
