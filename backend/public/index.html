@@ -791,6 +791,10 @@
               <option value="">Service type</option>
             </select>
           </div>
+          <div class="form-address-row">
+            <input type="text" name="address" id="exact_address" placeholder="Exact address (flat, building, street, area)" maxlength="300" autocomplete="street-address" aria-label="Exact address" required aria-required="true">
+            <button type="button" class="btn-qh-detect" id="heroDetectAddress">Use my location</button>
+          </div>
           <textarea name="message" id="message" placeholder="Describe your task, the more detail, the faster we respond…" required maxlength="1000" rows="4" aria-label="Task description" aria-required="true"></textarea>
           
           <select name="source" id="sourceSelect" aria-label="How did you find us">

@@ -488,13 +488,15 @@ header {
   box-shadow: 0 0 0 3px var(--accent-lt);
 }
 
-.qh-loc-row {
+.qh-loc-row,
+.form-address-row {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-.qh-loc-row input { flex: 1; min-width: 120px; }
+.qh-loc-row input,
+.form-address-row input { flex: 1; min-width: 120px; }
 
 .btn-qh-detect {
   font-family: inherit;
