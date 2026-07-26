@@ -114,8 +114,18 @@
     root.querySelector('[data-fee="amount"]').textContent = formatINR(fees.amount);
     root.querySelector('[data-fee="convenience"]').textContent = formatINR(fees.convenienceFee);
     root.querySelector('[data-fee="gst"]').textContent = formatINR(fees.gst);
-    root.querySelector('[data-fee="total"]').textContent = formatINR(fees.total);
+    var totalText = formatINR(fees.total);
+    root.querySelector('[data-fee="total"]').textContent = totalText;
     root.querySelector('#submitBtn').disabled = fees.amount <= 0;
+
+    ['submitAmountPreview', 'mobileTotalPreview'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = totalText;
+    });
+    var mobileBtn = document.getElementById('mobileSubmitBtn');
+    if (mobileBtn) mobileBtn.disabled = fees.amount <= 0;
+
+    document.dispatchEvent(new CustomEvent('feeUpdated', { detail: fees }));
   }
 
   function showAlert(el, message, type) {
@@ -182,6 +192,13 @@
       if (settings.supportNumber) parts.push(settings.supportNumber);
       if (settings.supportEmail) parts.push(settings.supportEmail);
       footerContact.textContent = parts.join(' · ');
+    }
+
+    var payHelpPhone = document.getElementById('payHelpPhone');
+    if (payHelpPhone && settings.supportNumber) {
+      var tel = String(settings.supportNumber).replace(/\s/g, '');
+      payHelpPhone.href = 'tel:' + tel;
+      payHelpPhone.textContent = settings.supportNumber;
     }
 
     if (query.amount) document.getElementById('payAmount').value = query.amount;

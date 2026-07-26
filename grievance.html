@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grievance Officer — InstaHelp</title>
+  <meta name="description" content="InstaHelp grievance officer contact and complaint process.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://instahelp.in/grievance.html">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .grv-page { max-width: 720px; margin: 0 auto; padding: 120px 24px 80px; }
+    .grv-page h1 { font-size: clamp(28px, 5vw, 36px); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 12px; }
+    .grv-page .grv-lead { color: var(--gray-700); margin-bottom: 32px; line-height: 1.7; }
+    .grv-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 16px; padding: 20px 22px; margin-bottom: 24px; }
+    .grv-card dt { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); margin-top: 12px; }
+    .grv-card dt:first-child { margin-top: 0; }
+    .grv-card dd { font-weight: 600; margin: 4px 0 0; }
+    .grv-placeholder { background: #fff8e1; border: 1px solid #ffd600; border-radius: 12px; padding: 16px 18px; font-size: 14px; margin-bottom: 24px; }
+    .grv-back { display: inline-flex; margin-bottom: 24px; font-weight: 600; text-decoration: none; }
+    .grv-form label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .grv-form input, .grv-form textarea { width: 100%; padding: 12px 14px; border: 1.5px solid var(--gray-200); border-radius: 12px; font-family: inherit; margin-bottom: 14px; }
+    .grv-form button { padding: 14px 24px; border: none; border-radius: 999px; background: var(--black); color: #fff; font-weight: 700; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="grv-page">
+    <a href="/" class="grv-back">← Back to InstaHelp</a>
+    <h1>Grievance officer</h1>
+    <p class="grv-lead">If you have a complaint about InstaHelp's platform services, contact our grievance officer. Complaints are acknowledged within 24 hours; resolution is targeted within 15 days.</p>
+
+    <div class="grv-placeholder" role="note">
+      [[FILL: Grievance Officer name, email (e.g. grievance@instahelp.in), and full address — must match footer on all pages]]
+    </div>
+
+    <dl class="grv-card">
+      <dt>Customer care</dt>
+      <dd><a href="mailto:mail@instahelp.in">mail@instahelp.in</a> · <a href="tel:+917022702220">+91 70227 02220</a></dd>
+      <dt>Grievance officer</dt>
+      <dd>[[FILL: Name]] · [[FILL: grievance@instahelp.in]]</dd>
+      <dt>Address</dt>
+      <dd>[[FILL: Principal place of business, Bengaluru]]</dd>
+    </dl>
+
+    <h2>Lodge a complaint</h2>
+    <form class="grv-form" action="mailto:mail@instahelp.in" method="post" enctype="text/plain">
+      <label for="grv_name">Your name</label>
+      <input type="text" id="grv_name" name="name" required>
+      <label for="grv_email">Email</label>
+      <input type="email" id="grv_email" name="email" required>
+      <label for="grv_phone">Phone</label>
+      <input type="tel" id="grv_phone" name="phone">
+      <label for="grv_msg">Describe your complaint</label>
+      <textarea id="grv_msg" name="complaint" rows="5" required></textarea>
+      <button type="submit">Send complaint</button>
+    </form>
+  </div>
+</body>
+</html>

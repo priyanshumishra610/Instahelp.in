@@ -18,19 +18,30 @@
 </head>
 <body class="pay-page portal-page">
 
-  <div id="testModeBanner" class="portal-test-banner" hidden>
-  </div>
+  <div id="testModeBanner" class="portal-test-banner" hidden></div>
+
+  <header class="portal-topbar" aria-label="Payment navigation">
+    <a href="/" class="portal-topbar-back" aria-label="Back to InstaHelp home">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      Home
+    </a>
+    <span class="portal-topbar-title">Secure Pay</span>
+    <span class="portal-topbar-secure" aria-hidden="true">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </span>
+  </header>
 
   <div class="portal-bg" aria-hidden="true">
     <div class="portal-bg-orb portal-bg-orb--1"></div>
     <div class="portal-bg-orb portal-bg-orb--2"></div>
+    <div class="portal-bg-orb portal-bg-orb--3"></div>
     <div class="portal-bg-grid"></div>
   </div>
 
   <div class="portal-shell pay-enter">
 
-    <aside class="portal-sidebar">
-      <a href="index.html" class="portal-brand">
+    <aside class="portal-sidebar portal-enter portal-enter-d1">
+      <a href="/" class="portal-brand">
         <span class="portal-mark" id="brandMark">IH</span>
         <span class="portal-brand-text">
           <strong id="sidebarBusinessName">InstaHelp</strong>
@@ -39,8 +50,11 @@
       </a>
 
       <div class="portal-sidebar-body">
-        <p class="portal-sidebar-eyebrow">Secure checkout</p>
-        <h1 class="portal-sidebar-title">Pay any amount,<br>anytime.</h1>
+        <div class="portal-sidebar-badge">
+          <span class="portal-sidebar-badge-dot" aria-hidden="true"></span>
+          Secure checkout
+        </div>
+        <h1 class="portal-sidebar-title">Pay any amount,<br><span class="portal-accent">anytime.</span></h1>
         <p class="portal-sidebar-desc">Complete your payment safely. You'll receive instant confirmation once the transaction is successful.</p>
 
         <ul class="portal-trust-list">
@@ -68,123 +82,177 @@
             </span>
             <div>
               <strong>Need help?</strong>
-              <span id="sidebarSupportPhone"></span>
+              <span id="sidebarSupportPhone">+91 70227 02220</span>
             </div>
           </li>
         </ul>
       </div>
 
       <div class="portal-sidebar-foot">
+        <p class="portal-partners-label">Powered by</p>
+        <div class="portal-partners">
+          <img src="image/phonepe-logo.svg" alt="PhonePe" width="88" height="24" loading="lazy">
+          <img src="image/razorpay-logo.svg" alt="Razorpay" width="88" height="24" loading="lazy">
+        </div>
         <div class="portal-pay-methods">
           <span>UPI</span>
           <span>Cards</span>
           <span>Net Banking</span>
+          <span>Wallets</span>
         </div>
       </div>
     </aside>
 
-    <main class="portal-main">
-      <header class="portal-main-header">
-        <div>
-          <p class="portal-step">Step 1 of 1</p>
-          <h2 id="businessName">Payment Details</h2>
-        </div>
-        <span class="portal-secure-pill">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Secure
-        </span>
-      </header>
+    <main class="portal-main portal-enter portal-enter-d2">
+      <div class="portal-card">
+        <ol class="portal-progress" aria-label="Checkout steps">
+          <li class="portal-progress-step is-active" data-step="amount"><span>1</span> Amount</li>
+          <li class="portal-progress-step" data-step="details"><span>2</span> Details</li>
+          <li class="portal-progress-step" data-step="pay"><span>3</span> Pay</li>
+        </ol>
 
-      <form id="payPortalForm" class="portal-form" novalidate>
-        <div id="payFormAlert" class="portal-alert" role="alert" hidden></div>
-
-        <section class="portal-section">
-          <div class="portal-amount-block">
-            <label for="payAmount" class="portal-label">Amount <span class="portal-inr-badge">INR</span></label>
-            <div class="portal-amount-field">
-              <span class="portal-rupee" aria-hidden="true">₹</span>
-              <input
-                type="text"
-                inputmode="decimal"
-                id="payAmount"
-                name="amount"
-                placeholder="0"
-                autocomplete="off"
-                required
-                aria-describedby="amountHint"
-              >
-            </div>
-            <p id="amountHint" class="portal-field-hint">Minimum ₹1 · Maximum ₹5,00,000</p>
+        <header class="portal-main-header">
+          <div>
+            <p class="portal-step">Secure payment</p>
+            <h2 id="businessName">Payment Details</h2>
           </div>
-        </section>
+          <span class="portal-secure-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            SSL Secure
+          </span>
+        </header>
 
-        <section class="portal-section portal-section--details">
-          <button type="button" class="portal-details-toggle" id="detailsToggle" aria-expanded="false" aria-controls="optionalDetails">
-            <span>Guest &amp; reference details</span>
-            <svg class="portal-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        <form id="payPortalForm" class="portal-form" novalidate>
+          <div id="payFormAlert" class="portal-alert" role="alert" hidden></div>
+
+          <section class="portal-section">
+            <div class="portal-amount-block">
+              <label for="payAmount" class="portal-label">
+                How much would you like to pay?
+                <span class="portal-inr-badge">INR</span>
+              </label>
+              <div class="portal-amount-field" id="amountFieldWrap">
+                <span class="portal-rupee" aria-hidden="true">₹</span>
+                <input
+                  type="text"
+                  inputmode="decimal"
+                  id="payAmount"
+                  name="amount"
+                  placeholder="0"
+                  autocomplete="off"
+                  required
+                  aria-describedby="amountHint amountWords"
+                >
+              </div>
+              <p id="amountWords" class="portal-amount-words" aria-live="polite"></p>
+              <p id="amountHint" class="portal-field-hint">Minimum ₹1 · Maximum ₹5,00,000 · Includes 2% processing fee + GST</p>
+
+              <div class="portal-quick-amounts" role="group" aria-label="Quick amount selection">
+                <button type="button" class="portal-quick-btn" data-amount="500">₹500</button>
+                <button type="button" class="portal-quick-btn" data-amount="1000">₹1,000</button>
+                <button type="button" class="portal-quick-btn" data-amount="2000">₹2,000</button>
+                <button type="button" class="portal-quick-btn" data-amount="2500">₹2,500</button>
+                <button type="button" class="portal-quick-btn" data-amount="5000">₹5,000</button>
+                <button type="button" class="portal-quick-btn" data-amount="10000">₹10,000</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="portal-section portal-section--details">
+            <button type="button" class="portal-details-toggle" id="detailsToggle" aria-expanded="false" aria-controls="optionalDetails">
+              <span class="portal-details-toggle-left">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Guest &amp; reference details
+              </span>
+              <span class="portal-details-toggle-hint">Optional</span>
+              <svg class="portal-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+
+            <div class="portal-details-panel" id="optionalDetails" hidden>
+              <div class="portal-field-grid">
+                <div class="portal-field">
+                  <label for="payName">Full name</label>
+                  <input type="text" id="payName" name="name" placeholder="As on booking" maxlength="100" autocomplete="name">
+                </div>
+                <div class="portal-field">
+                  <label for="payPhone">Mobile</label>
+                  <input type="tel" id="payPhone" name="phone" placeholder="+91 98765 43210" maxlength="20" autocomplete="tel">
+                </div>
+              </div>
+              <div class="portal-field">
+                <label for="payEmail">Email address</label>
+                <input type="email" id="payEmail" name="email" placeholder="For payment receipt" maxlength="100" autocomplete="email">
+              </div>
+              <div class="portal-field">
+                <label for="payNote">Booking / invoice reference</label>
+                <input type="text" id="payNote" name="note" placeholder="e.g. INV-2026-0042" maxlength="120">
+              </div>
+            </div>
+          </section>
+
+          <section class="portal-summary portal-summary--live" aria-labelledby="summaryTitle">
+            <div class="portal-summary-head">
+              <h3 id="summaryTitle" class="portal-summary-title">Payment summary</h3>
+              <span class="portal-summary-live" aria-live="polite">Updates live</span>
+            </div>
+            <dl class="portal-summary-rows">
+              <div class="portal-summary-row">
+                <dt>Amount</dt>
+                <dd data-fee="amount" class="portal-fee-val">₹0</dd>
+              </div>
+              <div class="portal-summary-row">
+                <dt>Processing fee <span class="portal-fee-tag" title="2% convenience fee on payment gateway">2%</span></dt>
+                <dd data-fee="convenience" class="portal-fee-val">₹0</dd>
+              </div>
+              <div class="portal-summary-row">
+                <dt>GST on fee</dt>
+                <dd data-fee="gst" class="portal-fee-val">₹0</dd>
+              </div>
+              <div class="portal-summary-row portal-summary-row--total" id="totalDueRow">
+                <dt>Total due</dt>
+                <dd data-fee="total" id="totalDueDisplay">₹0</dd>
+              </div>
+            </dl>
+          </section>
+
+          <button type="submit" class="portal-submit" id="submitBtn" disabled>
+            <span class="portal-submit-text">Proceed to secure checkout</span>
+            <span class="portal-submit-amount" id="submitAmountPreview" aria-hidden="true">₹0</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
 
-          <div class="portal-details-panel" id="optionalDetails" hidden>
-            <div class="portal-field-grid">
-              <div class="portal-field">
-                <label for="payName">Full name</label>
-                <input type="text" id="payName" name="name" placeholder="As on booking" maxlength="100" autocomplete="name">
-              </div>
-              <div class="portal-field">
-                <label for="payPhone">Mobile</label>
-                <input type="tel" id="payPhone" name="phone" placeholder="+91 98765 43210" maxlength="20" autocomplete="tel">
-              </div>
-            </div>
-            <div class="portal-field">
-              <label for="payEmail">Email address</label>
-              <input type="email" id="payEmail" name="email" placeholder="For payment receipt" maxlength="100" autocomplete="email">
-            </div>
-            <div class="portal-field">
-              <label for="payNote">Booking / invoice reference</label>
-              <input type="text" id="payNote" name="note" placeholder="e.g. INV-2026-0042" maxlength="120">
-            </div>
+          <div class="portal-help-strip">
+            <span>Questions about your payment?</span>
+            <a href="https://wa.me/917022702220?text=Hi%20InstaHelp%2C%20I%20need%20help%20with%20a%20payment" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+            <span class="portal-help-dot" aria-hidden="true">·</span>
+            <a href="tel:+917022702220" id="payHelpPhone">Call support</a>
           </div>
-        </section>
 
-        <section class="portal-summary" aria-labelledby="summaryTitle">
-          <h3 id="summaryTitle" class="portal-summary-title">Payment summary</h3>
-          <dl class="portal-summary-rows">
-            <div class="portal-summary-row">
-              <dt>Subtotal</dt>
-              <dd data-fee="amount">₹0</dd>
-            </div>
-            <div class="portal-summary-row">
-              <dt>Processing fee <span class="portal-fee-tag">2%</span></dt>
-              <dd data-fee="convenience">₹0</dd>
-            </div>
-            <div class="portal-summary-row">
-              <dt>GST on processing fee</dt>
-              <dd data-fee="gst">₹0</dd>
-            </div>
-            <div class="portal-summary-row portal-summary-row--total">
-              <dt>Total due</dt>
-              <dd data-fee="total">₹0</dd>
-            </div>
-          </dl>
-        </section>
+          <p class="portal-legal">
+            By proceeding, you agree to our
+            <a href="term.html">Terms</a> and
+            <a href="privacy.html">Privacy Policy</a>.
+          </p>
+        </form>
 
-        <button type="submit" class="portal-submit" id="submitBtn" disabled>
-          <span>Proceed to Pay</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </button>
-
-        <p class="portal-legal">
-          By proceeding, you agree to our
-          <a href="term.html">Terms</a> and
-          <a href="privacy.html">Privacy Policy</a>.
-        </p>
-      </form>
-
-      <footer class="portal-main-footer">
-        <p id="footerContact"></p>
-        <p class="portal-copy">© <span id="payYear"></span> <span id="footerBusinessName">InstaHelp</span></p>
-      </footer>
+        <footer class="portal-main-footer">
+          <p id="footerContact"></p>
+          <p class="portal-copy">© <span id="payYear"></span> <span id="footerBusinessName">InstaHelp</span></p>
+        </footer>
+      </div>
     </main>
+  </div>
+
+  <div class="portal-mobile-bar" id="mobilePayBar" aria-hidden="true">
+    <div class="portal-mobile-bar-inner">
+      <div class="portal-mobile-bar-total">
+        <span>Total</span>
+        <strong id="mobileTotalPreview">₹0</strong>
+      </div>
+      <button type="button" class="portal-mobile-bar-btn" id="mobileSubmitBtn" disabled form="payPortalForm">
+        Pay now
+      </button>
+    </div>
   </div>
 
   <div class="portal-loading" id="payLoadingOverlay" aria-live="polite" aria-busy="true">
@@ -192,6 +260,11 @@
       <div class="portal-loading-ring" aria-hidden="true"></div>
       <p class="portal-loading-title">Opening secure checkout</p>
       <p class="portal-loading-sub">Please don't close this window</p>
+      <ul class="portal-loading-steps">
+        <li class="is-active">Validating amount</li>
+        <li>Connecting to gateway</li>
+        <li>Redirecting securely</li>
+      </ul>
     </div>
   </div>
 
@@ -203,7 +276,7 @@
   <script src="js/orders.js"></script>
   <script src="js/transactions.js"></script>
   <script src="js/payment.js?v=5"></script>
-  <script src="js/pay-form.js?v=2"></script>
+  <script src="js/pay-form.js?v=4"></script>
   <script>
     document.getElementById('payYear').textContent = new Date().getFullYear();
 
@@ -232,6 +305,135 @@
       document.addEventListener('DOMContentLoaded', function () {
         if (hasPrefill()) setOpen(true);
       });
+    })();
+
+    (function () {
+      var amountInput = document.getElementById('payAmount');
+      var amountWrap = document.getElementById('amountFieldWrap');
+      var amountWords = document.getElementById('amountWords');
+      var quickBtns = document.querySelectorAll('.portal-quick-btn');
+      var mobileBtn = document.getElementById('mobileSubmitBtn');
+      var form = document.getElementById('payPortalForm');
+      var totalRow = document.getElementById('totalDueRow');
+      var progressSteps = document.querySelectorAll('.portal-progress-step');
+      var detailsToggle = document.getElementById('detailsToggle');
+      var detailsPanel = document.getElementById('optionalDetails');
+
+      function parseRaw(val) {
+        return parseFloat(String(val || '').replace(/[^\d.]/g, '')) || 0;
+      }
+
+      function formatIndianInput(num) {
+        if (!num) return '';
+        var parts = String(num).split('.');
+        var intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        if (parts[1] != null) intPart += '.' + parts[1].slice(0, 2);
+        return intPart;
+      }
+
+      function amountInWords(n) {
+        n = Math.floor(n);
+        if (!n) return '';
+        if (n === 1) return 'One rupee';
+        if (n < 1000) return n.toLocaleString('en-IN') + ' rupees';
+        if (n < 100000) return (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1).replace(/\.0$/, '') + ' thousand rupees';
+        return (n / 100000).toFixed(n % 100000 === 0 ? 0 : 2).replace(/\.?0+$/, '') + ' lakh rupees';
+      }
+
+      function setProgress(step) {
+        progressSteps.forEach(function (s) {
+          s.classList.toggle('is-active', s.dataset.step === step);
+          s.classList.toggle('is-done', ['amount', 'details', 'pay'].indexOf(s.dataset.step) < ['amount', 'details', 'pay'].indexOf(step));
+        });
+      }
+
+      function syncQuickActive() {
+        var val = parseRaw(amountInput.value);
+        quickBtns.forEach(function (btn) {
+          btn.classList.toggle('is-active', Number(btn.dataset.amount) === val);
+        });
+        if (amountWords) {
+          amountWords.textContent = val > 0 ? amountInWords(val) : '';
+        }
+        setProgress(val > 0 ? 'details' : 'amount');
+      }
+
+      function pulseTotal() {
+        if (!totalRow) return;
+        totalRow.classList.remove('is-pulse');
+        void totalRow.offsetWidth;
+        totalRow.classList.add('is-pulse');
+      }
+
+      amountInput.addEventListener('input', function () {
+        var raw = amountInput.value.replace(/[^\d.]/g, '');
+        var dot = raw.indexOf('.');
+        if (dot !== -1) raw = raw.slice(0, dot + 1) + raw.slice(dot + 1).replace(/\./g, '');
+        var num = parseRaw(raw);
+        var formatted = formatIndianInput(raw);
+        if (amountInput.value !== formatted) {
+          amountInput.value = formatted;
+        }
+        syncQuickActive();
+      });
+
+      quickBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          amountInput.value = formatIndianInput(btn.dataset.amount);
+          amountInput.dispatchEvent(new Event('input', { bubbles: true }));
+          amountInput.focus();
+          syncQuickActive();
+        });
+      });
+
+      amountInput.addEventListener('focus', function () {
+        if (amountWrap) amountWrap.classList.add('is-focused');
+      });
+      amountInput.addEventListener('blur', function () {
+        if (amountWrap) amountWrap.classList.remove('is-focused');
+      });
+
+      if (detailsToggle && detailsPanel) {
+        detailsToggle.addEventListener('click', function () {
+          setTimeout(function () {
+            if (detailsToggle.classList.contains('is-open')) setProgress('pay');
+          }, 0);
+        });
+      }
+
+      document.addEventListener('feeUpdated', pulseTotal);
+
+      if (mobileBtn && form) {
+        mobileBtn.addEventListener('click', function () {
+          setProgress('pay');
+          if (typeof form.requestSubmit === 'function') {
+            form.requestSubmit();
+          } else {
+            form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+          }
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', syncQuickActive);
+    })();
+
+    (function () {
+      var overlay = document.getElementById('payLoadingOverlay');
+      if (!overlay) return;
+      var steps = overlay.querySelectorAll('.portal-loading-steps li');
+      var observer = new MutationObserver(function () {
+        if (!overlay.classList.contains('show')) return;
+        steps.forEach(function (s, i) { s.classList.remove('is-active', 'is-done'); });
+        var idx = 0;
+        steps[0].classList.add('is-active');
+        var timer = setInterval(function () {
+          if (idx < steps.length) steps[idx].classList.add('is-done');
+          idx += 1;
+          if (idx >= steps.length) { clearInterval(timer); return; }
+          steps[idx].classList.add('is-active');
+        }, 900);
+      });
+      observer.observe(overlay, { attributes: true, attributeFilter: ['class'] });
     })();
   </script>
 </body>

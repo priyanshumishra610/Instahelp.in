@@ -25,6 +25,24 @@
   force = true
 
 [[redirects]]
+  from = "https://www.instahelp.in/*"
+  to = "https://instahelp.in/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://instahelp.in/*"
+  to = "https://instahelp.in/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.instahelp.in/*"
+  to = "https://instahelp.in/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/app-waitlist"
   to = "/app-waitlist.html"
   status = 200

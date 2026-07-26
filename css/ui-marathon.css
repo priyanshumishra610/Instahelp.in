@@ -1,0 +1,396 @@
+/* ═══════════════════════════════════════
+   UI MARATHON — site-wide motion layer
+═══════════════════════════════════════ */
+
+:root {
+  --ui-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ui-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ui-duration: 0.55s;
+  --ui-duration-fast: 0.28s;
+}
+
+/* ── Scroll reveal stagger ── */
+.reveal-stagger.in-view > *,
+.reveal-stagger.in-view {
+  animation: uiStaggerIn var(--ui-duration) var(--ui-ease-out) both;
+}
+
+.reveal-stagger.in-view > *:nth-child(1),
+.reveal-stagger.in-view:nth-child(1) { animation-delay: 0.04s; }
+.reveal-stagger.in-view > *:nth-child(2),
+.reveal-stagger.in-view:nth-child(2) { animation-delay: 0.1s; }
+.reveal-stagger.in-view > *:nth-child(3),
+.reveal-stagger.in-view:nth-child(3) { animation-delay: 0.16s; }
+.reveal-stagger.in-view > *:nth-child(4),
+.reveal-stagger.in-view:nth-child(4) { animation-delay: 0.22s; }
+.reveal-stagger.in-view > *:nth-child(5),
+.reveal-stagger.in-view:nth-child(5) { animation-delay: 0.28s; }
+.reveal-stagger.in-view > *:nth-child(6),
+.reveal-stagger.in-view:nth-child(6) { animation-delay: 0.34s; }
+
+@keyframes uiStaggerIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Bento cards as direct reveal-stagger items */
+.bento-card.reveal-stagger {
+  transition:
+    transform var(--ui-duration-fast) var(--ui-ease-out),
+    box-shadow var(--ui-duration-fast) var(--ui-ease-out),
+    border-color var(--ui-duration-fast) ease;
+}
+
+.bento-card.reveal-stagger.in-view:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.08);
+}
+
+.step.reveal-stagger.in-view {
+  animation: uiStepPop 0.6s var(--ui-ease-out) both;
+}
+
+@keyframes uiStepPop {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Header scroll shrink ── */
+#siteHeader {
+  transition:
+    top var(--ui-duration-fast) var(--ui-ease-out),
+    padding var(--ui-duration-fast) var(--ui-ease-out),
+    box-shadow var(--ui-duration-fast) var(--ui-ease-out),
+    background var(--ui-duration-fast) ease,
+    backdrop-filter var(--ui-duration-fast) ease;
+}
+
+#siteHeader.header-scrolled {
+  top: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px) saturate(1.4);
+}
+
+#siteHeader .nav-links a {
+  position: relative;
+  transition: color var(--ui-duration-fast) ease, opacity var(--ui-duration-fast) ease;
+}
+
+#siteHeader .nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: var(--yellow, #ffd600);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ui-ease-out);
+  border-radius: 2px;
+}
+
+#siteHeader .nav-links a:hover::after,
+#siteHeader .nav-links a.nav-active::after {
+  transform: scaleX(1);
+}
+
+#siteHeader .nav-links a.nav-active {
+  color: var(--black);
+  font-weight: 700;
+}
+
+/* ── Button micro-interactions ── */
+.ui-btn-lift {
+  transition:
+    transform var(--ui-duration-fast) var(--ui-ease-spring),
+    box-shadow var(--ui-duration-fast) ease,
+    background var(--ui-duration-fast) ease,
+    color var(--ui-duration-fast) ease;
+}
+
+.ui-btn-lift:hover {
+  transform: translateY(-2px);
+}
+
+.ui-btn-lift:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.08s;
+}
+
+.ui-btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.ui-btn-shine::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.ui-btn-shine:hover::before {
+  transform: translateX(120%);
+}
+
+/* ── Hero form float card ── */
+.ui-float-card {
+  animation: uiFloatCard 6s ease-in-out infinite;
+  transition:
+    box-shadow 0.4s var(--ui-ease-out),
+    transform 0.4s var(--ui-ease-out);
+}
+
+.ui-float-card:hover {
+  box-shadow:
+    0 32px 64px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 214, 0, 0.15);
+}
+
+@keyframes uiFloatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.ui-form-block {
+  transition:
+    opacity 0.4s var(--ui-ease-out),
+    transform 0.4s var(--ui-ease-out);
+}
+
+.hero-form-card:focus-within .ui-form-block {
+  opacity: 1;
+}
+
+.hero-field input,
+.hero-field textarea {
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.hero-field input:focus,
+.hero-field textarea:focus {
+  box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.25);
+}
+
+.hero-form-alt-actions {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.hero-form-wa-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-700);
+  padding: 8px 14px;
+  border-radius: var(--radius-pill, 999px);
+  border: 1px solid var(--gray-200);
+  background: var(--gray-50, #fafafa);
+  text-decoration: none;
+}
+
+.hero-form-wa-link:hover {
+  color: #128C7E;
+  border-color: rgba(37, 211, 102, 0.35);
+  background: rgba(37, 211, 102, 0.06);
+}
+
+.btn-hero-submit {
+  transition:
+    transform var(--ui-duration-fast) var(--ui-ease-spring),
+    box-shadow var(--ui-duration-fast) ease,
+    background var(--ui-duration-fast) ease;
+}
+
+.btn-hero-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.btn-hero-submit .btn-hero-submit-icon {
+  transition: transform 0.3s var(--ui-ease-out);
+}
+
+.btn-hero-submit:hover .btn-hero-submit-icon {
+  transform: translateX(4px);
+}
+
+/* ── Marquee entrance ── */
+.ui-marquee-enter {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: uiMarqueeEnter 0.8s var(--ui-ease-out) 0.5s both;
+}
+
+@keyframes uiMarqueeEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Bottom CTA glow pulse ── */
+.ui-cta-glow {
+  position: relative;
+}
+
+.ui-cta-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 214, 0, 0.2), transparent 50%, rgba(59, 130, 246, 0.12));
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ui-cta-glow.in-view::before {
+  opacity: 1;
+  animation: uiCtaPulse 4s ease-in-out infinite;
+}
+
+@keyframes uiCtaPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ── FAQ items ── */
+.faq-item.reveal-stagger {
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.faq-item.reveal-stagger.in-view:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.faq-item[open] .faq-summary-icon {
+  transition: transform 0.35s var(--ui-ease-out);
+}
+
+.faq-item[open] {
+  animation: faqOpen 0.35s var(--ui-ease-out);
+}
+
+@keyframes faqOpen {
+  from { opacity: 0.85; }
+  to { opacity: 1; }
+}
+
+/* ── Quick help pills ── */
+.quick-help-pill,
+.qh-pill,
+.footer-quick-help a,
+.hero-prompt-chip {
+  transition:
+    transform var(--ui-duration-fast) var(--ui-ease-spring),
+    background var(--ui-duration-fast) ease,
+    border-color var(--ui-duration-fast) ease,
+    box-shadow var(--ui-duration-fast) ease;
+}
+
+.quick-help-pill:hover,
+.qh-pill:hover,
+.footer-quick-help a:hover,
+.hero-prompt-chip:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* ── Hero parallax on background layer (preserves blob drift animations) ── */
+.hero-section .hero-bg {
+  transition: transform 0.18s ease-out;
+  transform: translate(calc(var(--mx, 0) * 10px), calc(var(--my, 0) * 6px));
+}
+
+body.is-scrolling .hero-section .hero-bg {
+  transition: none;
+}
+
+/* ── Section headings ── */
+.section-head h2,
+.faq-head h2,
+.steps-head h2 {
+  transition: letter-spacing 0.5s var(--ui-ease-out);
+}
+
+.section-head.in-view h2,
+.faq-head.in-view h2,
+.steps-head.in-view h2 {
+  letter-spacing: -0.02em;
+}
+
+/* ── Footer links ── */
+footer a {
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+footer a:hover {
+  color: var(--yellow, #ffd600);
+}
+
+/* ── Smooth page feel ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body.is-scrolling .ui-float-card {
+  animation-play-state: paused;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.in-view,
+  .reveal-stagger.in-view,
+  .reveal-stagger.in-view > * {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .ui-float-card,
+  .ui-marquee-enter,
+  .ui-cta-glow::before {
+    animation: none !important;
+  }
+
+  .ui-btn-shine::before {
+    display: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

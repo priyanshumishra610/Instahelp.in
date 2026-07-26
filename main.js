@@ -33,9 +33,7 @@ async function verifySheetWebApp() {
   }
 }
 
-(function initReveal() {
-  document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
-})();
+/* Scroll reveals handled by js/ui-marathon.js */
 
 /* ── PAUSE HEAVY ANIMATIONS WHILE SCROLLING ── */
 (function initScrollPerf() {
@@ -228,7 +226,6 @@ function fillAddressInput(inputId, buttonId, options) {
     });
 }
 
-getBrowserLocation(false).catch(() => {});
 
 document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) lucide.createIcons();
@@ -236,10 +233,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroDetect = document.getElementById('heroDetectAddress');
   if (heroDetect) {
     heroDetect.addEventListener('click', () => {
+      const ok = window.confirm(
+        'InstaHelp will ask your browser for location only to help fill your address. You can skip this and type your address manually.'
+      );
+      if (!ok) return;
       fillAddressInput('exact_address', 'heroDetectAddress', { alertOnFail: true, force: true });
     });
   }
-  fillAddressInput('exact_address', 'heroDetectAddress', { alertOnFail: false });
 
   initHeroInteractiveForm();
   initHeroPromptDemo();
@@ -266,7 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
     qhModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     if (window.lucide) lucide.createIcons();
-    fillAddressInput('qh_location', 'qhDetectLoc', { alertOnFail: false, mode: 'city' });
     setTimeout(() => {
       const s = document.getElementById('qh_service');
       if (s) s.focus();
@@ -326,6 +325,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (qhDetect) {
     qhDetect.addEventListener('click', () => {
+      const ok = window.confirm(
+        'InstaHelp will ask your browser for location only to help fill your city. You can skip this and type manually.'
+      );
+      if (!ok) return;
       fillAddressInput('qh_location', 'qhDetectLoc', { alertOnFail: true, force: true, mode: 'city' });
     });
   }
@@ -402,13 +405,104 @@ function initHeroInteractiveForm() {
   };
 }
 
-const HERO_PROMPT_PHRASES = [
-  'a plumber in Whitefield by tomorrow',
-  'a CA for GST filing this week',
-  'packers for my 2BHK move to Pune',
-  'deep cleaning before guests arrive',
-  'an electrician — fuse keeps tripping',
+const HERO_CATEGORIES = [
+  { label: 'Plumber', icon: 'wrench', prompt: 'I need a plumber to fix a leaking tap in my kitchen.', phrase: 'a plumber in Whitefield by tomorrow' },
+  { label: 'CA / GST', icon: 'file-text', prompt: 'I need a CA to file my GST returns this month.', phrase: 'a CA for GST filing this week' },
+  { label: 'Packers', icon: 'truck', prompt: 'I need packers and movers for a 2BHK shift next weekend.', phrase: 'packers for my 2BHK move to Pune' },
+  { label: 'Electrician', icon: 'zap', prompt: 'I need an electrician — the fuse keeps tripping.', phrase: 'an electrician for a power issue at home' },
+  { label: 'Deep cleaning', icon: 'sparkles', prompt: 'I need deep cleaning for my 3BHK before guests arrive.', phrase: 'deep cleaning before guests arrive' },
+  { label: 'Photographer', icon: 'camera', prompt: 'I need a wedding photographer for next month.', phrase: 'a wedding photographer for my event' },
+  { label: 'Interior designer', icon: 'palette', prompt: 'I need an interior designer for my new apartment.', phrase: 'an interior designer for my 2BHK' },
+  { label: 'Tutor', icon: 'book-open', prompt: 'I need a home tutor for maths for Class 10.', phrase: 'a home tutor for maths this week' },
+  { label: 'Pest control', icon: 'bug', prompt: 'I need pest control for cockroaches in my kitchen.', phrase: 'pest control for my apartment' },
+  { label: 'Visa help', icon: 'plane', prompt: 'I need help with Schengen visa documentation.', phrase: 'Schengen visa help for Europe trip' },
+  { label: 'Web developer', icon: 'code', prompt: 'I need a website developer for my small business.', phrase: 'a website developer for my startup' },
+  { label: 'AC repair', icon: 'wind', prompt: 'I need urgent AC repair — not cooling properly.', phrase: 'urgent AC repair this afternoon' },
+  { label: 'Event planner', icon: 'calendar-days', prompt: 'I need an event planner for a corporate offsite.', phrase: 'an event planner for a corporate event' },
+  { label: 'Salon at home', icon: 'scissors', prompt: 'I need salon services at home this weekend.', phrase: 'salon at home for this Saturday' },
+  { label: 'Lawyer', icon: 'scale', prompt: 'I need a lawyer to review a rental agreement.', phrase: 'a lawyer to review my contract' },
 ];
+
+const HERO_PROMPT_PHRASES = HERO_CATEGORIES.map(c => c.phrase);
+
+function renderHeroCategoryChips(container) {
+  if (!container) return [];
+  container.innerHTML = HERO_CATEGORIES.map((cat, i) =>
+    `<button type="button" class="hero-prompt-chip${i === 0 ? ' is-cycle-active' : ''}" data-index="${i}" data-prompt="${cat.prompt.replace(/"/g, '&quot;')}">
+      <i data-lucide="${cat.icon}" aria-hidden="true" class="hero-prompt-chip-icon"></i>
+      ${cat.label}
+    </button>`
+  ).join('');
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+  return container.querySelectorAll('.hero-prompt-chip');
+}
+
+function setHeroCategoryIndex(index, { animateWord = true } = {}) {
+  const chips = document.querySelectorAll('.hero-prompt-chip');
+  const cycleWord = document.getElementById('heroCatCycleWord');
+  const cat = HERO_CATEGORIES[index];
+  if (!cat) return;
+
+  chips.forEach((chip, i) => {
+    chip.classList.toggle('is-cycle-active', i === index);
+    chip.classList.toggle('is-active', i === index);
+  });
+
+  const activeChip = chips[index];
+  const chipScroller = document.getElementById('heroCategoryChips');
+  if (activeChip && chipScroller && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const cr = chipScroller.getBoundingClientRect();
+    const br = activeChip.getBoundingClientRect();
+    if (br.left < cr.left || br.right > cr.right) {
+      activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  }
+
+  if (cycleWord && animateWord) {
+    cycleWord.classList.remove('is-entering');
+    cycleWord.classList.add('is-exiting');
+    setTimeout(() => {
+      cycleWord.textContent = cat.label;
+      cycleWord.classList.remove('is-exiting');
+      cycleWord.classList.add('is-entering');
+      setTimeout(() => cycleWord.classList.remove('is-entering'), 260);
+    }, 120);
+  } else if (cycleWord) {
+    cycleWord.textContent = cat.label;
+  }
+}
+
+function heroAnimatePhraseSwap(typedEl, nextText, onComplete) {
+  if (!typedEl) {
+    onComplete?.();
+    return;
+  }
+
+  typedEl.classList.remove('is-entering');
+  typedEl.classList.add('is-exiting');
+
+  setTimeout(() => {
+    typedEl.classList.remove('is-exiting');
+    typedEl.textContent = '';
+    typedEl.classList.add('is-entering');
+
+    let i = 0;
+    const typeSpeed = 12;
+
+    function typeStep() {
+      i += 1;
+      typedEl.textContent = nextText.slice(0, i);
+      if (i >= nextText.length) {
+        typedEl.classList.remove('is-entering');
+        onComplete?.();
+        return;
+      }
+      setTimeout(typeStep, typeSpeed);
+    }
+
+    typeStep();
+  }, 180);
+}
 
 function focusHeroForm(messageText) {
   const formCard = document.getElementById('heroFormCard');
@@ -434,58 +528,55 @@ function focusHeroForm(messageText) {
 function initHeroPromptDemo() {
   const typed = document.getElementById('heroTypedText');
   const cursor = document.getElementById('heroTypedCursor');
-  const chips = document.querySelectorAll('.hero-prompt-chip');
+  const chipContainer = document.getElementById('heroCategoryChips');
+  const chips = renderHeroCategoryChips(chipContainer);
   if (!typed) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let userPaused = false;
+  let phraseIndex = 0;
 
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
+      userPaused = true;
+      phraseIndex = parseInt(chip.dataset.index, 10) || 0;
+      setHeroCategoryIndex(phraseIndex);
       chips.forEach(c => c.classList.remove('is-active'));
       chip.classList.add('is-active');
       focusHeroForm(chip.dataset.prompt || '');
+      typed.textContent = HERO_CATEGORIES[phraseIndex].phrase;
+      setTimeout(() => { userPaused = false; }, 8000);
     });
   });
 
-  if (reducedMotion || HERO_PROMPT_PHRASES.length < 2) {
-    typed.textContent = HERO_PROMPT_PHRASES[0];
+  if (reducedMotion || HERO_CATEGORIES.length < 2) {
+    typed.textContent = HERO_CATEGORIES[0].phrase;
     if (cursor) cursor.style.display = 'none';
+    setHeroCategoryIndex(0, { animateWord: false });
     return;
   }
 
-  let phraseIndex = 0;
-  let charIndex = HERO_PROMPT_PHRASES[0].length;
-  let deleting = false;
+  const HOLD_MS = 850;
+  const CYCLE_GAP_MS = 120;
 
-  typed.textContent = HERO_PROMPT_PHRASES[0];
-
-  function tick() {
-    const current = HERO_PROMPT_PHRASES[phraseIndex];
-
-    if (!deleting) {
-      charIndex += 1;
-      typed.textContent = current.slice(0, charIndex);
-      if (charIndex >= current.length) {
-        deleting = true;
-        setTimeout(tick, 2200);
-        return;
-      }
-      setTimeout(tick, 38 + Math.random() * 28);
+  function runCycle() {
+    if (userPaused) {
+      setTimeout(runCycle, 250);
       return;
     }
 
-    charIndex -= 1;
-    typed.textContent = current.slice(0, charIndex);
-    if (charIndex <= 0) {
-      deleting = false;
-      phraseIndex = (phraseIndex + 1) % HERO_PROMPT_PHRASES.length;
-      setTimeout(tick, 420);
-      return;
-    }
-    setTimeout(tick, 22);
+    const phrase = HERO_PROMPT_PHRASES[phraseIndex];
+    setHeroCategoryIndex(phraseIndex);
+
+    heroAnimatePhraseSwap(typed, phrase, () => {
+      setTimeout(() => {
+        phraseIndex = (phraseIndex + 1) % HERO_PROMPT_PHRASES.length;
+        setTimeout(runCycle, CYCLE_GAP_MS);
+      }, HOLD_MS);
+    });
   }
 
-  setTimeout(tick, 1800);
+  setTimeout(runCycle, 350);
 }
 
 /* ── SERVICE OPTIONS ── */
@@ -590,10 +681,15 @@ function secureSubmitForm(e) {
     return;
   }
 
-  // Consent gate
-  const consentBox = form.querySelector('input[name="evidence_consent"]');
-  if (consentBox && !consentBox.checked) {
-    consentBox.focus();
+  // Consent gates — both required, unticked by default
+  const providerConsent = form.querySelector('input[name="evidence_consent"]');
+  const privacyConsent = form.querySelector('input[name="privacy_consent"]');
+  if (providerConsent && !providerConsent.checked) {
+    providerConsent.focus();
+    return;
+  }
+  if (privacyConsent && !privacyConsent.checked) {
+    privacyConsent.focus();
     return;
   }
 
@@ -659,7 +755,8 @@ function secureSubmitForm(e) {
     // Evidence fields
     source:                  g('source'),
     prior_payment:           g('prior_payment'),
-    evidence_consent:        consentBox?.checked ? 'YES' : 'NO',
+    evidence_consent:        providerConsent?.checked ? 'YES' : 'NO',
+    privacy_consent:         privacyConsent?.checked ? 'YES' : 'NO',
     confusion_instance:      isConfusion ? 'YES,REVIEW' : 'no',
 
     // Traffic
@@ -768,10 +865,11 @@ function secureSubmitForm(e) {
   }, 2500);
 }
 
-/* ── FAST ANCHOR SCROLL (offset for fixed header) ── */
+/* ── ANCHOR SCROLL (offset for fixed header) ── */
 function ihScrollTo(target, offset = 88) {
   const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
-  window.scrollTo({ top, behavior: 'auto' });
+  const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({ top, behavior: smooth ? 'smooth' : 'auto' });
 }
 
 document.querySelectorAll('a[href^="#"]').forEach(a => {

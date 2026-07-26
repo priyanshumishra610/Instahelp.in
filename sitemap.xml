@@ -2,57 +2,69 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.instahelp.in/</loc>
+    <loc>https://instahelp.in/</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en-IN" href="https://www.instahelp.in/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.instahelp.in/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://instahelp.in/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://instahelp.in/"/>
   </url>
   <url>
-    <loc>https://www.instahelp.in/plans</loc>
+    <loc>https://instahelp.in/plans</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.instahelp.in/giftcards</loc>
+    <loc>https://instahelp.in/giftcards</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://www.instahelp.in/app-waitlist</loc>
+    <loc>https://instahelp.in/app-waitlist</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.instahelp.in/privacy.html</loc>
+    <loc>https://instahelp.in/privacy.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.instahelp.in/term.html</loc>
+    <loc>https://instahelp.in/term.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.instahelp.in/refund.html</loc>
+    <loc>https://instahelp.in/refund.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.instahelp.in/pricing.html</loc>
+    <loc>https://instahelp.in/pricing.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.instahelp.in/legal.html</loc>
+    <loc>https://instahelp.in/legal.html</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://instahelp.in/how-we-vet.html</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://instahelp.in/grievance.html</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>

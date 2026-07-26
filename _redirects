@@ -2,6 +2,11 @@
 /api/*  https://instahelp-in.onrender.com/api/:splat  200!
 /health  https://instahelp-in.onrender.com/health  200!
 
+# Canonical host redirects
+https://www.instahelp.in/*  https://instahelp.in/:splat  301!
+http://instahelp.in/*  https://instahelp.in/:splat  301!
+http://www.instahelp.in/*  https://instahelp.in/:splat  301!
+
 # Pretty URLs
 /app-waitlist  /app-waitlist.html  200
 /plans  /plans.html  200
