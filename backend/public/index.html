@@ -703,136 +703,193 @@
 
 <main>
 <section class="hero-section" id="home" aria-labelledby="hero-heading">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-bg-base"></div>
+    <div class="hero-bg-blob hero-bg-blob-yellow"></div>
+    <div class="hero-bg-blob hero-bg-blob-blue"></div>
+  </div>
+
   <div class="hero-inner">
-    <div class="hero-copy">
-      <div class="hero-pill" role="text">
-        <span class="hero-pill-dot" aria-hidden="true"></span>
-        We'll get it done!
-      </div>
+    <div class="hero-top">
+      <div class="hero-copy">
+        <div class="hero-pill hero-anim" role="text">
+          <span class="hero-pill-dot" aria-hidden="true"></span>
+          India's On-Demand Concierge · Since 2015
+        </div>
 
-      <h1 id="hero-heading">
-        Stop Searching.<br>Get It Done.<br><em>Actually done.</em>
-      </h1>
+        <h1 id="hero-heading" class="hero-anim hero-anim-d1">
+          Stop searching.<br>Get it done.<br><em>Actually done.</em>
+        </h1>
 
-      <p class="hero-sub">
-        Looking for a Plumber, CA, Packers and Movers, Wedding photographer, Electrician or Helper?
-        <br>Google Search ranks results using SEO.<br>Justdial prioritizes paid listings.<br>
-        InstaHelp cuts through the noise.<br>
-        We provide verified, unbiased, and curated service providers, matched to your exact requirement.
-        No endless calls. No guesswork. One Request. One team. Actually done.
-      </p>
+        <p class="hero-sub hero-anim hero-anim-d2">
+          <strong>Plumber? CA? Packers? Photographer?</strong>
+          Skip JustDial's paid listings and endless Google scrolling.
+          Tell us what you need — we find, vet, and coordinate the right provider.
+        </p>
 
-      <p class="hero-coverage">
-        Serving <strong>many cities</strong> —
-        Bangalore, Mumbai, Delhi&nbsp;NCR, Hyderabad, Chennai, Pune, Kolkata,
-        Ahmedabad, Jaipur, Lucknow, Chandigarh, Kochi, Indore, Coimbatore,
-        Gurgaon, Noida, Mysore, Goa &amp; more.
-        We are Popular with residents of large apartment complexes and gated communities.
-      </p>
+        <p class="hero-coverage hero-anim hero-anim-d2">
+          Serving <strong>30+ cities</strong> — Bangalore, Mumbai, Delhi&nbsp;NCR, Hyderabad, Chennai, Pune &amp; more.
+        </p>
 
-      <div class="trust-strip" role="list" aria-label="Trust indicators">
-        <div class="trust-item" role="listitem"><span class="trust-item-dot" aria-hidden="true"></span>11+ Years Active</div>
-        <div class="trust-item" role="listitem"><span class="trust-item-dot" aria-hidden="true"></span>Thousands of Tasks Done</div>
-        <div class="trust-item" role="listitem"><span class="trust-item-dot" aria-hidden="true"></span>Available 24 / 7</div>
-        <div class="trust-item" role="listitem"><span class="trust-item-dot" aria-hidden="true"></span>Any Category</div>
-      </div>
+        <div class="hero-trust hero-anim hero-anim-d3" role="list" aria-label="Trust indicators">
+          <div class="hero-trust-item" role="listitem">
+            <svg class="hero-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            11+ Years Active
+          </div>
+          <div class="hero-trust-item" role="listitem">
+            <svg class="hero-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Available 24 / 7
+          </div>
+          <div class="hero-trust-item" role="listitem">
+            <svg class="hero-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Any Category
+          </div>
+        </div>
 
-      <div class="hero-contacts">
-        <a href="tel:+917022702220" class="hero-contact-btn primary" aria-label="Call InstaHelp now">
-          <i data-lucide="phone" aria-hidden="true" class="hero-contact-ic" style="width:16px;height:16px;"></i>
-          70227&nbsp;02220
-        </a>
-        <a href="https://wa.me/917022702220?text=Hi%20InstaHelp%2C%20I%20need%20help%20with..." class="hero-contact-btn secondary" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp InstaHelp">
-          <i data-lucide="message-circle" aria-hidden="true" class="hero-contact-ic" style="width:16px;height:16px;"></i>
-          WhatsApp
-        </a>
-      </div>
-
-      <div class="app-buttons">
-        <a href="app-waitlist.html?platform=ios" class="store-link" aria-label="Join the InstaHelp iOS app waitlist">
-          <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1276550400&h=7e5b6854c6198813303862660d13ed7c" alt="Join the InstaHelp App Store waitlist" loading="lazy">
-        </a>
-        <a href="app-waitlist.html?platform=android" class="store-link" aria-label="Join the InstaHelp Google Play waitlist">
-          <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Join the InstaHelp Google Play waitlist" style="height: 60px;" loading="lazy">
-        </a>
-      </div>
-    </div>
-
-    <div class="hero-form-wrap">
-      <div class="quick-help-block" id="quick-help" aria-labelledby="quick-help-title">
-        <h2 class="quick-help-title" id="quick-help-title">Skip the form, go straight to WhatsApp</h2>
-        <p class="quick-help-sub">Pick a topic, add a short line, and open WhatsApp with your message ready to send.</p>
-        <div class="quick-help-pills" role="group" aria-label="WhatsApp quick topics">
-          <button type="button" class="qh-pill" data-issue="Payment Issues">Payment Issues</button>
-          <button type="button" class="qh-pill" data-issue="Cancellation">Cancellation</button>
-          <button type="button" class="qh-pill" data-issue="Help">Help</button>
-          <button type="button" class="qh-pill" data-issue="Availability">Availability</button>
-          <button type="button" class="qh-pill" data-issue="Reschedule">Reschedule</button>
-          <button type="button" class="qh-pill" data-issue="Requests">Other Issues</button>
+        <div class="hero-contacts hero-anim hero-anim-d4">
+          <a href="https://wa.me/917022702220?text=Hi%20InstaHelp%2C%20I%20need%20help%20with..." class="hero-contact-btn wa-primary" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp InstaHelp">
+            <i data-lucide="message-circle" aria-hidden="true" class="hero-contact-ic" style="width:18px;height:18px;"></i>
+            WhatsApp us
+          </a>
+          <a href="tel:+917022702220" class="hero-contact-btn call-secondary" aria-label="Call InstaHelp">
+            <i data-lucide="phone" aria-hidden="true" class="hero-contact-ic" style="width:18px;height:18px;"></i>
+            70227&nbsp;02220
+          </a>
         </div>
       </div>
 
-      <p class="form-secondary-cta">Prefer detailed request? Fill the form</p>
-
-      <div class="hero-form-card" role="complementary" aria-label="Submit a service request">
-        <div class="form-card-title">Get it done today</div>
-        <div class="form-card-sub">Tell us your task, we'll handle the rest.</div>
-        <form class="contact-form" id="heroForm" onsubmit="secureSubmitForm(event)" novalidate autocomplete="on" aria-label="Service request form">
-          <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
-            <input type="text" name="honeypot" tabindex="-1" autocomplete="off">
-          </div>
-          <div class="form-row">
-            <input type="text" name="fullname" id="fullname" placeholder="Your name" required maxlength="60" autocomplete="name" aria-label="Full name" aria-required="true">
-            <input type="tel" name="phone" id="phone" placeholder="Phone / WhatsApp" maxlength="15" autocomplete="tel" aria-label="Phone number">
-          </div>
-          <div class="form-row">
-            <input type="email" name="email" id="email" placeholder="Email address" maxlength="100" autocomplete="email" aria-label="Email address">
-            <select id="serviceSelect" name="service" aria-label="Select service category">
-              <option value="">Service type</option>
-            </select>
-          </div>
-          <div class="form-address-row">
-            <input type="text" name="address" id="exact_address" placeholder="Exact address (flat, building, street, area)" maxlength="300" autocomplete="street-address" aria-label="Exact address" required aria-required="true">
-            <button type="button" class="btn-qh-detect" id="heroDetectAddress">Use my location</button>
-          </div>
-          <textarea name="message" id="message" placeholder="Describe your task, the more detail, the faster we respond…" required maxlength="1000" rows="4" aria-label="Task description" aria-required="true"></textarea>
-          
-          <select name="source" id="sourceSelect" aria-label="How did you find us">
-            <option value="">How did you find us?</option>
-            <option value="google">Google Search</option>
-            <option value="some">Some App</option>
-            <option value="playstore">Playstore</option>
-            <option value="word_of_mouth">Word of Mouth</option>
-            <option value="returning">I've used InstaHelp before</option>
-            <option value="other">Other</option>
-          </select>
-          <select name="prior_payment" id="priorPayment" aria-label="Prior payment status">
-            <option value="">Have you used InstaHelp before?</option>
-            <option value="no">No, not yet</option>
-            <option value="yes_here">Yes, through this website</option>
-            <option value="yes_elsewhere">Yes, through a different app or platform</option>
-          </select>
-
-          <input type="hidden" name="referrer_url" id="referrer_url">
-          <input type="hidden" name="utm_source" id="utm_source">
-          <input type="hidden" name="utm_medium" id="utm_medium">
-          <input type="hidden" name="utm_campaign" id="utm_campaign">
-          <input type="hidden" name="landing_page" id="landing_page">
-          <input type="hidden" name="confusion_referral_flag" id="confusion_referral_flag">
-          <input type="hidden" name="confusion_instance" id="confusion_instance">
-          <input type="hidden" name="form_token" id="form_token">
-          <input type="hidden" name="form_id" value="hero_form">
-
-          <div class="consent-row">
-            <input type="checkbox" name="evidence_consent" id="evidence_consent" required aria-required="true">
-            <label for="evidence_consent">I consent to InstaHelp acting as an intermediation platform to connect me with third-party service providers for this request.</label>
+      <div class="hero-form-panel hero-anim hero-anim-d3" role="complementary" aria-label="Submit a service request">
+        <div class="hero-form-card hero-form-interactive" id="heroFormCard">
+          <div class="hero-form-progress" aria-hidden="true">
+            <div class="hero-form-progress-track">
+              <div class="hero-form-progress-fill" id="heroProgressFill"></div>
+            </div>
+            <ol class="hero-form-steps" id="heroFormSteps">
+              <li class="hero-form-step-dot is-active" data-step="1"><span>1</span> Task</li>
+              <li class="hero-form-step-dot" data-step="2"><span>2</span> Contact</li>
+              <li class="hero-form-step-dot" data-step="3"><span>3</span> Send</li>
+            </ol>
           </div>
 
-          <button type="submit" class="btn-submit" id="heroSubmitBtn">Submit Request →</button>
-          <div class="form-secure-note" aria-hidden="true">
-            <i data-lucide="lock" style="width:11px;height:11px;"></i> Secure · We may use your data only for legal purpose.
-          </div>
-        </form>
+          <form class="contact-form hero-form" id="heroForm" onsubmit="secureSubmitForm(event)" novalidate autocomplete="on" aria-label="Service request form">
+            <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+              <input type="text" name="honeypot" tabindex="-1" autocomplete="off">
+            </div>
+
+            <!-- Step 1: Task -->
+            <div class="hero-step is-active" data-step="1" id="heroStep1">
+              <div class="hero-step-head">
+                <h2 class="hero-step-title">What do you need?</h2>
+                <p class="hero-step-sub">Pick a category or describe your task below.</p>
+              </div>
+              <div class="hero-category-chips" role="group" aria-label="Popular service categories">
+                <button type="button" class="hero-cat-chip" data-service="Home & Personal" data-prompt="I need a plumber for ">Plumber</button>
+                <button type="button" class="hero-cat-chip" data-service="Home & Personal" data-prompt="I need an electrician for ">Electrician</button>
+                <button type="button" class="hero-cat-chip" data-service="Business & Corporate" data-prompt="I need a CA for ">CA / GST</button>
+                <button type="button" class="hero-cat-chip" data-service="Events & Travel" data-prompt="I need packers and movers for ">Packers</button>
+                <button type="button" class="hero-cat-chip" data-service="Tech & Creative" data-prompt="I need a photographer for ">Photographer</button>
+                <button type="button" class="hero-cat-chip" data-service="Anything Else" data-prompt="I need help with ">Other</button>
+              </div>
+              <div class="hero-field hero-field-float">
+                <textarea name="message" id="message" required maxlength="1000" rows="3" aria-label="Task description" aria-required="true" placeholder=" "></textarea>
+                <label for="message">Describe your task in detail…</label>
+                <span class="hero-field-status" id="messageStatus" aria-hidden="true"></span>
+                <span class="hero-char-count" id="messageCount">0 / 1000</span>
+              </div>
+              <div class="hero-step-actions">
+                <button type="button" class="btn-hero-next" id="heroStep1Next">Continue →</button>
+              </div>
+            </div>
+
+            <!-- Step 2: Contact -->
+            <div class="hero-step" data-step="2" id="heroStep2" hidden>
+              <div class="hero-step-head">
+                <h2 class="hero-step-title">How can we reach you?</h2>
+                <p class="hero-step-sub">We'll call or WhatsApp you within minutes.</p>
+              </div>
+              <div class="hero-field hero-field-float">
+                <input type="text" name="fullname" id="fullname" required maxlength="60" autocomplete="name" aria-label="Full name" aria-required="true" placeholder=" ">
+                <label for="fullname">Your name</label>
+                <span class="hero-field-status" aria-hidden="true"></span>
+              </div>
+              <div class="hero-field hero-field-float">
+                <input type="tel" name="phone" id="phone" required maxlength="15" autocomplete="tel" aria-label="Phone number" aria-required="true" placeholder=" ">
+                <label for="phone">Phone / WhatsApp</label>
+                <span class="hero-field-status" aria-hidden="true"></span>
+              </div>
+              <div class="hero-field hero-field-float">
+                <input type="email" name="email" id="email" maxlength="100" autocomplete="email" aria-label="Email address" placeholder=" ">
+                <label for="email">Email <span class="hero-optional">(optional)</span></label>
+                <span class="hero-field-status" aria-hidden="true"></span>
+              </div>
+              <div class="form-address-row">
+                <div class="hero-field hero-field-float hero-field-grow">
+                  <input type="text" name="address" id="exact_address" placeholder=" " maxlength="300" autocomplete="street-address" aria-label="Exact address">
+                  <label for="exact_address">Address <span class="hero-optional">(optional)</span></label>
+                </div>
+                <button type="button" class="btn-qh-detect" id="heroDetectAddress">Use my location</button>
+              </div>
+              <select id="serviceSelect" name="service" class="hero-select-hidden" aria-hidden="true" tabindex="-1">
+                <option value="">Service type</option>
+              </select>
+              <select name="source" id="sourceSelect" class="hero-select-hidden" aria-hidden="true" tabindex="-1">
+                <option value="">How did you find us?</option>
+                <option value="google">Google Search</option>
+                <option value="some">Some App</option>
+                <option value="playstore">Playstore</option>
+                <option value="word_of_mouth">Word of Mouth</option>
+                <option value="returning">I've used InstaHelp before</option>
+                <option value="other">Other</option>
+              </select>
+              <select name="prior_payment" id="priorPayment" class="hero-select-hidden" aria-hidden="true" tabindex="-1">
+                <option value="">Have you used InstaHelp before?</option>
+                <option value="no">No, not yet</option>
+                <option value="yes_here">Yes, through this website</option>
+                <option value="yes_elsewhere">Yes, through a different app or platform</option>
+              </select>
+              <div class="hero-step-actions hero-step-actions-split">
+                <button type="button" class="btn-hero-back" id="heroStep2Back">← Back</button>
+                <button type="button" class="btn-hero-next" id="heroStep2Next">Review →</button>
+              </div>
+            </div>
+
+            <!-- Step 3: Review & send -->
+            <div class="hero-step" data-step="3" id="heroStep3" hidden>
+              <div class="hero-step-head">
+                <h2 class="hero-step-title">Ready to send?</h2>
+                <p class="hero-step-sub">Double-check your request below.</p>
+              </div>
+              <div class="hero-review" id="heroReview">
+                <div class="hero-review-row"><span class="hero-review-label">Task</span><span class="hero-review-val" id="reviewTask">—</span></div>
+                <div class="hero-review-row"><span class="hero-review-label">Name</span><span class="hero-review-val" id="reviewName">—</span></div>
+                <div class="hero-review-row"><span class="hero-review-label">Phone</span><span class="hero-review-val" id="reviewPhone">—</span></div>
+              </div>
+              <div class="consent-row consent-row-compact">
+                <input type="checkbox" name="evidence_consent" id="evidence_consent" required aria-required="true">
+                <label for="evidence_consent">I consent to InstaHelp connecting me with vetted third-party providers for this request.</label>
+              </div>
+              <div class="hero-step-actions hero-step-actions-split">
+                <button type="button" class="btn-hero-back" id="heroStep3Back">← Back</button>
+                <button type="submit" class="btn-submit btn-hero-submit" id="heroSubmitBtn" data-default-label="Send request →">
+                  <span class="btn-hero-submit-text">Send request →</span>
+                </button>
+              </div>
+              <div class="form-secure-note">
+                <i data-lucide="lock" style="width:11px;height:11px;"></i> Secure · Encrypted submission
+              </div>
+            </div>
+
+            <input type="hidden" name="referrer_url" id="referrer_url">
+            <input type="hidden" name="utm_source" id="utm_source">
+            <input type="hidden" name="utm_medium" id="utm_medium">
+            <input type="hidden" name="utm_campaign" id="utm_campaign">
+            <input type="hidden" name="landing_page" id="landing_page">
+            <input type="hidden" name="confusion_referral_flag" id="confusion_referral_flag">
+            <input type="hidden" name="confusion_instance" id="confusion_instance">
+            <input type="hidden" name="form_token" id="form_token">
+            <input type="hidden" name="form_id" value="hero_form">
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -883,117 +940,157 @@
   </div>
 </div>
 
+<section class="app-coming-soon" aria-label="Mobile app coming soon">
+  <div class="container app-coming-soon-inner">
+    <div class="app-coming-soon-copy">
+      <span class="app-coming-soon-badge">Coming soon</span>
+      <p>InstaHelp mobile app — get it done from your pocket.</p>
+    </div>
+    <div class="app-buttons app-buttons-inline">
+      <a href="app-waitlist.html?platform=ios" class="store-link" aria-label="Join the InstaHelp iOS app waitlist">
+        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1276550400&h=7e5b6854c6198813303862660d13ed7c" alt="Join the InstaHelp App Store waitlist" loading="lazy">
+      </a>
+      <a href="app-waitlist.html?platform=android" class="store-link" aria-label="Join the InstaHelp Google Play waitlist">
+        <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Join the InstaHelp Google Play waitlist" loading="lazy">
+      </a>
+    </div>
+  </div>
+</section>
+
 <section class="section container reveal" id="services" aria-labelledby="services-heading">
-  <h2 class="section-title" id="services-heading">Services, Products &amp; Experiences. Sourced &amp; Coordinated.</h2>
+  <div class="services-intro">
+    <h2 class="section-title" id="services-heading">Services, Products &amp; Experiences. Sourced &amp; Coordinated.</h2>
+    <p class="section-subtitle">From home repairs to business support — we match you with vetted third-party providers across every category.</p>
+  </div>
   <div class="bento-grid" role="list" aria-label="Service categories">
 
-    <article class="bento-card" role="listitem">
-      <h3>Home &amp; Personal Services</h3>
+    <article class="bento-card bento-card--home bento-card-featured" role="listitem">
+      <div class="bento-card-header">
+        <span class="bento-card-icon" aria-hidden="true"><i data-lucide="home"></i></span>
+        <h3>Home &amp; Personal Services</h3>
+      </div>
       <p>We arrange trusted independent professionals for repairs, cleaning, maintenance, childcare, cooking, and everyday household needs.</p>
       <div class="tags" aria-label="Services included">
-        <span class="tag">Plumbers</span><span class="tag">Electricians</span><span class="tag">Carpenters</span>
-        <span class="tag">House Helpers</span><span class="tag">Deep Cleaning</span><span class="tag">Pest Control</span>
-        <span class="tag">AC Services</span><span class="tag">Appliance Repair</span><span class="tag">Handyman</span>
-        <span class="tag">Furniture Assembly</span><span class="tag">Gardening</span><span class="tag">Babysitters</span>
-        <span class="tag">Home Cooks</span><span class="tag">Grocery Help</span>
+        <span class="tag">Plumbers</span><span class="tag">Electricians</span><span class="tag">Deep Cleaning</span>
+        <span class="tag">AC Services</span><span class="tag">House Helpers</span>
+        <span class="tag tag-more">+9 more</span>
       </div>
     </article>
 
-    <article class="bento-card" role="listitem">
-      <h3>Education &amp; Tutoring</h3>
+    <article class="bento-card bento-card--education" role="listitem">
+      <div class="bento-card-header">
+        <span class="bento-card-icon" aria-hidden="true"><i data-lucide="graduation-cap"></i></span>
+        <h3>Education &amp; Tutoring</h3>
+      </div>
       <p>Connecting you with vetted tutors, trainers, and coaching providers for academics, competitive exams, hobbies, and skills.</p>
       <div class="tags">
-        <span class="tag">Home Tutors</span><span class="tag">Online Classes</span><span class="tag">NEET Coaching</span>
-        <span class="tag">JEE Coaching</span><span class="tag">Music Classes</span><span class="tag">Language Classes</span>
-        <span class="tag">Chess Coaching</span><span class="tag">Skill Training</span>
+        <span class="tag">Home Tutors</span><span class="tag">NEET Coaching</span><span class="tag">JEE Coaching</span>
+        <span class="tag">Music Classes</span>
+        <span class="tag tag-more">+4 more</span>
       </div>
     </article>
 
-    <article class="bento-card" role="listitem">
-      <h3>Real Estate</h3>
+    <article class="bento-card bento-card--realestate" role="listitem">
+      <div class="bento-card-header">
+        <span class="bento-card-icon" aria-hidden="true"><i data-lucide="building-2"></i></span>
+        <h3>Real Estate</h3>
+      </div>
       <p>Facilitating connections with verified property agents and support services for renting, buying, selling, and managing properties.</p>
       <div class="tags">
         <span class="tag">Property Dealers</span><span class="tag">Rental Assistance</span><span class="tag">Property Sales</span>
-        <span class="tag">Commercial Properties</span><span class="tag">Property Documentation</span><span class="tag">Property Legal Help</span>
         <span class="tag">Interior Designers</span>
+        <span class="tag tag-more">+3 more</span>
       </div>
     </article>
 
-    <article class="bento-card card-wide" role="listitem">
-      <h3>Personal Care &amp; Wellness</h3>
+    <article class="bento-card bento-card--wellness" role="listitem">
+      <div class="bento-card-header">
+        <span class="bento-card-icon" aria-hidden="true"><i data-lucide="heart-pulse"></i></span>
+        <h3>Personal Care &amp; Wellness</h3>
+      </div>
       <p>Coordinating independent wellness, beauty, fitness, and caregiving experts to support your everyday lifestyle needs.</p>
       <div class="tags">
-        <span class="tag">Elder Care</span><span class="tag">Pet Care</span><span class="tag">Meal Preparation</span>
-        <span class="tag">Fitness Trainers</span><span class="tag">Yoga Classes</span><span class="tag">Massage Services</span>
-        <span class="tag">Salon at Home</span><span class="tag">Personal Assistance</span>
+        <span class="tag">Elder Care</span><span class="tag">Fitness Trainers</span><span class="tag">Salon at Home</span>
+        <span class="tag">Yoga Classes</span>
+        <span class="tag tag-more">+4 more</span>
       </div>
     </article>
 
-    <article class="bento-card card-wide" role="listitem">
-      <h3>Manufacturers &amp; Suppliers</h3>
+    <article class="bento-card bento-card--manufacturing" role="listitem">
+      <div class="bento-card-header">
+        <span class="bento-card-icon" aria-hidden="true"><i data-lucide="factory"></i></span>
+        <h3>Manufacturers &amp; Suppliers</h3>
+      </div>
       <p>Strategic sourcing and intermediation to connect you with factories, wholesalers, and industrial vendors for bulk supply needs.</p>
       <div class="tags">
-        <span class="tag">Packaging Suppliers</span><span class="tag">Printing Vendors</span><span class="tag">Garment Manufacturers</span>
-        <span class="tag">Corporate Gifts</span><span class="tag">CNC &amp; Fabrication</span><span class="tag">Metal Fabricators</span>
-        <span class="tag">Raw Materials</span><span class="tag">3D Printing</span><span class="tag">Industrial Vendors</span><span class="tag">Bulk Suppliers</span>
+        <span class="tag">Packaging Suppliers</span><span class="tag">Garment Manufacturers</span><span class="tag">CNC &amp; Fabrication</span>
+        <span class="tag">Bulk Suppliers</span>
+        <span class="tag tag-more">+6 more</span>
       </div>
     </article>
 
-    <article class="bento-card card-wide" role="listitem">
-      <h3>Business &amp; Professional</h3>
+    <article class="bento-card bento-card--business" role="listitem">
+      <div class="bento-card-header">
+        <span class="bento-card-icon" aria-hidden="true"><i data-lucide="briefcase"></i></span>
+        <h3>Business &amp; Professional</h3>
+      </div>
       <p>Arranging essential business support by matching you with independent CAs, recruiters, marketing agencies, and compliance experts.</p>
       <div class="tags">
-        <span class="tag">CA &amp; GST Services</span><span class="tag">Tax Filing</span><span class="tag">Company Registration</span>
-        <span class="tag">Trademark Help</span><span class="tag">B2B Sourcing Help</span><span class="tag">Procurement</span>
-        <span class="tag">Recruitment</span><span class="tag">HR &amp; Payroll</span><span class="tag">Virtual Assistants</span>
-        <span class="tag">Data Entry</span><span class="tag">Customer Support</span><span class="tag">Sales &amp; Marketing</span>
+        <span class="tag">CA &amp; GST Services</span><span class="tag">Company Registration</span><span class="tag">Recruitment</span>
+        <span class="tag">Virtual Assistants</span>
+        <span class="tag tag-more">+8 more</span>
       </div>
     </article>
 
-    <article class="bento-card" role="listitem">
-      <h3>Tech &amp; Creative</h3>
+    <article class="bento-card bento-card--tech" role="listitem">
+      <div class="bento-card-header">
+        <span class="bento-card-icon" aria-hidden="true"><i data-lucide="laptop"></i></span>
+        <h3>Tech &amp; Creative</h3>
+      </div>
       <p>Matching your business with verified digital and creative professionals to build websites, apps, branding, and online presence.</p>
       <div class="tags">
-        <span class="tag">Website Development</span><span class="tag">App Development</span><span class="tag">Whatsapp Marketing</span>
-        <span class="tag">Graphic Design</span><span class="tag">PR Services</span><span class="tag">UI/UX Design</span>
-        <span class="tag">Social Media</span><span class="tag">SEO Services</span><span class="tag">Digital Marketing</span>
-        <span class="tag">Content Creation</span><span class="tag">IT Support</span><span class="tag">E-commerce Support</span>
+        <span class="tag">Website Development</span><span class="tag">App Development</span><span class="tag">SEO Services</span>
+        <span class="tag">Graphic Design</span>
+        <span class="tag tag-more">+8 more</span>
       </div>
     </article>
 
-    <article class="bento-card card-wide" role="listitem">
-      <h3>Events &amp; Travel</h3>
+    <article class="bento-card bento-card--events" role="listitem">
+      <div class="bento-card-header">
+        <span class="bento-card-icon" aria-hidden="true"><i data-lucide="plane"></i></span>
+        <h3>Events &amp; Travel</h3>
+      </div>
       <p>End-to-end vendor coordination for event planners, travel providers, photographers, and transport partners.</p>
       <div class="tags">
-        <span class="tag">Event Planners</span><span class="tag">Conferences</span><span class="tag">Wedding Services</span>
-        <span class="tag">Photography</span><span class="tag">Videography</span><span class="tag">Itinerary Designer</span>
-        <span class="tag">Flight Optimizers</span><span class="tag">Tour Guides</span><span class="tag">Airport Pickup</span>
-        <span class="tag">Credit Cards Points</span><span class="tag">Drivers &amp; Rentals</span><span class="tag">Hotel Bookings</span>
-        <span class="tag">Packers &amp; Movers</span><span class="tag">Visa Assistance</span>
+        <span class="tag">Event Planners</span><span class="tag">Wedding Services</span><span class="tag">Packers &amp; Movers</span>
+        <span class="tag">Visa Assistance</span>
+        <span class="tag tag-more">+10 more</span>
       </div>
     </article>
 
-    <article class="bento-card card-wide card-light" role="listitem">
-      <h3>Deals &amp; Buying Assistance</h3>
+    <article class="bento-card bento-card--deals" role="listitem">
+      <div class="bento-card-header">
+        <span class="bento-card-icon" aria-hidden="true"><i data-lucide="tag"></i></span>
+        <h3>Deals &amp; Buying Assistance</h3>
+      </div>
       <p>Acting as your purchasing intermediary to compare prices, discover offers, and connect you with trusted sellers for premium products.</p>
       <div class="tags">
-        <span class="tag">Property Deals</span><span class="tag">Car Deals</span><span class="tag">Bike Deals</span>
-        <span class="tag">Apartment &amp; Flat Offers</span><span class="tag">Luxury Product Sourcing</span>
-        <span class="tag">Mobile &amp; Gadget Deals</span><span class="tag">Electronics Discounts</span>
-        <span class="tag">Sports &amp; Fitness Equipment</span><span class="tag">Bulk Purchase Assistance</span>
-        <span class="tag">Dealer Connections</span><span class="tag">Price Comparison Help</span><span class="tag">Offers &amp; Promotions</span>
+        <span class="tag">Property Deals</span><span class="tag">Car Deals</span><span class="tag">Electronics Discounts</span>
+        <span class="tag">Price Comparison</span>
+        <span class="tag tag-more">+8 more</span>
       </div>
     </article>
 
-    <article class="bento-card card-wide card-light" role="listitem">
-      <h3>Anything Else</h3>
+    <article class="bento-card bento-card--custom" role="listitem">
+      <div class="bento-card-header">
+        <span class="bento-card-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+        <h3>Anything Else</h3>
+      </div>
       <p>Let us source and manage local freelancers, specialists, and independent service providers for your custom requirements.</p>
       <div class="tags">
         <span class="tag">Interior Designers</span><span class="tag">Personal Shoppers</span><span class="tag">Caterers</span>
-        <span class="tag">Courier Services</span><span class="tag">Mechanics</span><span class="tag">Car Washing</span>
-        <span class="tag">Music Classes</span><span class="tag">Local Experiences</span><span class="tag">Online Deals</span>
-        <span class="tag">Freelancer Support</span><span class="tag">General Queries</span><span class="tag">Food & Beverages Specialists</span>
         <span class="tag">Custom Requests</span>
+        <span class="tag tag-more">+9 more</span>
       </div>
     </article>
   </div>
@@ -1004,7 +1101,7 @@
     <div class="step" role="listitem">
       <div class="step-icon"><i data-lucide="message-square" aria-hidden="true"></i></div>
       <h3>Tell us your task</h3>
-      <p>Describe what you need through WhatsApp, the shortcuts above the form, call, or the detailed form.</p>
+      <p>Describe what you need through WhatsApp, the footer shortcuts, call, or the form.</p>
     </div>
     <div class="step" role="listitem">
       <div class="step-icon"><i data-lucide="check-circle" aria-hidden="true"></i></div>
@@ -1054,7 +1151,7 @@
             <span class="faq-summary-icon" aria-hidden="true"></span>
           </summary>
           <div class="faq-answer">
-            <p>Use the topic buttons above the form for Cancellation or Reschedule, or WhatsApp us with the phone number or reference used at booking. We align with each provider's policy and confirm changes in writing. Same-day moves depend on partner availability, but we always try for the fastest option.</p>
+            <p>Use the WhatsApp topic shortcuts in the footer for Cancellation or Reschedule, or message us with the phone number or reference used at booking. We align with each provider's policy and confirm changes in writing. Same-day moves depend on partner availability, but we always try for the fastest option.</p>
           </div>
         </details>
         <details class="faq-item">
@@ -1072,7 +1169,7 @@
             <span class="faq-summary-icon" aria-hidden="true"></span>
           </summary>
           <div class="faq-answer">
-            <p>Payment depends on the service. Some third-party providers collect on site, others invoice or share a secure link through us. We explain what you are paying for, including any applicable facilitation fees, before work starts. For billing questions, use the Payment Issues topic above the form so the right desk picks it up quickly.</p>
+            <p>Payment depends on the service. Some third-party providers collect on site, others invoice or share a secure link through us. We explain what you are paying for, including any applicable facilitation fees, before work starts. For billing questions, use the Payment Issues shortcut in the footer so the right desk picks it up quickly.</p>
           </div>
         </details>
       </div>
@@ -1108,24 +1205,29 @@
 
 </main>
 <footer role="contentinfo">
+  <div class="footer-accent" aria-hidden="true"></div>
   <div class="container">
     <div class="footer-grid">
 
       <div class="footer-brand">
         <span class="footer-logo">InstaHelp<span>&reg;</span></span>
         <p class="footer-tag">India's personal Assistant since 2015. One team for home, business, travel, and almost anything else &mdash; arranged through verified third-party providers.</p>
+        <div class="footer-badge">
+          <span class="footer-badge-dot" aria-hidden="true"></span>
+          Operating since April 2015 &middot; Bengaluru
+        </div>
         <div class="footer-socials" aria-label="Contact channels">
           <a href="https://wa.me/917022702220" class="footer-social-btn wa" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-            <i data-lucide="message-circle" aria-hidden="true" style="width:16px;height:16px;"></i>
+            <i data-lucide="message-circle" aria-hidden="true"></i>
           </a>
           <a href="tel:+917022702220" class="footer-social-btn" aria-label="Call">
-            <i data-lucide="phone" aria-hidden="true" style="width:16px;height:16px;"></i>
+            <i data-lucide="phone" aria-hidden="true"></i>
           </a>
           <a href="mailto:mail@instahelp.in" class="footer-social-btn" aria-label="Email">
-            <i data-lucide="mail" aria-hidden="true" style="width:16px;height:16px;"></i>
+            <i data-lucide="mail" aria-hidden="true"></i>
           </a>
           <a href="https://twitter.com/i7022702220" class="footer-social-btn" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-            <i data-lucide="twitter" aria-hidden="true" style="width:16px;height:16px;"></i>
+            <i data-lucide="twitter" aria-hidden="true"></i>
           </a>
         </div>
         <p class="tm-notice">INSTAHELP&reg; is a registered trademark of Kamlesh Singhvee (Reg. No. 3299283, Class 35 — advertising, business management, business administration, office functions and commercial intermediation services). All rights reserved.</p>
@@ -1149,133 +1251,141 @@
           <li><a href="mailto:mail@instahelp.in"><span class="dot"></span>mail@instahelp.in</a></li>
           <li><a href="https://wa.me/917022702220" target="_blank" rel="noopener noreferrer"><span class="dot"></span>WhatsApp us</a></li>
         </ul>
+        <h3 class="footer-subheading">Hours</h3>
+        <ul class="footer-meta">
+          <li>Mon &ndash; Sun</li>
+          <li>00:00 &ndash; 24:00</li>
+          <li class="footer-meta-muted">English, Hindi, Kannada</li>
+        </ul>
       </div>
 
       <div class="footer-links">
-        <h3>Hours</h3>
+        <h3>Legal</h3>
         <ul>
-          <li style="color:#bdbdbd;">Mon - Sun</li>
-          <li style="color:#bdbdbd;">00:00 - 24:00</li>
-          <li style="color:#9e9e9e;">Languages: English, Hindi, Kannada</li>
+          <li><a href="term.html"><span class="dot"></span>Terms of Service</a></li>
+          <li><a href="privacy.html"><span class="dot"></span>Privacy Policy</a></li>
+          <li><a href="refund.html"><span class="dot"></span>Refund Policy</a></li>
+          <li><a href="pricing.html"><span class="dot"></span>Pricing Policy</a></li>
+          <li><a href="legal.html"><span class="dot"></span>Legal</a></li>
         </ul>
       </div>
 
     </div>
 
-    <div class="seo-footer-strip">
-<h3>We'll get it done!</h3>
-      <div class="seo-kw">
-        <p>
-          <strong>InstaHelp&reg;</strong> operates as a <strong>Assistant-based commercial intermediation platform</strong> (Trademark Class 35) connecting users with verified <strong>third-party service providers</strong> across India. Whether you are looking for <strong>InstaHelp home services</strong> (repairs, cleaning, maintenance), <strong>InstaHelp business support</strong> (CAs, legal, procurement, office functions), or <strong>InstaHelp travel and event coordination</strong>, our human Assistant team handles end-to-end sourcing, <strong>arranging contracts</strong> and coordinating delivery on your behalf.
-        </p>
-        <p style="margin-top: 10px;">
-          We arrange and intermediate trusted professionals with deep operational coverage across all major regional hubs in <strong>Tier-1 metros</strong> like <strong>Delhi NCR, Mumbai, Bangalore, Hyderabad, Chennai, and Kolkata</strong>. We also bring the same seamless coordination to booming <strong>Tier-2 and Tier-3 cities(coming Soon)</strong>, including <strong>Pune, Ahmedabad, Jaipur, Surat, Siliguri, Coimbatore, Amritsar, Lucknow, Indore, Bhopal, Chandigarh, Kochi and many more</strong>.
-        </p>
-        <p style="margin-top: 10px;">
-          Instead of endlessly searching for "reliable <strong>services near me</strong>," simply tell us your task. <strong>InstaHelp&reg;</strong> will intermediate the right local expert matched to your exact location and timeline. We do not perform the underlying work directly &mdash; we arrange it through verified providers under our Class 35 mandate of <strong>commercial intermediation, business management for others, and arranging contracts for the supply of services</strong>.
-        </p>
+    <div class="quick-help-block" id="quick-help" aria-labelledby="quick-help-title">
+      <h2 class="quick-help-title" id="quick-help-title">Skip the form, go straight to WhatsApp</h2>
+      <p class="quick-help-sub">Pick a topic, add a short line, and open WhatsApp with your message ready to send.</p>
+      <div class="quick-help-pills" role="group" aria-label="WhatsApp quick topics">
+        <button type="button" class="qh-pill" data-issue="Payment Issues">Payment Issues</button>
+        <button type="button" class="qh-pill" data-issue="Cancellation">Cancellation</button>
+        <button type="button" class="qh-pill" data-issue="Help">Help</button>
+        <button type="button" class="qh-pill" data-issue="Availability">Availability</button>
+        <button type="button" class="qh-pill" data-issue="Reschedule">Reschedule</button>
+        <button type="button" class="qh-pill" data-issue="Requests">Other Issues</button>
       </div>
-      <h3>Cities we often serve</h3>
-<div class="seo-cities" aria-label="Service areas across India">
-  <span class="instaHelp-city-pill">Delhi</span>
-  <span class="instaHelp-city-pill">Mumbai</span>
-  <span class="instaHelp-city-pill">Bangalore</span>
-  <span class="instaHelp-city-pill">Hyderabad</span>
-  <span class="instaHelp-city-pill">Chennai</span>
-  <span class="instaHelp-city-pill">Kolkata</span>
-  
-  <span class="instaHelp-city-pill">Pune</span>
-  <span class="instaHelp-city-pill">Ahmedabad</span>
-  <span class="instaHelp-city-pill">Surat</span>
-  <span class="instaHelp-city-pill">Jaipur</span>
-  <span class="instaHelp-city-pill">Lucknow</span>
-  <span class="instaHelp-city-pill">Kanpur</span>
-  <span class="instaHelp-city-pill">Nagpur</span>
-  <span class="instaHelp-city-pill">Indore</span>
-  <span class="instaHelp-city-pill">Bhopal</span>
-  <span class="instaHelp-city-pill">Visakhapatnam</span>
-  <span class="instaHelp-city-pill">Patna</span>
-  <span class="instaHelp-city-pill">Vadodara</span>
-  <span class="instaHelp-city-pill">Ghaziabad</span>
-  <span class="instaHelp-city-pill">Ludhiana</span>
-  <span class="instaHelp-city-pill">Agra</span>
-  <span class="instaHelp-city-pill">Nashik</span>
-  <span class="instaHelp-city-pill">Faridabad</span>
-  <span class="instaHelp-city-pill">Rajkot</span>
-  <span class="instaHelp-city-pill">Varanasi</span>
-  <span class="instaHelp-city-pill">Amritsar</span>
-  <span class="instaHelp-city-pill">Ranchi</span>
-  <span class="instaHelp-city-pill">Gwalior</span>
-  <span class="instaHelp-city-pill">Jabalpur</span>
-  <span class="instaHelp-city-pill">Coimbatore</span>
-  <span class="instaHelp-city-pill">Vijayawada</span>
-  <span class="instaHelp-city-pill">Jodhpur</span>
-  <span class="instaHelp-city-pill">Madurai</span>
-  <span class="instaHelp-city-pill">Raipur</span>
-  <span class="instaHelp-city-pill">Kota</span>
-  <span class="instaHelp-city-pill">Guwahati</span>
-  <span class="instaHelp-city-pill">Chandigarh</span>
-  <span class="instaHelp-city-pill">Thiruvananthapuram</span>
+    </div>
 
-  <span class="instaHelp-city-pill">Coming Soon</span>
-  <span class="instaHelp-city-pill">Ujjain</span>
-  <span class="instaHelp-city-pill">Mysore</span>
-  <span class="instaHelp-city-pill">Dehradun</span>
-  <span class="instaHelp-city-pill">Udaipur</span>
-  <span class="instaHelp-city-pill">Kochi</span>
-  <span class="instaHelp-city-pill">Bhubaneswar</span>
-  <span class="instaHelp-city-pill">Jamshedpur</span>
-  <span class="instaHelp-city-pill">Bikaner</span>
-  <span class="instaHelp-city-pill">Mangalore</span>
-  <span class="instaHelp-city-pill">Belagavi</span>
-  <span class="instaHelp-city-pill">Hubli</span>
-  <span class="instaHelp-city-pill">Salem</span>
-  <span class="instaHelp-city-pill">Tiruchirappalli</span>
-  <span class="instaHelp-city-pill">Cuttack</span>
-  <span class="instaHelp-city-pill">Bokaro</span>
-  <span class="instaHelp-city-pill">Durgapur</span>
-  <span class="instaHelp-city-pill">Rourkela</span>
-  <span class="instaHelp-city-pill">Kolhapur</span>
-  <span class="instaHelp-city-pill">Ajmer</span>
-  <span class="instaHelp-city-pill">Jamnagar</span>
-  <span class="instaHelp-city-pill">Rohtak</span>
-  <span class="instaHelp-city-pill">Jhansi</span>
-  <span class="instaHelp-city-pill">Aligarh</span>
-  <span class="instaHelp-city-pill">Mathura</span>
-  <span class="instaHelp-city-pill">Shimla</span>
-  <span class="instaHelp-city-pill">Shillong</span>
-  <span class="instaHelp-city-pill">Request for your city!</span>
+    <div class="seo-footer-strip">
+      <p class="seo-lede">InstaHelp&reg; coordinates verified third-party providers for home, business, and travel across India.</p>
 
-</div>
+      <details class="footer-expand">
+        <summary>About InstaHelp</summary>
+        <div class="seo-kw">
+          <p>
+            <strong>InstaHelp&reg;</strong> operates as a <strong>Assistant-based commercial intermediation platform</strong> (Trademark Class 35) connecting users with verified <strong>third-party service providers</strong> across India. Whether you are looking for <strong>InstaHelp home services</strong> (repairs, cleaning, maintenance), <strong>InstaHelp business support</strong> (CAs, legal, procurement, office functions), or <strong>InstaHelp travel and event coordination</strong>, our human Assistant team handles end-to-end sourcing, <strong>arranging contracts</strong> and coordinating delivery on your behalf.
+          </p>
+          <p>
+            We arrange and intermediate trusted professionals with deep operational coverage across all major regional hubs in <strong>Tier-1 metros</strong> like <strong>Delhi NCR, Mumbai, Bangalore, Hyderabad, Chennai, and Kolkata</strong>. We also bring the same seamless coordination to booming <strong>Tier-2 and Tier-3 cities (coming soon)</strong>, including <strong>Pune, Ahmedabad, Jaipur, Surat, Siliguri, Coimbatore, Amritsar, Lucknow, Indore, Bhopal, Chandigarh, Kochi and many more</strong>.
+          </p>
+          <p>
+            Instead of endlessly searching for "reliable <strong>services near me</strong>," simply tell us your task. <strong>InstaHelp&reg;</strong> will intermediate the right local expert matched to your exact location and timeline. We do not perform the underlying work directly &mdash; we arrange it through verified providers under our Class 35 mandate of <strong>commercial intermediation, business management for others, and arranging contracts for the supply of services</strong>.
+          </p>
+        </div>
+      </details>
+
+      <details class="footer-expand">
+        <summary>Cities we serve</summary>
+        <div class="seo-cities" aria-label="Service areas across India">
+          <span class="instaHelp-city-pill">Delhi</span>
+          <span class="instaHelp-city-pill">Mumbai</span>
+          <span class="instaHelp-city-pill">Bangalore</span>
+          <span class="instaHelp-city-pill">Hyderabad</span>
+          <span class="instaHelp-city-pill">Chennai</span>
+          <span class="instaHelp-city-pill">Kolkata</span>
+          <span class="instaHelp-city-pill">Pune</span>
+          <span class="instaHelp-city-pill">Ahmedabad</span>
+          <span class="instaHelp-city-pill">Surat</span>
+          <span class="instaHelp-city-pill">Jaipur</span>
+          <span class="instaHelp-city-pill">Lucknow</span>
+          <span class="instaHelp-city-pill">Kanpur</span>
+          <span class="instaHelp-city-pill">Nagpur</span>
+          <span class="instaHelp-city-pill">Indore</span>
+          <span class="instaHelp-city-pill">Bhopal</span>
+          <span class="instaHelp-city-pill">Visakhapatnam</span>
+          <span class="instaHelp-city-pill">Patna</span>
+          <span class="instaHelp-city-pill">Vadodara</span>
+          <span class="instaHelp-city-pill">Ghaziabad</span>
+          <span class="instaHelp-city-pill">Ludhiana</span>
+          <span class="instaHelp-city-pill">Agra</span>
+          <span class="instaHelp-city-pill">Nashik</span>
+          <span class="instaHelp-city-pill">Faridabad</span>
+          <span class="instaHelp-city-pill">Rajkot</span>
+          <span class="instaHelp-city-pill">Varanasi</span>
+          <span class="instaHelp-city-pill">Amritsar</span>
+          <span class="instaHelp-city-pill">Ranchi</span>
+          <span class="instaHelp-city-pill">Gwalior</span>
+          <span class="instaHelp-city-pill">Jabalpur</span>
+          <span class="instaHelp-city-pill">Coimbatore</span>
+          <span class="instaHelp-city-pill">Vijayawada</span>
+          <span class="instaHelp-city-pill">Jodhpur</span>
+          <span class="instaHelp-city-pill">Madurai</span>
+          <span class="instaHelp-city-pill">Raipur</span>
+          <span class="instaHelp-city-pill">Kota</span>
+          <span class="instaHelp-city-pill">Guwahati</span>
+          <span class="instaHelp-city-pill">Chandigarh</span>
+          <span class="instaHelp-city-pill">Thiruvananthapuram</span>
+          <span class="instaHelp-city-pill">Coming Soon</span>
+          <span class="instaHelp-city-pill">Ujjain</span>
+          <span class="instaHelp-city-pill">Mysore</span>
+          <span class="instaHelp-city-pill">Dehradun</span>
+          <span class="instaHelp-city-pill">Udaipur</span>
+          <span class="instaHelp-city-pill">Kochi</span>
+          <span class="instaHelp-city-pill">Bhubaneswar</span>
+          <span class="instaHelp-city-pill">Jamshedpur</span>
+          <span class="instaHelp-city-pill">Bikaner</span>
+          <span class="instaHelp-city-pill">Mangalore</span>
+          <span class="instaHelp-city-pill">Belagavi</span>
+          <span class="instaHelp-city-pill">Hubli</span>
+          <span class="instaHelp-city-pill">Salem</span>
+          <span class="instaHelp-city-pill">Tiruchirappalli</span>
+          <span class="instaHelp-city-pill">Cuttack</span>
+          <span class="instaHelp-city-pill">Bokaro</span>
+          <span class="instaHelp-city-pill">Durgapur</span>
+          <span class="instaHelp-city-pill">Rourkela</span>
+          <span class="instaHelp-city-pill">Kolhapur</span>
+          <span class="instaHelp-city-pill">Ajmer</span>
+          <span class="instaHelp-city-pill">Jamnagar</span>
+          <span class="instaHelp-city-pill">Rohtak</span>
+          <span class="instaHelp-city-pill">Jhansi</span>
+          <span class="instaHelp-city-pill">Aligarh</span>
+          <span class="instaHelp-city-pill">Mathura</span>
+          <span class="instaHelp-city-pill">Shimla</span>
+          <span class="instaHelp-city-pill">Shillong</span>
+          <span class="instaHelp-city-pill">Request for your city!</span>
+        </div>
+      </details>
     </div>
 
     <div class="footer-bottom">
-      <div style="width: 100%; margin-bottom: 1rem; color: #9e9e9e; font-size: 0.85rem;">
-        <em>Disclaimer: InstaHelp® is a Assistant platform connecting users with independent third-party service providers.
-Service providers operate independently and are responsible for the services delivered. 
-InstaHelp facilitates discovery, coordination, and support. We help them with Advertising; business management, organization and administration; office functions.</em>
-      </div>
-      <div>&copy; 2015-2026 InstaHelp. All rights reserved.</div>
-<div>
-        <a href="https://www.instahelp.co">instahelp.co</a>
-        &nbsp;&middot;&nbsp;
-        <a href="https://www.instahelp.in">instahelp.in</a>
-        &nbsp;&middot;&nbsp;
-        <a href="term.html">Terms</a>
-        &nbsp;&middot;&nbsp;
-        <a href="privacy.html">Privacy</a>
-		&nbsp;&middot;&nbsp;
-        <a href="/plans">Plans</a>
-        &nbsp;&middot;&nbsp;
-        <a href="pricing.html">Pricing Policy</a>
-        &nbsp;&middot;&nbsp;
-        <a href="transactions.html">Transactions</a>
-        &nbsp;&middot;&nbsp;
-        <a href="admin-payment.html">PhonePe Setup</a>
-        &nbsp;&middot;&nbsp;
-        <a href="refund.html">Refunds</a>
-        &nbsp;&middot;&nbsp;
-        <a href="legal.html">More</a>
+      <div class="footer-bottom-row">
+        <p class="footer-copy">&copy; 2015&ndash;2026 InstaHelp. All rights reserved. <span class="footer-disclaimer-inline">Class 35 commercial intermediation &mdash; providers operate independently.</span></p>
+        <nav class="footer-legal-nav" aria-label="Footer links">
+          <a href="https://www.instahelp.co">instahelp.co</a>
+          <a href="https://www.instahelp.in">instahelp.in</a>
+          <a href="/plans">Plans</a>
+          <a href="transactions.html">Transactions</a>
+          <a href="admin-payment.html">PhonePe Setup</a>
+        </nav>
       </div>
     </div>
 

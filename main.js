@@ -78,7 +78,11 @@ function formatCityFromParts(addr) {
   );
 }
 
-async function reverseGeocode(lat, lon, mode) {
+const GEO_OPTIONS = { enableHighAccuracy: true, timeout: 12000, maximumAge: 600000 };
+let _ihGeoCache = null;
+let _ihGeoPromise = null;
+
+async function reverseGeocodeParts(lat, lon) {
   const r = await fetch(
     'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' +
       lat +
@@ -88,11 +92,48 @@ async function reverseGeocode(lat, lon, mode) {
   );
   const j = await r.json();
   const addr = j.address || {};
-  if (mode === 'city') {
-    const city = formatCityFromParts(addr);
-    return city || j.display_name || lat.toFixed(4) + ', ' + lon.toFixed(4);
+  const fallback = j.display_name || lat.toFixed(4) + ', ' + lon.toFixed(4);
+  return {
+    full: formatAddressFromParts(addr) || fallback,
+    city: formatCityFromParts(addr) || fallback,
+  };
+}
+
+function getBrowserLocation(force) {
+  if (force) {
+    _ihGeoCache = null;
+    _ihGeoPromise = null;
   }
-  return formatAddressFromParts(addr) || j.display_name || lat.toFixed(4) + ', ' + lon.toFixed(4);
+  if (_ihGeoCache) return Promise.resolve(_ihGeoCache);
+  if (_ihGeoPromise) return _ihGeoPromise;
+
+  _ihGeoPromise = new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      _ihGeoPromise = null;
+      reject(new Error('unsupported'));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          _ihGeoCache = await reverseGeocodeParts(pos.coords.latitude, pos.coords.longitude);
+          resolve(_ihGeoCache);
+        } catch (err) {
+          reject(err);
+        } finally {
+          _ihGeoPromise = null;
+        }
+      },
+      (err) => {
+        _ihGeoPromise = null;
+        reject(err);
+      },
+      GEO_OPTIONS
+    );
+  });
+
+  return _ihGeoPromise;
 }
 
 function fillAddressInput(inputId, buttonId, options) {
@@ -101,34 +142,41 @@ function fillAddressInput(inputId, buttonId, options) {
   if (!input || (input.value.trim() && !opts.force)) return;
 
   const btn = buttonId ? document.getElementById(buttonId) : null;
-
-  if (!navigator.geolocation) {
-    if (opts.alertOnFail) alert('Location is not supported in this browser. Please type your address.');
-    return;
+  if (!input.dataset.defaultPlaceholder) {
+    input.dataset.defaultPlaceholder = input.placeholder;
+  }
+  if (btn && !btn.dataset.defaultLabel) {
+    btn.dataset.defaultLabel = btn.textContent;
   }
 
-  if (btn) btn.disabled = true;
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Detecting…';
+  }
+  input.placeholder = 'Detecting your location…';
 
-  navigator.geolocation.getCurrentPosition(
-    async (pos) => {
-      try {
-        input.value = await reverseGeocode(
-          pos.coords.latitude,
-          pos.coords.longitude,
-          opts.mode || 'full'
-        );
-      } catch (err) {
-        if (opts.alertOnFail) alert('Could not detect address. Please type it manually.');
+  getBrowserLocation(opts.force)
+    .then((loc) => {
+      input.value = opts.mode === 'city' ? loc.city : loc.full;
+    })
+    .catch((err) => {
+      if (!opts.alertOnFail) return;
+      if (err && err.message === 'unsupported') {
+        alert('Location is not supported in this browser. Please type your address.');
+        return;
       }
-      if (btn) btn.disabled = false;
-    },
-    () => {
-      if (btn) btn.disabled = false;
-      if (opts.alertOnFail) alert('Location permission denied. Please type your address.');
-    },
-    { enableHighAccuracy: true, timeout: 12000, maximumAge: 600000 }
-  );
+      alert('Could not detect your location. Please type it manually or allow location access.');
+    })
+    .finally(() => {
+      input.placeholder = input.dataset.defaultPlaceholder || '';
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = btn.dataset.defaultLabel || 'Use my location';
+      }
+    });
 }
+
+getBrowserLocation(false).catch(() => {});
 
 document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) lucide.createIcons();
@@ -140,6 +188,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   fillAddressInput('exact_address', 'heroDetectAddress', { alertOnFail: false });
+
+  initHeroInteractiveForm();
 
   const qhModal = document.getElementById('quickHelpModal');
   const qhForm  = document.getElementById('quickHelpForm');
@@ -162,6 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
     qhModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     if (window.lucide) lucide.createIcons();
+    fillAddressInput('qh_location', 'qhDetectLoc', { alertOnFail: false, mode: 'city' });
     setTimeout(() => {
       const s = document.getElementById('qh_service');
       if (s) s.focus();
@@ -226,6 +277,153 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+/* ── HERO INTERACTIVE FORM (3-step wizard) ── */
+function initHeroInteractiveForm() {
+  const form = document.getElementById('heroForm');
+  if (!form) return;
+
+  const steps = [1, 2, 3].map(n => document.getElementById('heroStep' + n)).filter(Boolean);
+  const dots  = document.querySelectorAll('.hero-form-step-dot');
+  const fill  = document.getElementById('heroProgressFill');
+  const msg   = document.getElementById('message');
+  const msgCount = document.getElementById('messageCount');
+  const serviceSel = document.getElementById('serviceSelect');
+  let current = 1;
+
+  function setStep(next) {
+    if (next < 1 || next > 3 || next === current) return;
+    const prevEl = steps[current - 1];
+    const nextEl = steps[next - 1];
+    if (!prevEl || !nextEl) return;
+
+    prevEl.classList.remove('is-active');
+    prevEl.classList.add('is-leaving');
+    setTimeout(() => {
+      prevEl.hidden = true;
+      prevEl.classList.remove('is-leaving');
+      nextEl.hidden = false;
+      nextEl.classList.add('is-active');
+      current = next;
+      updateProgress();
+      if (next === 3) populateReview();
+      const focusMap = { 1: 'message', 2: 'fullname', 3: 'evidence_consent' };
+      const el = document.getElementById(focusMap[next]);
+      if (el) setTimeout(() => el.focus(), 80);
+    }, 220);
+  }
+
+  function updateProgress() {
+    const pct = current === 1 ? 33.33 : current === 2 ? 66.66 : 100;
+    if (fill) fill.style.width = pct + '%';
+    dots.forEach(dot => {
+      const s = parseInt(dot.dataset.step, 10);
+      dot.classList.toggle('is-active', s === current);
+      dot.classList.toggle('is-done', s < current);
+    });
+  }
+
+  function validateField(input) {
+    const wrap = input.closest('.hero-field-float');
+    if (!wrap) return true;
+    const status = wrap.querySelector('.hero-field-status');
+    let ok = true;
+    if (input.hasAttribute('required') && !input.value.trim()) ok = false;
+    if (input.type === 'tel' && input.value.trim() && !/^[\d\s+\-()]{8,15}$/.test(input.value.trim())) ok = false;
+    if (input.type === 'email' && input.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) ok = false;
+    wrap.classList.toggle('is-valid', ok && input.value.trim().length > 0);
+    wrap.classList.toggle('is-invalid', !ok && input.value.trim().length > 0);
+    if (status) status.classList.toggle('is-valid', ok && input.value.trim().length > 0);
+    return ok;
+  }
+
+  function validateStep(step) {
+    if (step === 1) {
+      if (!msg || !msg.value.trim()) {
+        msg?.focus();
+        msg?.closest('.hero-field-float')?.classList.add('is-invalid');
+        return false;
+      }
+      return true;
+    }
+    if (step === 2) {
+      const name = document.getElementById('fullname');
+      const phone = document.getElementById('phone');
+      let ok = true;
+      if (name && !validateField(name)) ok = false;
+      if (phone && !validateField(phone)) ok = false;
+      if (!name?.value.trim()) { name?.focus(); ok = false; }
+      else if (!phone?.value.trim()) { phone?.focus(); ok = false; }
+      return ok;
+    }
+    return true;
+  }
+
+  function populateReview() {
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '—'; };
+    set('reviewTask', msg?.value.trim());
+    set('reviewName', document.getElementById('fullname')?.value.trim());
+    set('reviewPhone', document.getElementById('phone')?.value.trim());
+  }
+
+  document.getElementById('heroStep1Next')?.addEventListener('click', () => {
+    if (validateStep(1)) setStep(2);
+  });
+  document.getElementById('heroStep2Next')?.addEventListener('click', () => {
+    if (validateStep(2)) setStep(3);
+  });
+  document.getElementById('heroStep2Back')?.addEventListener('click', () => setStep(1));
+  document.getElementById('heroStep3Back')?.addEventListener('click', () => setStep(2));
+
+  document.querySelectorAll('.hero-cat-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.hero-cat-chip').forEach(c => c.classList.remove('is-selected'));
+      chip.classList.add('is-selected');
+      const prompt = chip.dataset.prompt || '';
+      const service = chip.dataset.service || '';
+      if (serviceSel && service) serviceSel.value = service;
+      if (msg) {
+        if (!msg.value.trim() || msg.value.startsWith('I need')) {
+          msg.value = prompt;
+        }
+        msg.focus();
+        msg.dispatchEvent(new Event('input'));
+        validateField(msg);
+      }
+    });
+  });
+
+  if (msg && msgCount) {
+    const updateCount = () => {
+      msgCount.textContent = msg.value.length + ' / 1000';
+    };
+    msg.addEventListener('input', updateCount);
+    updateCount();
+  }
+
+  form.querySelectorAll('.hero-field-float input, .hero-field-float textarea').forEach(input => {
+    input.addEventListener('blur', () => validateField(input));
+    input.addEventListener('input', () => {
+      if (input.value.trim()) validateField(input);
+      else input.closest('.hero-field-float')?.classList.remove('is-valid', 'is-invalid');
+    });
+  });
+
+  updateProgress();
+
+  window._ih_resetHeroForm = function resetHeroForm() {
+    steps.forEach((el, i) => {
+      if (!el) return;
+      el.hidden = i !== 0;
+      el.classList.toggle('is-active', i === 0);
+      el.classList.remove('is-leaving');
+    });
+    current = 1;
+    updateProgress();
+    document.querySelectorAll('.hero-cat-chip').forEach(c => c.classList.remove('is-selected'));
+    form.querySelectorAll('.hero-field-float').forEach(f => f.classList.remove('is-valid', 'is-invalid'));
+  };
+}
+
 /* ── SERVICE OPTIONS ── */
 const SERVICE_TABS = [
   "Home & Personal","Business & Corporate","Tech & Creative",
@@ -233,11 +431,13 @@ const SERVICE_TABS = [
   "Real Estate","Manufacturers & Suppliers","Anything Else"
 ];
 const sel = document.getElementById('serviceSelect');
-SERVICE_TABS.forEach(t => {
-  const o = document.createElement('option');
-  o.value = t; o.textContent = t;
-  sel.appendChild(o);
-});
+if (sel) {
+  SERVICE_TABS.forEach(t => {
+    const o = document.createElement('option');
+    o.value = t; o.textContent = t;
+    sel.appendChild(o);
+  });
+}
 
 /* ── TRAFFIC + EVIDENCE CAPTURE (runs immediately) ── */
 (function captureTrafficData() {
@@ -333,14 +533,24 @@ function secureSubmitForm(e) {
     return;
   }
 
+  const phoneEl = form.querySelector('[name="phone"]');
+  if (phoneEl && phoneEl.hasAttribute('required') && !phoneEl.value.trim()) {
+    phoneEl.focus();
+    return;
+  }
+
   const addressEl = form.querySelector('[name="address"]');
-  if (addressEl && !addressEl.value.trim()) {
+  if (addressEl && addressEl.hasAttribute('required') && !addressEl.value.trim()) {
     addressEl.focus();
     return;
   }
 
-  btn.textContent = 'Sending…';
-  btn.disabled = true;
+  const defaultLabel = btn?.dataset.defaultLabel || 'Send request →';
+  const labelEl = btn?.querySelector('.btn-hero-submit-text');
+
+  if (labelEl) labelEl.textContent = 'Sending…';
+  else if (btn) btn.textContent = 'Sending…';
+  if (btn) btn.disabled = true;
 
   // Determine confusion instance
   const sourceVal   = (form.querySelector('select[name="source"]')?.value    || '').toLowerCase();
@@ -478,10 +688,13 @@ function secureSubmitForm(e) {
 
   showNotif();
 
-  btn.textContent = 'Request Sent!';
+  if (labelEl) labelEl.textContent = 'Request Sent!';
+  else if (btn) btn.textContent = 'Request Sent!';
   setTimeout(() => {
-    btn.textContent = 'Submit Request →';
-    btn.disabled = false;
+    if (labelEl) labelEl.textContent = defaultLabel;
+    else if (btn) btn.textContent = defaultLabel;
+    if (btn) btn.disabled = false;
+    if (typeof window._ih_resetHeroForm === 'function') window._ih_resetHeroForm();
   }, 2500);
 }
 
