@@ -25,17 +25,10 @@ import {
   verifyRazorpaySignature,
 } from './razorpay.service';
 import { logAudit, AuditActions } from './audit.service';
+import { getCachedAppSettings } from './settings-cache.service';
 import { logger } from '../config/logger';
 
 const ADMIN_OWNER_ID = 'platform';
-
-async function getAppSettings() {
-  return prisma.appSettings.upsert({
-    where: { id: 'default' },
-    create: {},
-    update: {},
-  });
-}
 
 function buildRedirectUrl(path: string): string {
   if (path.startsWith('http')) return path;
@@ -67,29 +60,15 @@ export interface CreatePaymentInput {
 }
 
 export async function getPaymentGateways() {
-  const settings = await getAppSettings();
+  const settings = await getCachedAppSettings();
   const gateways: Array<{ id: string; name: string; enabled: boolean }> = [];
 
-  if (settings.phonepeEnabled) {
-    try {
-      await getPaymentAccountCredentials(OwnerType.ADMIN, ADMIN_OWNER_ID);
-      gateways.push({ id: 'PHONEPE', name: 'PhonePe', enabled: true });
-    } catch {
-      if (env.PHONEPE_CLIENT_ID) {
-        gateways.push({ id: 'PHONEPE', name: 'PhonePe', enabled: true });
-      }
-    }
+  if (settings.phonepeEnabled && env.PHONEPE_CLIENT_ID && env.PHONEPE_CLIENT_SECRET) {
+    gateways.push({ id: 'PHONEPE', name: 'PhonePe', enabled: true });
   }
 
-  if (settings.razorpayEnabled) {
-    try {
-      await getRazorpayCredentials(OwnerType.ADMIN, ADMIN_OWNER_ID);
-      gateways.push({ id: 'RAZORPAY', name: 'Razorpay', enabled: true });
-    } catch {
-      if (env.RAZORPAY_KEY_ID) {
-        gateways.push({ id: 'RAZORPAY', name: 'Razorpay', enabled: true });
-      }
-    }
+  if (settings.razorpayEnabled && env.RAZORPAY_KEY_ID && env.RAZORPAY_KEY_SECRET) {
+    gateways.push({ id: 'RAZORPAY', name: 'Razorpay', enabled: true });
   }
 
   return {
@@ -99,12 +78,24 @@ export async function getPaymentGateways() {
 }
 
 export async function createPayment(input: CreatePaymentInput, ipAddress?: string) {
-  const settings = await getAppSettings();
+  const provider = input.provider ?? PaymentProvider.PHONEPE;
+  const owner = resolveOwner(input.ownerType ?? OwnerType.ADMIN, input.vendorId);
+
+  const [settings, existingPaid] = await Promise.all([
+    getCachedAppSettings(),
+    input.idempotencyKey
+      ? prisma.order.findFirst({
+          where: {
+            idempotencyKey: input.idempotencyKey,
+            paymentStatus: PaymentStatus.PAID,
+          },
+        })
+      : Promise.resolve(null),
+  ]);
+
   if (!settings.paymentsEnabled) {
     throw new AppError(503, 'Online payments are temporarily unavailable', 'PAYMENTS_DISABLED');
   }
-
-  const provider = input.provider ?? PaymentProvider.PHONEPE;
 
   if (provider === PaymentProvider.PHONEPE && !settings.phonepeEnabled) {
     throw new AppError(503, 'PhonePe payments are disabled', 'PAYMENTS_DISABLED');
@@ -112,17 +103,6 @@ export async function createPayment(input: CreatePaymentInput, ipAddress?: strin
   if (provider === PaymentProvider.RAZORPAY && !settings.razorpayEnabled) {
     throw new AppError(503, 'Razorpay payments are disabled', 'PAYMENTS_DISABLED');
   }
-
-  const owner = resolveOwner(input.ownerType ?? OwnerType.ADMIN, input.vendorId);
-
-  const existingPaid = input.idempotencyKey
-    ? await prisma.order.findFirst({
-        where: {
-          idempotencyKey: input.idempotencyKey,
-          paymentStatus: PaymentStatus.PAID,
-        },
-      })
-    : null;
 
   if (existingPaid) {
     throw new ConflictError('Payment already completed for this request');
@@ -157,7 +137,7 @@ export async function createPayment(input: CreatePaymentInput, ipAddress?: strin
     data: { paymentStatus: PaymentStatus.PROCESSING },
   });
 
-  await logAudit(AuditActions.PAYMENT_INITIATED, {
+  void logAudit(AuditActions.PAYMENT_INITIATED, {
     userId: input.userId,
     ipAddress,
     metadata: {
@@ -167,7 +147,7 @@ export async function createPayment(input: CreatePaymentInput, ipAddress?: strin
       amount,
       provider,
     },
-  });
+  }).catch((err) => logger.warn('Audit log failed for payment initiation', { err }));
 
   if (provider === PaymentProvider.RAZORPAY) {
     const creds = await getRazorpayCredentials(owner.ownerType, owner.ownerId);
@@ -282,7 +262,7 @@ export async function verifyRazorpayPayment(input: {
     metadata: { orderId: order.id, provider: 'RAZORPAY', paymentId: input.razorpayPaymentId },
   });
 
-  const settings = await getAppSettings();
+  const settings = await getCachedAppSettings();
   return {
     verified: true,
     paymentStatus: PaymentStatus.PAID,
@@ -400,7 +380,7 @@ export async function handlePaymentCallback(query: {
   if (!query.orderId) throw new ValidationError('orderId is required');
 
   const order = await getOrderById(query.orderId);
-  const settings = await getAppSettings();
+  const settings = await getCachedAppSettings();
 
   const verification = await verifyPayment({ orderId: order.id });
   const success = verification.paymentStatus === PaymentStatus.PAID;

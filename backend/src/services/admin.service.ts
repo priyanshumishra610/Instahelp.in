@@ -3,6 +3,7 @@ import { prisma } from '../config/database';
 import { maskSecret } from '../utils/encryption';
 import { upsertPaymentAccount } from './phonepe.service';
 import { logAudit, AuditActions } from './audit.service';
+import { invalidateAppSettingsCache } from './settings-cache.service';
 
 const ADMIN_OWNER_ID = 'platform';
 
@@ -237,5 +238,6 @@ export async function updatePaymentSettings(
     },
   });
 
+  invalidateAppSettingsCache();
   return getPaymentSettings();
 }

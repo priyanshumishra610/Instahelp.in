@@ -99,4 +99,11 @@
     loadRazorpayScript: loadRazorpayScript,
     openCheckout: openCheckout
   };
+
+  if (typeof global.location !== 'undefined') {
+    var path = (global.location.pathname || '').toLowerCase();
+    if (/\/(pay|plans)(\.html)?$/.test(path) || path.endsWith('/pay') || path.endsWith('/plans')) {
+      loadRazorpayScript().catch(function () {});
+    }
+  }
 })(typeof window !== 'undefined' ? window : this);

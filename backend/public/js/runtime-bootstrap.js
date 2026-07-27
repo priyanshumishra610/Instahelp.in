@@ -54,6 +54,23 @@
   var apiBase = resolveApiBase();
   global.INSTAHELP_API_BASE = apiBase;
 
+  function isPaymentPage() {
+    var path = (global.location.pathname || '').toLowerCase();
+    return /\/(pay|plans)(\.html)?$/.test(path) || path.endsWith('/pay') || path.endsWith('/plans');
+  }
+
+  function warmupBackend() {
+    if (!apiBase) return;
+    var url = apiBase + '/health/live';
+    if (typeof global.fetch === 'function') {
+      global.fetch(url, { mode: 'cors', credentials: 'omit', keepalive: true }).catch(function () {});
+    }
+  }
+
+  if (isPaymentPage()) {
+    warmupBackend();
+  }
+
   try {
     global.localStorage.setItem('instahelp_api_base', apiBase);
 

@@ -228,12 +228,20 @@
       showAlert(alertEl, '');
       showLoading(true);
 
+      var loadingTitle = document.querySelector('#payLoadingOverlay .portal-loading-title');
+      var slowTimer = setTimeout(function () {
+        if (loadingTitle) {
+          loadingTitle.textContent = 'Starting secure checkout — this may take a few seconds…';
+        }
+      }, 2500);
+
       var order = buildOrder(formData, settings);
       Payment.setPendingOrder(order);
 
-      var result = Payment.processPayment(order, { redirectDelay: 400 });
+      var result = Payment.processPayment(order, { redirectDelay: 0 });
 
       function onResult(res) {
+        clearTimeout(slowTimer);
         if (!res || !res.ok) {
           showLoading(false);
           showAlert(
@@ -246,6 +254,7 @@
 
       if (result && typeof result.then === 'function') {
         result.then(onResult).catch(function (err) {
+          clearTimeout(slowTimer);
           showLoading(false);
           showAlert(alertEl, (err && err.message) || 'Payment could not be initiated.');
           Payment.clearPayLock();

@@ -118,7 +118,7 @@
     setPendingOrder(orderData);
 
     if (useBackendApi()) {
-      return processPaymentViaBackend(orderData, { redirectDelay: 400 });
+      return processPaymentViaBackend(orderData, { redirectDelay: 0 });
     }
 
     var qs = new URLSearchParams({
@@ -309,7 +309,7 @@
       vendorName: resolved.vendorName,
       transactionId: tx.transactionId
     }, {
-      redirectDelay: options.redirectDelay || 1200,
+      redirectDelay: options.redirectDelay ?? 0,
       skipRedirect: true
     });
 
@@ -318,9 +318,14 @@
       return { ok: false, error: ppResult.error };
     }
 
-    setTimeout(function () {
+    var redirectDelay = options.redirectDelay ?? 0;
+    if (redirectDelay > 0) {
+      setTimeout(function () {
+        window.location.href = ppResult.redirectUrl;
+      }, redirectDelay);
+    } else {
       window.location.href = ppResult.redirectUrl;
-    }, options.redirectDelay || 1200);
+    }
 
     return {
       ok: true,

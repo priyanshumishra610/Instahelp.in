@@ -8,26 +8,11 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://instahelp-in.onrender.com">
+  <link rel="preconnect" href="https://checkout.razorpay.com" crossorigin>
+  <link rel="preconnect" href="https://mercury.phonepe.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/plans.css">
-  <script>
-    window.INSTAHELP_API_BASE = 'https://instahelp-in.onrender.com';
-    (function () {
-      var api = window.INSTAHELP_API_BASE;
-      var host = location.hostname;
-      if (host !== 'instahelp.in' && host !== 'www.instahelp.in') return;
-      try {
-        localStorage.setItem('instahelp_api_base', api);
-        var raw = localStorage.getItem('paymentSettings');
-        if (raw) {
-          var s = JSON.parse(raw);
-          s.apiBaseUrl = api;
-          s.apiMode = s.apiMode || 'backend';
-          localStorage.setItem('paymentSettings', JSON.stringify(s));
-        }
-      } catch (e) {}
-    })();
-  </script>
 </head>
 <body class="plans-page">
 
@@ -191,6 +176,10 @@
     function openPayModal(tier) {
       if (paying) return;
 
+      if (InstaHelpAPI && InstaHelpAPI.warmupBackend) {
+        InstaHelpAPI.warmupBackend();
+      }
+
       var plans = InstaHelpPlans.getPlans(audience);
       var plan = plans[tier];
       if (!plan || plan.ctaType !== 'pay') return;
@@ -247,13 +236,21 @@
       closePayModal();
       paying = true;
       loading.classList.add('show');
-      loading.querySelector('p').textContent = paymentGateway === 'RAZORPAY'
+      var loadingMsg = loading.querySelector('p');
+      loadingMsg.textContent = paymentGateway === 'RAZORPAY'
         ? 'Opening Razorpay checkout…'
         : 'Redirecting to PhonePe…';
+
+      var slowTimer = setTimeout(function () {
+        if (paying && loadingMsg) {
+          loadingMsg.textContent = 'Starting secure checkout — this may take a few seconds…';
+        }
+      }, 2500);
 
       var result = InstaHelpPayment.initiateCheckout(order, { provider: paymentGateway });
 
       function done(res) {
+        clearTimeout(slowTimer);
         if (res && res.ok && res.provider === 'RAZORPAY') {
           paying = false;
           loading.classList.remove('show');

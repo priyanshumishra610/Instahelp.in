@@ -19,6 +19,12 @@
   force = true
 
 [[redirects]]
+  from = "/health/live"
+  to = "https://instahelp-in.onrender.com/health/live"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/app-waitlist"
   to = "/app-waitlist.html"
   status = 200

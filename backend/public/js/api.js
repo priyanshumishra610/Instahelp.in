@@ -165,7 +165,13 @@
   }
 
   function healthCheck() {
-    return fetch(getApiBase() + '/health').then(function (r) { return r.json(); });
+    return fetch(getApiBase() + '/health/live').then(function (r) { return r.json(); });
+  }
+
+  function warmupBackend() {
+    var base = getApiBase();
+    if (!base || typeof fetch !== 'function') return;
+    fetch(base + '/health/live', { mode: 'cors', credentials: 'omit', keepalive: true }).catch(function () {});
   }
 
   global.InstaHelpAPI = {
@@ -190,7 +196,8 @@
     verifyOtp: verifyOtp,
     getAdminPaymentSettings: getAdminPaymentSettings,
     updateAdminPaymentSettings: updateAdminPaymentSettings,
-    healthCheck: healthCheck
+    healthCheck: healthCheck,
+    warmupBackend: warmupBackend
   };
 
   if (typeof document !== 'undefined') {

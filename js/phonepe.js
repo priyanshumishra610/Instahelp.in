@@ -198,10 +198,14 @@
     if (options.onRedirect) {
       options.onRedirect(redirectUrl, orderMeta);
     } else if (!options.skipRedirect) {
-      var delay = options.redirectDelay || 1200;
-      setTimeout(function () {
+      var delay = options.redirectDelay ?? 0;
+      if (delay > 0) {
+        setTimeout(function () {
+          global.location.href = redirectUrl;
+        }, delay);
+      } else {
         global.location.href = redirectUrl;
-      }, delay);
+      }
     }
 
     return {

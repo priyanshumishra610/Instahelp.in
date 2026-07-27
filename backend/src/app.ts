@@ -60,6 +60,10 @@ export function createApp() {
     }
   });
 
+  app.get('/health/live', (_req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
   app.use('/api', apiRoutes);
 
   function resolveFrontendPath(): string {
