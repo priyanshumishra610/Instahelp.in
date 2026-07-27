@@ -359,7 +359,7 @@ function initHeroInteractiveForm() {
   }
 
   function populateReview() {
-    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '—'; };
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || 'Not set yet'; };
     set('reviewTask', msg?.value.trim());
     set('reviewName', document.getElementById('fullname')?.value.trim());
     set('reviewPhone', document.getElementById('phone')?.value.trim());
