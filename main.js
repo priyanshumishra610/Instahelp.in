@@ -1,20 +1,55 @@
+/** Apps Script web app — must match latest code.gs deployment (see code.gs doGet version). */
+const IH_SHEET_URL =
+  'https://script.google.com/macros/s/AKfycbwVllMnXYQ35TmWUHAP52bmdPa45zYcfOoz5Q4O6DKF-csF7K-Ekh-Riu1EhLHmwsCLAA/exec';
+const IH_SHEET_VERSION_EXPECTED = '2026-07-29';
 
-/* ── REVEAL ON SCROLL ── */
-(function initReveal() {
-  const els = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window) || !els.length) {
-    els.forEach(el => el.classList.add('in-view'));
-    return;
+async function verifySheetWebApp() {
+  try {
+    const res = await fetch(IH_SHEET_URL);
+    const text = await res.text();
+    let info = null;
+    try {
+      info = JSON.parse(text);
+    } catch (err) {
+      info = null;
+    }
+    if (!info || !info.postSupported) {
+      console.warn(
+        '[InstaHelp] Form sheet web app is not ready. POST may fail — redeploy code.gs as Web app (Anyone). GET response:',
+        text.slice(0, 200)
+      );
+      return;
+    }
+    if (info.version && info.version !== IH_SHEET_VERSION_EXPECTED) {
+      console.warn(
+        '[InstaHelp] Sheet web app version mismatch. Site expects',
+        IH_SHEET_VERSION_EXPECTED + ', deployed:',
+        info.version,
+        '— paste code.gs and redeploy.'
+      );
+    }
+  } catch (err) {
+    console.warn('[InstaHelp] Could not reach sheet web app:', err);
   }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in-view');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  els.forEach(el => io.observe(el));
+}
+
+(function initReveal() {
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+})();
+
+/* ── PAUSE HEAVY ANIMATIONS WHILE SCROLLING ── */
+(function initScrollPerf() {
+  let scrollTimer;
+  const onScroll = () => {
+    if (!document.body.classList.contains('is-scrolling')) {
+      document.body.classList.add('is-scrolling');
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      document.body.classList.remove('is-scrolling');
+    }, 120);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
 })();
 
 /* ── FAQ: single-open accordion (optional nicety) ── */
@@ -136,6 +171,18 @@ function getBrowserLocation(force) {
   return _ihGeoPromise;
 }
 
+function syncFloatLabel(input) {
+  const wrap = input && input.closest('.hero-field-float');
+  if (wrap) wrap.classList.toggle('is-filled', !!String(input.value || '').trim());
+}
+
+function setDetectButtonState(btn, label) {
+  if (!btn) return;
+  const labelEl = btn.querySelector('.btn-qh-detect-label');
+  if (labelEl) labelEl.textContent = label;
+  else btn.textContent = label;
+}
+
 function fillAddressInput(inputId, buttonId, options) {
   const opts = options || {};
   const input = document.getElementById(inputId);
@@ -146,18 +193,21 @@ function fillAddressInput(inputId, buttonId, options) {
     input.dataset.defaultPlaceholder = input.placeholder;
   }
   if (btn && !btn.dataset.defaultLabel) {
-    btn.dataset.defaultLabel = btn.textContent;
+    const labelEl = btn.querySelector('.btn-qh-detect-label');
+    btn.dataset.defaultLabel = labelEl ? labelEl.textContent : btn.textContent;
   }
 
   if (btn) {
     btn.disabled = true;
-    btn.textContent = 'Detecting…';
+    setDetectButtonState(btn, 'Detecting…');
   }
   input.placeholder = 'Detecting your location…';
 
   getBrowserLocation(opts.force)
     .then((loc) => {
       input.value = opts.mode === 'city' ? loc.city : loc.full;
+      syncFloatLabel(input);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
     })
     .catch((err) => {
       if (!opts.alertOnFail) return;
@@ -169,9 +219,11 @@ function fillAddressInput(inputId, buttonId, options) {
     })
     .finally(() => {
       input.placeholder = input.dataset.defaultPlaceholder || '';
+      syncFloatLabel(input);
       if (btn) {
         btn.disabled = false;
-        btn.textContent = btn.dataset.defaultLabel || 'Use my location';
+        setDetectButtonState(btn, btn.dataset.defaultLabel || 'Use my location');
+        if (window.lucide) lucide.createIcons();
       }
     });
 }
@@ -190,6 +242,8 @@ document.addEventListener('DOMContentLoaded', () => {
   fillAddressInput('exact_address', 'heroDetectAddress', { alertOnFail: false });
 
   initHeroInteractiveForm();
+  initHeroPromptDemo();
+  verifySheetWebApp();
 
   const qhModal = document.getElementById('quickHelpModal');
   const qhForm  = document.getElementById('quickHelpForm');
@@ -277,50 +331,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ── HERO INTERACTIVE FORM (3-step wizard) ── */
+/* ── HERO FORM (single panel) ── */
 function initHeroInteractiveForm() {
   const form = document.getElementById('heroForm');
   if (!form) return;
 
-  const steps = [1, 2, 3].map(n => document.getElementById('heroStep' + n)).filter(Boolean);
-  const dots  = document.querySelectorAll('.hero-form-step-dot');
-  const fill  = document.getElementById('heroProgressFill');
-  const msg   = document.getElementById('message');
+  const msg = document.getElementById('message');
   const msgCount = document.getElementById('messageCount');
   const serviceSel = document.getElementById('serviceSelect');
-  let current = 1;
-
-  function setStep(next) {
-    if (next < 1 || next > 3 || next === current) return;
-    const prevEl = steps[current - 1];
-    const nextEl = steps[next - 1];
-    if (!prevEl || !nextEl) return;
-
-    prevEl.classList.remove('is-active');
-    prevEl.classList.add('is-leaving');
-    setTimeout(() => {
-      prevEl.hidden = true;
-      prevEl.classList.remove('is-leaving');
-      nextEl.hidden = false;
-      nextEl.classList.add('is-active');
-      current = next;
-      updateProgress();
-      if (next === 3) populateReview();
-      const focusMap = { 1: 'message', 2: 'fullname', 3: 'evidence_consent' };
-      const el = document.getElementById(focusMap[next]);
-      if (el) setTimeout(() => el.focus(), 80);
-    }, 220);
-  }
-
-  function updateProgress() {
-    const pct = current === 1 ? 33.33 : current === 2 ? 66.66 : 100;
-    if (fill) fill.style.width = pct + '%';
-    dots.forEach(dot => {
-      const s = parseInt(dot.dataset.step, 10);
-      dot.classList.toggle('is-active', s === current);
-      dot.classList.toggle('is-done', s < current);
-    });
-  }
 
   function validateField(input) {
     const wrap = input.closest('.hero-field-float');
@@ -335,44 +353,6 @@ function initHeroInteractiveForm() {
     if (status) status.classList.toggle('is-valid', ok && input.value.trim().length > 0);
     return ok;
   }
-
-  function validateStep(step) {
-    if (step === 1) {
-      if (!msg || !msg.value.trim()) {
-        msg?.focus();
-        msg?.closest('.hero-field-float')?.classList.add('is-invalid');
-        return false;
-      }
-      return true;
-    }
-    if (step === 2) {
-      const name = document.getElementById('fullname');
-      const phone = document.getElementById('phone');
-      let ok = true;
-      if (name && !validateField(name)) ok = false;
-      if (phone && !validateField(phone)) ok = false;
-      if (!name?.value.trim()) { name?.focus(); ok = false; }
-      else if (!phone?.value.trim()) { phone?.focus(); ok = false; }
-      return ok;
-    }
-    return true;
-  }
-
-  function populateReview() {
-    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || 'Not set yet'; };
-    set('reviewTask', msg?.value.trim());
-    set('reviewName', document.getElementById('fullname')?.value.trim());
-    set('reviewPhone', document.getElementById('phone')?.value.trim());
-  }
-
-  document.getElementById('heroStep1Next')?.addEventListener('click', () => {
-    if (validateStep(1)) setStep(2);
-  });
-  document.getElementById('heroStep2Next')?.addEventListener('click', () => {
-    if (validateStep(2)) setStep(3);
-  });
-  document.getElementById('heroStep2Back')?.addEventListener('click', () => setStep(1));
-  document.getElementById('heroStep3Back')?.addEventListener('click', () => setStep(2));
 
   document.querySelectorAll('.hero-cat-chip').forEach(chip => {
     chip.addEventListener('click', () => {
@@ -401,27 +381,111 @@ function initHeroInteractiveForm() {
   }
 
   form.querySelectorAll('.hero-field-float input, .hero-field-float textarea').forEach(input => {
-    input.addEventListener('blur', () => validateField(input));
+    syncFloatLabel(input);
+    input.addEventListener('blur', () => {
+      syncFloatLabel(input);
+      validateField(input);
+    });
     input.addEventListener('input', () => {
+      syncFloatLabel(input);
       if (input.value.trim()) validateField(input);
       else input.closest('.hero-field-float')?.classList.remove('is-valid', 'is-invalid');
     });
   });
 
-  updateProgress();
-
   window._ih_resetHeroForm = function resetHeroForm() {
-    steps.forEach((el, i) => {
-      if (!el) return;
-      el.hidden = i !== 0;
-      el.classList.toggle('is-active', i === 0);
-      el.classList.remove('is-leaving');
-    });
-    current = 1;
-    updateProgress();
     document.querySelectorAll('.hero-cat-chip').forEach(c => c.classList.remove('is-selected'));
-    form.querySelectorAll('.hero-field-float').forEach(f => f.classList.remove('is-valid', 'is-invalid'));
+    form.querySelectorAll('.hero-field-float').forEach(f => {
+      f.classList.remove('is-valid', 'is-invalid', 'is-filled');
+    });
+    if (msgCount && msg) msgCount.textContent = '0 / 1000';
   };
+}
+
+const HERO_PROMPT_PHRASES = [
+  'a plumber in Whitefield by tomorrow',
+  'a CA for GST filing this week',
+  'packers for my 2BHK move to Pune',
+  'deep cleaning before guests arrive',
+  'an electrician — fuse keeps tripping',
+];
+
+function focusHeroForm(messageText) {
+  const formCard = document.getElementById('heroFormCard');
+  const message = document.getElementById('message');
+  const target = formCard || document.getElementById('heroForm');
+
+  if (target) ihScrollTo(target, 96);
+
+  if (message && messageText) {
+    message.value = messageText;
+    syncFloatLabel(message);
+    message.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  setTimeout(() => message?.focus(), 280);
+
+  if (formCard) {
+    formCard.classList.add('hero-form-highlight');
+    setTimeout(() => formCard.classList.remove('hero-form-highlight'), 1200);
+  }
+}
+
+function initHeroPromptDemo() {
+  const typed = document.getElementById('heroTypedText');
+  const cursor = document.getElementById('heroTypedCursor');
+  const chips = document.querySelectorAll('.hero-prompt-chip');
+  if (!typed) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+      focusHeroForm(chip.dataset.prompt || '');
+    });
+  });
+
+  if (reducedMotion || HERO_PROMPT_PHRASES.length < 2) {
+    typed.textContent = HERO_PROMPT_PHRASES[0];
+    if (cursor) cursor.style.display = 'none';
+    return;
+  }
+
+  let phraseIndex = 0;
+  let charIndex = HERO_PROMPT_PHRASES[0].length;
+  let deleting = false;
+
+  typed.textContent = HERO_PROMPT_PHRASES[0];
+
+  function tick() {
+    const current = HERO_PROMPT_PHRASES[phraseIndex];
+
+    if (!deleting) {
+      charIndex += 1;
+      typed.textContent = current.slice(0, charIndex);
+      if (charIndex >= current.length) {
+        deleting = true;
+        setTimeout(tick, 2200);
+        return;
+      }
+      setTimeout(tick, 38 + Math.random() * 28);
+      return;
+    }
+
+    charIndex -= 1;
+    typed.textContent = current.slice(0, charIndex);
+    if (charIndex <= 0) {
+      deleting = false;
+      phraseIndex = (phraseIndex + 1) % HERO_PROMPT_PHRASES.length;
+      setTimeout(tick, 420);
+      return;
+    }
+    setTimeout(tick, 22);
+  }
+
+  setTimeout(tick, 1800);
 }
 
 /* ── SERVICE OPTIONS ── */
@@ -539,13 +603,19 @@ function secureSubmitForm(e) {
     return;
   }
 
+  const emailEl = form.querySelector('[name="email"]');
+  if (emailEl && emailEl.hasAttribute('required') && !emailEl.value.trim()) {
+    emailEl.focus();
+    return;
+  }
+
   const addressEl = form.querySelector('[name="address"]');
   if (addressEl && addressEl.hasAttribute('required') && !addressEl.value.trim()) {
     addressEl.focus();
     return;
   }
 
-  const defaultLabel = btn?.dataset.defaultLabel || 'Send request →';
+  const defaultLabel = btn?.dataset.defaultLabel || 'Send request';
   const labelEl = btn?.querySelector('.btn-hero-submit-text');
 
   if (labelEl) labelEl.textContent = 'Sending…';
@@ -609,7 +679,7 @@ function secureSubmitForm(e) {
   sessionStorage.setItem('ih_fc', count + 1);
 
   // Web app (same project as code.gs) → spreadsheet 1d_OP7QSblYraIfMDUBbbNZIAV4Gx7aJSy_wDNTX62pk
-  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxFSRdQaYURJyuhN6Vojf76nMtxWlCHuxW53tYQsIKSOkrRTKP2hn22-b19rNAcNCsH9g/exec';
+  const SHEET_URL = IH_SHEET_URL;
 
   // BELT + SUSPENDERS — we send the payload via TWO independent paths.
   // Either is enough; both running in parallel reduces lead loss if one
@@ -698,14 +768,19 @@ function secureSubmitForm(e) {
   }, 2500);
 }
 
-/* ── SMOOTH ANCHOR SCROLL (offset for fixed header) ── */
+/* ── FAST ANCHOR SCROLL (offset for fixed header) ── */
+function ihScrollTo(target, offset = 88) {
+  const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
+  window.scrollTo({ top, behavior: 'auto' });
+}
+
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
+    const href = a.getAttribute('href');
+    if (!href || href === '#') return;
+    const target = document.querySelector(href);
     if (!target) return;
     e.preventDefault();
-    const offset = 100;
-    const top = target.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top, behavior: 'smooth' });
+    ihScrollTo(target);
   });
 });

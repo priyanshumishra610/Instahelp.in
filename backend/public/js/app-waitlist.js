@@ -2,7 +2,7 @@
   'use strict';
 
   var SHEET_URL =
-    'https://script.google.com/macros/s/AKfycbxFSRdQaYURJyuhN6Vojf76nMtxWlCHuxW53tYQsIKSOkrRTKP2hn22-b19rNAcNCsH9g/exec';
+    'https://script.google.com/macros/s/AKfycbwVllMnXYQ35TmWUHAP52bmdPa45zYcfOoz5Q4O6DKF-csF7K-Ekh-Riu1EhLHmwsCLAA/exec';
 
   var platformLabels = {
     ios: 'iOS (App Store)',

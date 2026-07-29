@@ -2,5 +2,7 @@
 /api/*  https://instahelp-in.onrender.com/api/:splat  200!
 /health  https://instahelp-in.onrender.com/health  200!
 
-# Pretty URL for app waitlist page
+# Pretty URLs
 /app-waitlist  /app-waitlist.html  200
+/plans  /plans.html  200
+/giftcards  /giftcards.html  200

@@ -1,0 +1,1255 @@
+/* ═══════════════════════════════════════════════════════════════
+   DOODLE THEME — self-contained copy-paste package
+
+   USAGE (paths relative to this folder):
+   1. <link rel="stylesheet" href="css/doodle.css">
+   2. <body class="doodle-page">
+   3. <script src="js/doodle.js" defer></script>
+
+   Open example.html in this folder for a live demo.
+   See README.md for integrating into other projects.
+═══════════════════════════════════════════════════════════════ */
+
+.doodle-page {
+  --doodle-ink: #323232;
+  --doodle-paper: #fff9e6;
+  --doodle-paper-alt: #e6f0ff;
+  --doodle-bg: #fffdf5;
+  --doodle-primary: #ff6b6b;
+  --doodle-primary-hover: #ff5252;
+  --doodle-secondary: #4ecdc4;
+  --doodle-accent: #ffe66d;
+  --doodle-focus: #2d8cf0;
+  --doodle-sketch-1: 8px 24px 8px 24px / 24px 8px 24px 8px;
+  --doodle-sketch-2: 24px 8px 24px 8px / 8px 24px 8px 24px;
+  --doodle-sketch-btn: 16px 5px 16px 5px / 5px 16px 5px 16px;
+  --doodle-border: 2px;
+  --doodle-shadow: 4px;
+
+  background-color: var(--doodle-bg);
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    rgba(50, 50, 50, 0.04) 31px,
+    rgba(50, 50, 50, 0.04) 33px
+  );
+  background-position: 0 12px;
+  background-attachment: fixed;
+}
+
+/* ── Page-wide floating decorations ── */
+.page-deco {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.page-deco svg {
+  position: absolute;
+}
+
+.page-deco-star {
+  animation: pageDecoFloat 5s ease-in-out infinite;
+}
+
+.page-deco-star-1 { top: 8%; left: 3%; width: 28px; height: 28px; animation-delay: 0s; }
+.page-deco-star-2 { top: 22%; right: 4%; width: 22px; height: 22px; animation-delay: 1.2s; }
+.page-deco-star-3 { top: 48%; left: 1.5%; width: 18px; height: 18px; animation-delay: 2.4s; }
+.page-deco-star-4 { top: 65%; right: 2%; width: 26px; height: 26px; animation-delay: 0.8s; }
+.page-deco-star-5 { top: 82%; left: 5%; width: 20px; height: 20px; animation-delay: 1.8s; }
+.page-deco-star-6 { top: 38%; right: 1%; width: 16px; height: 16px; animation-delay: 3s; }
+
+.page-deco-sparkle {
+  animation: pageDecoSparkle 4.5s ease-in-out infinite;
+}
+
+.page-deco-sparkle-1 { top: 15%; left: 8%; width: 20px; height: 20px; animation-delay: 0.5s; }
+.page-deco-sparkle-2 { top: 55%; right: 6%; width: 24px; height: 24px; animation-delay: 2s; }
+.page-deco-sparkle-3 { top: 75%; left: 2%; width: 18px; height: 18px; animation-delay: 3.2s; }
+
+.page-deco-string {
+  opacity: 0.35;
+}
+
+.page-deco-string-1 {
+  top: 0;
+  left: 12%;
+  width: 80px;
+  height: 140px;
+  animation: pageDecoSway 6s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+.page-deco-string-2 {
+  top: 0;
+  right: 10%;
+  width: 80px;
+  height: 120px;
+  animation: pageDecoSway 6s ease-in-out infinite 1.5s;
+  transform-origin: top center;
+}
+
+.page-deco-string-3 {
+  bottom: 12%;
+  left: 6%;
+  width: 100px;
+  height: 24px;
+  opacity: 0.25;
+  animation: pageDecoSway 7s ease-in-out infinite 0.6s;
+}
+
+@keyframes pageDecoFloat {
+  0%, 100% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+@keyframes pageDecoSparkle {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  50% { transform: translateY(-8px) rotate(12deg) scale(1.08); }
+}
+
+@keyframes pageDecoSway {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+.doodle-page main,
+.doodle-page header {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Header ── */
+.doodle-page header {
+  background: var(--doodle-paper);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: var(--doodle-shadow) var(--doodle-shadow) 0 var(--doodle-ink);
+}
+
+.doodle-page .nav-links {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+}
+
+.doodle-page .nav-links a:hover {
+  background: var(--doodle-paper);
+}
+
+.doodle-page .btn-primary {
+  background: var(--doodle-primary);
+  color: var(--doodle-ink);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+  font-weight: 800;
+}
+
+.doodle-page .btn-primary:hover {
+  background: var(--doodle-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+}
+
+/* ── Hero ── */
+.doodle-page .hero-bg-base {
+  background: var(--doodle-bg);
+}
+
+.doodle-page .hero-bg-blob-yellow {
+  background: rgba(255, 230, 109, 0.35);
+}
+
+.doodle-page .hero-bg-blob-blue {
+  background: rgba(78, 205, 196, 0.15);
+}
+
+.doodle-page .hero-pill {
+  background: var(--doodle-accent);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+}
+
+.doodle-page .hero-trust-item {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  padding: 6px 12px;
+}
+
+.doodle-page .hero-contact-btn.wa-primary {
+  border: var(--doodle-border) solid var(--doodle-ink);
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+}
+
+.doodle-page .hero-contact-btn.wa-primary:hover {
+  box-shadow: 5px 5px 0 var(--doodle-ink);
+}
+
+.doodle-page .hero-contact-btn.call-secondary {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+}
+
+.doodle-page .hero-contact-btn.call-secondary:hover {
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+  border-color: var(--doodle-ink);
+}
+
+.doodle-page .hero-foot {
+  border-top: var(--doodle-border) dashed var(--doodle-ink);
+}
+
+.doodle-page .hero-app-badge {
+  background: var(--doodle-accent);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+}
+
+/* ── Marquee ── */
+.doodle-page .marquee-wrapper {
+  position: relative;
+}
+
+.doodle-page .marquee-wrapper::before,
+.doodle-page .marquee-wrapper::after {
+  content: '';
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--doodle-ink) 0,
+    var(--doodle-ink) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.doodle-page .marquee-wrapper::before { top: 8px; }
+.doodle-page .marquee-wrapper::after { bottom: 8px; }
+
+.doodle-page .query-pill {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  font-weight: 700;
+}
+
+.doodle-page .query-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+}
+
+/* ── Sections ── */
+.doodle-page .doodle-section {
+  position: relative;
+}
+
+.doodle-page .doodle-section::before {
+  content: '★';
+  position: absolute;
+  top: 24px;
+  right: 0;
+  font-size: 22px;
+  color: #ffd166;
+  text-shadow: 1px 1px 0 var(--doodle-ink);
+  opacity: 0.85;
+  pointer-events: none;
+  animation: pageDecoFloat 4s ease-in-out infinite;
+}
+
+.doodle-page #how-it-works::before {
+  content: '✦';
+  left: 0;
+  right: auto;
+  color: #06d6a0;
+  animation-delay: 1s;
+}
+
+.doodle-page .section-title {
+  position: relative;
+  display: inline-block;
+}
+
+.doodle-page .section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 3px;
+  background: var(--doodle-ink);
+  border-radius: 2px;
+  opacity: 0.15;
+  transform: skewX(-12deg);
+}
+
+/* ── Bento cards ── */
+.doodle-page .bento-card {
+  background: var(--doodle-paper);
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 26px,
+    rgba(0, 0, 0, 0.04) 26px,
+    rgba(0, 0, 0, 0.04) 28px
+  );
+  background-position: 0 12px;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-1);
+  box-shadow: var(--doodle-shadow) var(--doodle-shadow) 0 var(--doodle-ink);
+  overflow: visible;
+}
+
+.doodle-page .bento-card::before {
+  display: none;
+}
+
+.doodle-page .bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 5px 5px 0 var(--doodle-ink);
+  border-color: var(--doodle-ink);
+}
+
+.doodle-page .bento-card-icon {
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-2);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  background: #fff !important;
+}
+
+.doodle-page .tag {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 1px 1px 0 var(--doodle-ink);
+  font-weight: 700;
+}
+
+.doodle-page .tag-more {
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* ── Steps ── */
+.doodle-page .step {
+  background: var(--doodle-paper-alt);
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 26px,
+    rgba(0, 0, 0, 0.04) 26px,
+    rgba(0, 0, 0, 0.04) 28px
+  );
+  background-position: 0 10px;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-2);
+  box-shadow: var(--doodle-shadow) var(--doodle-shadow) 0 var(--doodle-ink);
+}
+
+.doodle-page .step-icon {
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-1);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+}
+
+/* ── FAQ ── */
+.doodle-page .faq-section {
+  position: relative;
+  background: var(--doodle-paper-alt);
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    rgba(0, 0, 0, 0.04) 31px,
+    rgba(0, 0, 0, 0.04) 33px
+  );
+  background-position: 0 20px;
+  border-top: var(--doodle-border) solid var(--doodle-ink);
+  border-bottom: var(--doodle-border) solid var(--doodle-ink);
+}
+
+.doodle-page .faq-section::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(420px, 80%);
+  height: 32px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 32' fill='none'%3E%3Cpath d='M0 16 Q50 6 100 14 T200 12 T300 16 T400 10' stroke='%23323232' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.doodle-page .faq-eyebrow {
+  background: var(--doodle-accent);
+  color: var(--doodle-ink);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+}
+
+.doodle-page .faq-item {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-1);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+}
+
+.doodle-page .faq-item:hover {
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+}
+
+.doodle-page .faq-item[open] {
+  border-color: var(--doodle-ink);
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+  background: var(--doodle-paper);
+}
+
+.doodle-page .faq-summary-icon {
+  border: var(--doodle-border) solid var(--doodle-ink);
+  background: #fff;
+  box-shadow: 1px 1px 0 var(--doodle-ink);
+}
+
+.doodle-page .faq-item[open] .faq-summary-icon {
+  background: var(--doodle-accent);
+}
+
+.doodle-page .faq-cta {
+  background: var(--doodle-paper);
+  border: var(--doodle-border) dashed var(--doodle-ink);
+  border-radius: var(--doodle-sketch-2);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+}
+
+.doodle-page .faq-cta-btn.primary {
+  background: var(--doodle-primary);
+  color: var(--doodle-ink);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+}
+
+.doodle-page .faq-cta-btn.primary:hover {
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+  transform: translateY(-2px);
+}
+
+.doodle-page .faq-cta-btn.ghost {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  color: var(--doodle-ink);
+}
+
+.doodle-page .faq-cta-btn.ghost:hover {
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+}
+
+/* ── Bottom CTA ── */
+.doodle-page .bottom-cta {
+  background: var(--doodle-paper);
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    rgba(0, 0, 0, 0.05) 31px,
+    rgba(0, 0, 0, 0.05) 33px
+  );
+  background-position: 0 20px;
+  border-top: var(--doodle-border) solid var(--doodle-ink);
+  border-bottom: var(--doodle-border) solid var(--doodle-ink);
+}
+
+.doodle-page .bottom-cta::before {
+  display: none;
+}
+
+.doodle-page .bottom-cta-kicker {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+}
+
+.doodle-page .bottom-cta-actions .btn-primary {
+  background: var(--doodle-primary);
+  color: var(--doodle-ink);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+}
+
+.doodle-page .bottom-cta-actions .btn-ghost {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+  color: var(--doodle-ink);
+}
+
+.doodle-page .bottom-cta-actions .btn-ghost:hover {
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+}
+
+/* ── Footer ── */
+.doodle-page footer {
+  background: var(--doodle-ink);
+  border-top: var(--doodle-border) solid var(--doodle-ink);
+}
+
+.doodle-page .footer-accent {
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ffd166 0,
+    #ffd166 24px,
+    #06d6a0 24px,
+    #06d6a0 48px,
+    #ff6b6b 48px,
+    #ff6b6b 72px,
+    #4ecdc4 72px,
+    #4ecdc4 96px
+  );
+  animation: none;
+}
+
+.doodle-page footer .footer-cta {
+  background: rgba(255, 249, 230, 0.08);
+  border: var(--doodle-border) solid rgba(255, 230, 109, 0.45);
+  border-radius: var(--doodle-sketch-1);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+}
+
+.doodle-page footer .qh-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: var(--doodle-border) solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+  color: #fff;
+}
+
+.doodle-page footer .qh-pill:hover {
+  background: rgba(255, 230, 109, 0.15);
+  border-color: var(--doodle-accent);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.doodle-page .footer-social-btn {
+  border: var(--doodle-border) solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--doodle-sketch-2);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.doodle-page .instaHelp-city-pill {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--doodle-sketch-btn);
+}
+
+/* ── Hero form inherits page vars ── */
+.doodle-page .hero-form-doodle {
+  font-family: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doodle-page .page-deco-star,
+  .doodle-page .page-deco-sparkle,
+  .doodle-page .page-deco-string,
+  .doodle-page .doodle-section::before {
+    animation: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .doodle-page .page-deco-string,
+  .doodle-page .page-deco-star-3,
+  .doodle-page .page-deco-star-6,
+  .doodle-page .page-deco-sparkle-3 {
+    display: none;
+  }
+
+  .doodle-page .doodle-section::before {
+    font-size: 16px;
+    top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .doodle-page .page-deco {
+    opacity: 0.6;
+  }
+
+  .doodle-page .page-deco-star-2,
+  .doodle-page .page-deco-star-4,
+  .doodle-page .page-deco-sparkle-2 {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY CLASSES — use on any page with body.doodle-page
+   (works with or without style.css)
+═══════════════════════════════════════════════════════════════ */
+
+.doodle-page .doodle-card,
+.doodle-page .doodle-panel {
+  background: var(--doodle-paper);
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 28px,
+    rgba(0, 0, 0, 0.05) 28px,
+    rgba(0, 0, 0, 0.05) 30px
+  );
+  background-position: 0 14px;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-1);
+  box-shadow: var(--doodle-shadow) var(--doodle-shadow) 0 var(--doodle-ink);
+  padding: 1.25rem 1.35rem;
+}
+
+.doodle-page .doodle-panel {
+  border-radius: var(--doodle-sketch-2);
+  padding: 1.5rem 1.65rem;
+}
+
+.doodle-page .doodle-heading {
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--doodle-ink);
+  margin-bottom: 0.75rem;
+}
+
+.doodle-page .doodle-heading::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px;
+  margin-top: 0.35rem;
+  background: var(--doodle-ink);
+  opacity: 0.12;
+  transform: skewX(-10deg);
+}
+
+.doodle-page .doodle-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--doodle-ink);
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  padding: 4px 10px;
+  margin-bottom: 0.65rem;
+}
+
+.doodle-page .doodle-kicker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+}
+
+.doodle-page .doodle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--doodle-ink);
+  background: var(--doodle-primary);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+  padding: 0.65rem 1.25rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.doodle-page .doodle-btn:hover {
+  background: var(--doodle-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+}
+
+.doodle-page .doodle-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--doodle-ink);
+}
+
+.doodle-page .doodle-btn-secondary {
+  background: var(--doodle-secondary);
+}
+
+.doodle-page .doodle-btn-secondary:hover {
+  background: #3bbfb6;
+}
+
+.doodle-page .doodle-input,
+.doodle-page .doodle-textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--doodle-ink);
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-1);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  padding: 0.65rem 0.85rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.doodle-page .doodle-textarea {
+  min-height: 5rem;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.doodle-page .doodle-input:hover,
+.doodle-page .doodle-textarea:hover {
+  transform: translateY(-1px);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+}
+
+.doodle-page .doodle-input:focus,
+.doodle-page .doodle-textarea:focus {
+  border-color: var(--doodle-focus);
+  border-radius: var(--doodle-sketch-2);
+  background: #fffdf5;
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+}
+
+.doodle-page .doodle-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--doodle-ink);
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 1px 1px 0 var(--doodle-ink);
+  padding: 0.25rem 0.6rem;
+  line-height: 1.3;
+}
+
+.doodle-page .doodle-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.doodle-page .doodle-stack-lg {
+  gap: 1.1rem;
+}
+/* ── DOODLE SKETCH FORM (Uiverse-inspired) ── */
+@keyframes heroDoodleFloatStar {
+  0%, 100% { transform: translateY(0) rotate(-15deg); }
+  50% { transform: translateY(-8px) rotate(-10deg); }
+}
+
+@keyframes heroDoodleFloatSparkle {
+  0%, 100% { transform: translateY(0) rotate(10deg); }
+  50% { transform: translateY(-8px) rotate(15deg); }
+}
+
+@keyframes heroDoodleFloatSwirl {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(5deg); }
+}
+
+@keyframes heroDoodleWiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  25% { transform: rotate(2deg); }
+  50% { transform: rotate(-4deg); }
+  75% { transform: rotate(1deg); }
+}
+
+@keyframes heroDoodleStringSway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes heroDoodleBuntingBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.hero-form-scene {
+  position: relative;
+  width: 100%;
+  padding-top: 22px;
+  overflow: visible;
+}
+
+.hero-form-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-doodle-bunting {
+  position: absolute;
+  top: 0;
+  left: -4%;
+  width: 108%;
+  height: 44px;
+  animation: heroDoodleBuntingBob 5s ease-in-out infinite;
+  transform-origin: center top;
+}
+
+.hero-doodle-string {
+  position: absolute;
+  pointer-events: none;
+  transform-origin: top center;
+}
+
+.hero-doodle-string-left {
+  top: 38px;
+  left: -32px;
+  width: 48px;
+  height: 88px;
+  animation: heroDoodleStringSway 4.5s ease-in-out infinite;
+}
+
+.hero-doodle-string-right {
+  top: 42px;
+  right: -28px;
+  width: 48px;
+  height: 88px;
+  animation: heroDoodleStringSway 4.5s ease-in-out infinite 0.8s;
+}
+
+.hero-doodle-string-mid {
+  bottom: 48px;
+  left: -36px;
+  width: 100px;
+  height: 20px;
+  opacity: 0.75;
+  animation: heroDoodleStringSway 6s ease-in-out infinite 1.2s;
+}
+
+.hero-doodle-svg {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-doodle-star {
+  top: 8px;
+  left: -28px;
+  width: 44px;
+  height: 44px;
+  animation: heroDoodleFloatStar 4s ease-in-out infinite;
+}
+
+.hero-doodle-sparkle {
+  bottom: -14px;
+  right: -20px;
+  width: 36px;
+  height: 36px;
+  animation: heroDoodleFloatSparkle 4s ease-in-out infinite 1s;
+}
+
+.hero-doodle-swirl {
+  top: 52px;
+  right: -24px;
+  width: 28px;
+  height: 28px;
+  animation: heroDoodleFloatSwirl 4s ease-in-out infinite 2s;
+}
+
+.hero-doodle-star-xs {
+  width: 18px;
+  height: 18px;
+}
+
+.hero-doodle-star-a {
+  top: 28%;
+  left: -14px;
+  animation: heroDoodleFloatStar 3.5s ease-in-out infinite 0.3s;
+}
+
+.hero-doodle-star-b {
+  top: 58%;
+  right: -12px;
+  width: 22px;
+  height: 22px;
+  animation: heroDoodleFloatSparkle 4.2s ease-in-out infinite 0.6s;
+}
+
+.hero-doodle-star-c {
+  bottom: 22%;
+  left: -10px;
+  width: 16px;
+  height: 16px;
+  animation: heroDoodleFloatSwirl 3.8s ease-in-out infinite 1.4s;
+}
+
+.hero-doodle-star-d {
+  top: 18%;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  animation: heroDoodleFloatStar 4.8s ease-in-out infinite 2.1s;
+}
+
+.hero-doodle-sparkle-sm {
+  width: 22px;
+  height: 22px;
+}
+
+.hero-doodle-sparkle-2 {
+  bottom: 38%;
+  right: -16px;
+  animation: heroDoodleFloatSparkle 3.6s ease-in-out infinite 0.4s;
+}
+
+.hero-doodle-sparkle-3 {
+  top: 72%;
+  left: -18px;
+  animation: heroDoodleFloatStar 4.4s ease-in-out infinite 1.8s;
+}
+
+.hero-form-doodle {
+  font-family: inherit;
+  background-color: var(--doodle-paper, #fff9e6);
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 28px,
+    rgba(0, 0, 0, 0.06) 28px,
+    rgba(0, 0, 0, 0.06) 30px
+  );
+  background-position: 0 15px;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-1);
+  box-shadow: var(--doodle-shadow) var(--doodle-shadow) 0 var(--doodle-ink);
+  padding: 22px 20px 18px;
+  overflow: visible;
+  z-index: 1;
+}
+
+.hero-form-doodle::before,
+.hero-form-doodle::after {
+  display: none;
+}
+
+.hero-form-doodle:focus-within {
+  box-shadow: 5px 5px 0 var(--doodle-ink);
+}
+
+.hero-form-doodle:hover .hero-form-title {
+  animation: none;
+}
+
+.hero-form-doodle .hero-form-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-transform: none;
+  color: var(--doodle-ink);
+  transform: none;
+  text-shadow: none;
+  margin-bottom: 4px;
+}
+
+.hero-form-doodle .hero-form-lead {
+  font-size: 12px;
+  color: var(--gray-700);
+  font-weight: 500;
+}
+
+.hero-form-doodle .hero-form-kicker {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-2);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.hero-form-doodle .hero-form-block {
+  background: rgba(255, 255, 255, 0.45);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-2);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  padding: 12px 12px 10px;
+}
+
+.hero-form-doodle .hero-form-step-num {
+  background: #ffe66d;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  font-size: 12px;
+}
+
+.hero-form-doodle .hero-form-section-label {
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  color: var(--doodle-ink);
+}
+
+.hero-form-doodle .hero-cat-chip {
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: inherit;
+  padding: 4px 10px;
+  background: #fff;
+}
+
+.hero-form-doodle .hero-cat-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+  background: #fffdf5;
+  border-color: var(--doodle-ink);
+}
+
+.hero-form-doodle .hero-cat-chip.is-selected {
+  background: #ffe66d;
+  border-color: var(--doodle-ink);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+}
+
+.hero-form-doodle.contact-form .hero-field-float input:not([type="checkbox"]):not([type="radio"]),
+.hero-form-doodle.contact-form .hero-field-float textarea {
+  background: #fff;
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-1);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+  font-weight: 500;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 16px 12px 6px;
+  min-height: 44px;
+  transition: all 0.2s ease;
+}
+
+.hero-form-doodle.contact-form .hero-field-float textarea {
+  min-height: 72px;
+  padding-top: 22px;
+}
+
+.hero-form-doodle.contact-form .hero-field-float input:hover,
+.hero-form-doodle.contact-form .hero-field-float textarea:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+}
+
+.hero-form-doodle.contact-form .hero-field-float input:focus,
+.hero-form-doodle.contact-form .hero-field-float textarea:focus,
+.hero-form-doodle.contact-form .hero-field-float input:not(:placeholder-shown),
+.hero-form-doodle.contact-form .hero-field-float textarea:not(:placeholder-shown) {
+  border-color: var(--doodle-focus);
+  border-radius: var(--doodle-sketch-2);
+  background: #fffdf5;
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+}
+
+.hero-form-doodle.contact-form .hero-field-float label {
+  font-weight: 600;
+  color: var(--gray-400);
+}
+
+.hero-form-doodle.contact-form .hero-field-float input:focus + label,
+.hero-form-doodle.contact-form .hero-field-float input:not(:placeholder-shown) + label,
+.hero-form-doodle.contact-form .hero-field-float textarea:focus + label,
+.hero-form-doodle.contact-form .hero-field-float textarea:not(:placeholder-shown) + label {
+  color: var(--doodle-focus);
+  font-size: 10px;
+}
+
+.hero-form-doodle.contact-form .hero-field-float.is-valid input,
+.hero-form-doodle.contact-form .hero-field-float.is-valid textarea {
+  border-color: #06d6a0;
+}
+
+.hero-form-doodle.contact-form .hero-field-float.is-invalid input,
+.hero-form-doodle.contact-form .hero-field-float.is-invalid textarea {
+  border-color: #ff6b6b;
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+}
+
+.hero-form-doodle .hero-form-consent {
+  background: rgba(230, 240, 255, 0.65);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-1);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+}
+
+.hero-form-doodle .consent-row-compact label {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+.hero-form-doodle .consent-row input[type="checkbox"] {
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: 4px;
+  accent-color: var(--doodle-primary);
+}
+
+.hero-form-doodle .btn-qh-detect-hero {
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 2px 2px 0 var(--doodle-ink);
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: inherit;
+  min-height: 44px;
+}
+
+.hero-form-doodle .btn-qh-detect-hero:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--doodle-ink);
+  background: #fffdf5;
+  border-color: var(--doodle-ink);
+}
+
+.hero-form-doodle .hero-doodle-btn,
+.hero-form-doodle .btn-hero-submit {
+  background: var(--doodle-primary);
+  color: var(--doodle-ink);
+  border: var(--doodle-border) solid var(--doodle-ink);
+  border-radius: var(--doodle-sketch-btn);
+  box-shadow: 4px 4px 0 var(--doodle-ink);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  padding: 12px 20px;
+  transform: none;
+  transition: all 0.15s ease;
+}
+
+.hero-form-doodle .hero-doodle-btn:hover:not(:disabled),
+.hero-form-doodle .btn-hero-submit:hover:not(:disabled) {
+  background: var(--doodle-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 5px 5px 0 var(--doodle-ink);
+}
+
+.hero-form-doodle .hero-doodle-btn:active:not(:disabled),
+.hero-form-doodle .btn-hero-submit:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--doodle-ink);
+}
+
+.hero-form-doodle .form-secure-note {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gray-400);
+}
+
+.hero-form-doodle .hero-char-count {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--gray-400);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-doodle-star,
+  .hero-doodle-sparkle,
+  .hero-doodle-swirl,
+  .hero-doodle-star-xs,
+  .hero-doodle-sparkle-sm,
+  .hero-doodle-bunting,
+  .hero-doodle-string,
+  .hero-form-doodle:hover .hero-form-title {
+    animation: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-form-scene { padding-top: 16px; }
+  .hero-doodle-bunting { height: 36px; left: 0; width: 100%; }
+  .hero-doodle-string-left,
+  .hero-doodle-string-right { width: 36px; height: 64px; }
+  .hero-doodle-string-left { left: -12px; top: 32px; }
+  .hero-doodle-string-right { right: -10px; top: 34px; }
+  .hero-doodle-string-mid { display: none; }
+  .hero-doodle-star { left: -8px; width: 36px; height: 36px; }
+  .hero-doodle-sparkle { right: -8px; width: 30px; height: 30px; }
+  .hero-doodle-swirl,
+  .hero-doodle-star-d,
+  .hero-doodle-sparkle-3 { display: none; }
+  .hero-doodle-star-a,
+  .hero-doodle-star-c { width: 14px; height: 14px; left: -6px; }
+  .hero-doodle-star-b { width: 18px; height: 18px; right: -6px; }
+}
+
+/* ── example.html demo layout (optional) ── */
+.doodle-page.doodle-demo {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: #050505;
+  line-height: 1.6;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.doodle-demo-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 4rem;
+}
+
+.doodle-demo-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.doodle-demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.doodle-demo-note {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 1.5rem;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px dashed #323232;
+  border-radius: 8px 24px 8px 24px / 24px 8px 24px 8px;
+}
+

@@ -1,6 +1,10 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "InstaHelp — India's Digital Assistant",
+  "short_name": "InstaHelp",
+  "description": "On-demand digital Assistant across 30+ Indian cities. Tell us what you need — we get it done.",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "en-IN",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +19,8 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#11599b",
-  "background_color": "#11599b",
-  "display": "standalone"
+  "theme_color": "#FFD600",
+  "background_color": "#050505",
+  "display": "standalone",
+  "categories": ["business", "lifestyle", "utilities"]
 }

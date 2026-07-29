@@ -29,6 +29,16 @@
   to = "/app-waitlist.html"
   status = 200
 
+[[redirects]]
+  from = "/plans"
+  to = "/plans.html"
+  status = 200
+
+[[redirects]]
+  from = "/giftcards"
+  to = "/giftcards.html"
+  status = 200
+
 [[headers]]
   for = "/js/*"
   [headers.values]

@@ -1,0 +1,34 @@
+# InstaHelp — https://www.instahelp.in
+# LLM context: https://www.instahelp.in/llms.txt
+
+User-agent: *
+Allow: /
+
+Disallow: /pay.html
+Disallow: /pay
+Disallow: /payment-success.html
+Disallow: /payment-failed.html
+Disallow: /admin-payment.html
+Disallow: /orders.html
+Disallow: /transactions.html
+
+User-agent: GPTBot
+Allow: /
+Disallow: /pay.html
+Disallow: /pay
+Disallow: /payment-success.html
+Disallow: /payment-failed.html
+Disallow: /admin-payment.html
+Disallow: /orders.html
+Disallow: /transactions.html
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://www.instahelp.in/sitemap.xml

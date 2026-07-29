@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doodle Theme — Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/doodle.css">
+</head>
+<body class="doodle-page doodle-demo">
+
+  <main class="doodle-demo-wrap doodle-section">
+    <span class="doodle-kicker"><span class="doodle-kicker-dot"></span> Self-contained demo</span>
+    <h1 class="doodle-heading">Doodle Theme</h1>
+    <p>Copy this entire folder anywhere. Link <code>css/doodle.css</code> and <code>js/doodle.js</code>, add <code>class="doodle-page"</code> to body.</p>
+
+    <div class="doodle-demo-grid">
+      <div class="doodle-card">
+        <h2 class="doodle-heading" style="font-size:1.2rem">Card</h2>
+        <p>Notebook paper, sketch border, offset shadow.</p>
+        <div class="doodle-demo-row" style="margin-top:0.75rem">
+          <span class="doodle-tag">Plumber</span>
+          <span class="doodle-tag">Electrician</span>
+          <span class="doodle-tag">CA / GST</span>
+        </div>
+      </div>
+
+      <div class="doodle-panel doodle-stack">
+        <label>
+          <span style="font-weight:700;font-size:0.85rem">Email</span>
+          <input class="doodle-input" type="email" placeholder="you@example.com" style="margin-top:0.35rem">
+        </label>
+        <label>
+          <span style="font-weight:700;font-size:0.85rem">Message</span>
+          <textarea class="doodle-textarea" placeholder="What do you need done?" style="margin-top:0.35rem"></textarea>
+        </label>
+        <div class="doodle-demo-row">
+          <button type="button" class="doodle-btn">Let's Go!</button>
+          <button type="button" class="doodle-btn doodle-btn-secondary">Secondary</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="doodle-demo-note">
+      Floating stars and strings are injected by <strong>js/doodle.js</strong>.
+      For InstaHelp homepage markup, see <strong>reference/instahelp-index-doodle.html</strong>.
+    </p>
+  </main>
+
+  <script src="js/doodle.js" defer></script>
+</body>
+</html>

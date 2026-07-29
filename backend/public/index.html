@@ -746,29 +746,39 @@
           </div>
         </div>
 
-        <div class="hero-contacts hero-anim hero-anim-d4">
-          <a href="https://wa.me/917022702220?text=Hi%20InstaHelp%2C%20I%20need%20help%20with..." class="hero-contact-btn wa-primary" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp InstaHelp">
-            <i data-lucide="message-circle" aria-hidden="true" class="hero-contact-ic" style="width:18px;height:18px;"></i>
-            WhatsApp us
-          </a>
-          <a href="tel:+917022702220" class="hero-contact-btn call-secondary" aria-label="Call InstaHelp">
-            <i data-lucide="phone" aria-hidden="true" class="hero-contact-ic" style="width:18px;height:18px;"></i>
-            70227&nbsp;02220
-          </a>
+        <div class="hero-prompt-card hero-anim hero-anim-d4">
+          <p class="hero-prompt-kicker">Just say it like this</p>
+          <div class="hero-prompt-bubble" aria-hidden="true">
+            <span class="hero-prompt-line">
+              <span class="hero-prompt-prefix">I need </span><span class="hero-prompt-typed" id="heroTypedText">a plumber in Whitefield</span><span class="hero-prompt-cursor" id="heroTypedCursor"></span>
+            </span>
+          </div>
+          <div class="hero-prompt-chips" role="group" aria-label="Try an example request">
+            <button type="button" class="hero-prompt-chip" data-prompt="I need a plumber to fix a leaking tap in my kitchen.">
+              <i data-lucide="wrench" aria-hidden="true" class="hero-prompt-chip-icon"></i>
+              Plumber
+            </button>
+            <button type="button" class="hero-prompt-chip" data-prompt="I need a CA to file my GST returns this month.">
+              <i data-lucide="file-text" aria-hidden="true" class="hero-prompt-chip-icon"></i>
+              CA / GST
+            </button>
+            <button type="button" class="hero-prompt-chip" data-prompt="I need packers and movers for a 2BHK shift next weekend.">
+              <i data-lucide="truck" aria-hidden="true" class="hero-prompt-chip-icon"></i>
+              Packers
+            </button>
+          </div>
         </div>
       </div>
 
       <div class="hero-form-panel hero-anim hero-anim-d3" role="complementary" aria-label="Submit a service request">
         <div class="hero-form-card hero-form-interactive" id="heroFormCard">
-          <div class="hero-form-progress" aria-hidden="true">
-            <div class="hero-form-progress-track">
-              <div class="hero-form-progress-fill" id="heroProgressFill"></div>
-            </div>
-            <ol class="hero-form-steps" id="heroFormSteps">
-              <li class="hero-form-step-dot is-active" data-step="1"><span>1</span> Task</li>
-              <li class="hero-form-step-dot" data-step="2"><span>2</span> Contact</li>
-              <li class="hero-form-step-dot" data-step="3"><span>3</span> Send</li>
-            </ol>
+          <div class="hero-form-head">
+            <span class="hero-form-kicker">
+              <span class="hero-form-kicker-dot" aria-hidden="true"></span>
+              Free · No obligation
+            </span>
+            <h2 class="hero-form-title">Get it done</h2>
+            <p class="hero-form-lead">Tell us what you need. We reach out in minutes.</p>
           </div>
 
           <form class="contact-form hero-form" id="heroForm" onsubmit="secureSubmitForm(event)" novalidate autocomplete="on" aria-label="Service request form">
@@ -776,108 +786,92 @@
               <input type="text" name="honeypot" tabindex="-1" autocomplete="off">
             </div>
 
-            <!-- Step 1: Task -->
-            <div class="hero-step is-active" data-step="1" id="heroStep1">
-              <div class="hero-step-head">
-                <h2 class="hero-step-title">What do you need?</h2>
-                <p class="hero-step-sub">Pick a category, then add your details below.</p>
-              </div>
-              <div class="hero-category-chips" role="group" aria-label="Popular service categories">
-                <button type="button" class="hero-cat-chip" data-service="Home & Personal" data-prompt="I need a plumber for ">Plumber</button>
-                <button type="button" class="hero-cat-chip" data-service="Home & Personal" data-prompt="I need an electrician for ">Electrician</button>
-                <button type="button" class="hero-cat-chip" data-service="Business & Corporate" data-prompt="I need a CA for ">CA / GST</button>
-                <button type="button" class="hero-cat-chip" data-service="Events & Travel" data-prompt="I need packers and movers for ">Packers</button>
-                <button type="button" class="hero-cat-chip" data-service="Tech & Creative" data-prompt="I need a photographer for ">Photographer</button>
-                <button type="button" class="hero-cat-chip" data-service="Anything Else" data-prompt="I need help with ">Other</button>
-              </div>
-              <div class="hero-field hero-field-float">
-                <textarea name="message" id="message" required maxlength="1000" rows="3" aria-label="Task description" aria-required="true" placeholder=" "></textarea>
-                <label for="message">Task details</label>
-                <span class="hero-field-status" id="messageStatus" aria-hidden="true"></span>
-                <span class="hero-char-count" id="messageCount">0 / 1000</span>
-              </div>
-              <div class="hero-step-actions">
-                <button type="button" class="btn-hero-next" id="heroStep1Next">Continue →</button>
-              </div>
-            </div>
-
-            <!-- Step 2: Contact -->
-            <div class="hero-step" data-step="2" id="heroStep2" hidden>
-              <div class="hero-step-head">
-                <h2 class="hero-step-title">How can we reach you?</h2>
-                <p class="hero-step-sub">We'll call or WhatsApp you within minutes.</p>
-              </div>
-              <div class="hero-field hero-field-float">
-                <input type="text" name="fullname" id="fullname" required maxlength="60" autocomplete="name" aria-label="Full name" aria-required="true" placeholder=" ">
-                <label for="fullname">Your name</label>
-                <span class="hero-field-status" aria-hidden="true"></span>
-              </div>
-              <div class="hero-field hero-field-float">
-                <input type="tel" name="phone" id="phone" required maxlength="15" autocomplete="tel" aria-label="Phone number" aria-required="true" placeholder=" ">
-                <label for="phone">Phone / WhatsApp</label>
-                <span class="hero-field-status" aria-hidden="true"></span>
-              </div>
-              <div class="hero-field hero-field-float">
-                <input type="email" name="email" id="email" maxlength="100" autocomplete="email" aria-label="Email address" placeholder=" ">
-                <label for="email">Email <span class="hero-optional">(optional)</span></label>
-                <span class="hero-field-status" aria-hidden="true"></span>
-              </div>
-              <div class="form-address-row">
-                <div class="hero-field hero-field-float hero-field-grow">
-                  <input type="text" name="address" id="exact_address" placeholder=" " maxlength="300" autocomplete="street-address" aria-label="Exact address">
-                  <label for="exact_address">Address <span class="hero-optional">(optional)</span></label>
+            <div class="hero-form-body">
+              <div class="hero-form-section hero-form-block">
+                <div class="hero-form-section-head">
+                  <span class="hero-form-step-num" aria-hidden="true">1</span>
+                  <span class="hero-form-section-label">Your task</span>
                 </div>
-                <button type="button" class="btn-qh-detect" id="heroDetectAddress">Use my location</button>
+                <div class="hero-field hero-field-float">
+                  <textarea name="message" id="message" required maxlength="1000" rows="2" aria-label="Task description" aria-required="true" placeholder=" "></textarea>
+                  <label for="message">What do you need done?</label>
+                  <span class="hero-field-status" id="messageStatus" aria-hidden="true"></span>
+                  <span class="hero-char-count" id="messageCount">0 / 1000</span>
+                </div>
               </div>
-              <select id="serviceSelect" name="service" class="hero-select-hidden" aria-hidden="true" tabindex="-1">
-                <option value="">Service type</option>
-              </select>
-              <select name="source" id="sourceSelect" class="hero-select-hidden" aria-hidden="true" tabindex="-1">
-                <option value="">How did you find us?</option>
-                <option value="google">Google Search</option>
-                <option value="some">Some App</option>
-                <option value="playstore">Playstore</option>
-                <option value="word_of_mouth">Word of Mouth</option>
-                <option value="returning">I've used InstaHelp before</option>
-                <option value="other">Other</option>
-              </select>
-              <select name="prior_payment" id="priorPayment" class="hero-select-hidden" aria-hidden="true" tabindex="-1">
-                <option value="">Have you used InstaHelp before?</option>
-                <option value="no">No, not yet</option>
-                <option value="yes_here">Yes, through this website</option>
-                <option value="yes_elsewhere">Yes, through a different app or platform</option>
-              </select>
-              <div class="hero-step-actions hero-step-actions-split">
-                <button type="button" class="btn-hero-back" id="heroStep2Back">← Back</button>
-                <button type="button" class="btn-hero-next" id="heroStep2Next">Review →</button>
+
+              <div class="hero-form-section hero-form-block">
+                <div class="hero-form-section-head">
+                  <span class="hero-form-step-num" aria-hidden="true">2</span>
+                  <span class="hero-form-section-label">Your details</span>
+                </div>
+                <div class="hero-form-row">
+                  <div class="hero-field hero-field-float">
+                    <input type="text" name="fullname" id="fullname" required maxlength="60" autocomplete="name" aria-label="Full name" aria-required="true" placeholder=" ">
+                    <label for="fullname">Your name</label>
+                    <span class="hero-field-status" aria-hidden="true"></span>
+                  </div>
+                  <div class="hero-field hero-field-float">
+                    <input type="tel" name="phone" id="phone" required maxlength="15" autocomplete="tel" aria-label="Phone number" aria-required="true" placeholder=" ">
+                    <label for="phone">Phone</label>
+                    <span class="hero-field-status" aria-hidden="true"></span>
+                  </div>
+                </div>
+                <div class="hero-field hero-field-float">
+                  <input type="email" name="email" id="email" required maxlength="100" autocomplete="email" aria-label="Email address" aria-required="true" placeholder=" ">
+                  <label for="email">Email</label>
+                  <span class="hero-field-status" aria-hidden="true"></span>
+                </div>
+                <div class="form-address-row">
+                  <div class="hero-field hero-field-float hero-field-grow">
+                    <input type="text" name="address" id="exact_address" required placeholder=" " maxlength="300" autocomplete="street-address" aria-label="Exact address" aria-required="true">
+                    <label for="exact_address">Address</label>
+                    <span class="hero-field-status" aria-hidden="true"></span>
+                  </div>
+                  <button type="button" class="btn-qh-detect btn-qh-detect-hero" id="heroDetectAddress" aria-label="Use my current location">
+                    <i data-lucide="map-pin" aria-hidden="true" style="width:13px;height:13px;"></i>
+                    <span class="btn-qh-detect-label">Location</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="hero-form-consent">
+                <div class="consent-row consent-row-compact">
+                  <input type="checkbox" name="evidence_consent" id="evidence_consent" required aria-required="true">
+                  <label for="evidence_consent">I consent to InstaHelp connecting me with vetted third-party providers for this request.</label>
+                </div>
+              </div>
+
+              <div class="hero-form-footer">
+                <button type="submit" class="btn-submit btn-hero-submit" id="heroSubmitBtn" data-default-label="Send request">
+                  <span class="btn-hero-submit-text">Send request</span>
+                  <i data-lucide="arrow-right" aria-hidden="true" class="btn-hero-submit-icon"></i>
+                </button>
+                <p class="form-secure-note">
+                  <i data-lucide="lock" aria-hidden="true" style="width:11px;height:11px;"></i>
+                  Secure · Encrypted submission
+                </p>
               </div>
             </div>
 
-            <!-- Step 3: Review & send -->
-            <div class="hero-step" data-step="3" id="heroStep3" hidden>
-              <div class="hero-step-head">
-                <h2 class="hero-step-title">Ready to send?</h2>
-                <p class="hero-step-sub">Double-check your request below.</p>
-              </div>
-              <div class="hero-review" id="heroReview">
-                <div class="hero-review-row"><span class="hero-review-label">Task</span><span class="hero-review-val" id="reviewTask">Not set yet</span></div>
-                <div class="hero-review-row"><span class="hero-review-label">Name</span><span class="hero-review-val" id="reviewName">Not set yet</span></div>
-                <div class="hero-review-row"><span class="hero-review-label">Phone</span><span class="hero-review-val" id="reviewPhone">Not set yet</span></div>
-              </div>
-              <div class="consent-row consent-row-compact">
-                <input type="checkbox" name="evidence_consent" id="evidence_consent" required aria-required="true">
-                <label for="evidence_consent">I consent to InstaHelp connecting me with vetted third-party providers for this request.</label>
-              </div>
-              <div class="hero-step-actions hero-step-actions-split">
-                <button type="button" class="btn-hero-back" id="heroStep3Back">← Back</button>
-                <button type="submit" class="btn-submit btn-hero-submit" id="heroSubmitBtn" data-default-label="Send request →">
-                  <span class="btn-hero-submit-text">Send request →</span>
-                </button>
-              </div>
-              <div class="form-secure-note">
-                <i data-lucide="lock" style="width:11px;height:11px;"></i> Secure · Encrypted submission
-              </div>
-            </div>
+            <select id="serviceSelect" name="service" class="hero-select-hidden" aria-hidden="true" tabindex="-1">
+              <option value="">Service type</option>
+            </select>
+            <select name="source" id="sourceSelect" class="hero-select-hidden" aria-hidden="true" tabindex="-1">
+              <option value="">How did you find us?</option>
+              <option value="google">Google Search</option>
+              <option value="some">Some App</option>
+              <option value="playstore">Playstore</option>
+              <option value="word_of_mouth">Word of Mouth</option>
+              <option value="returning">I've used InstaHelp before</option>
+              <option value="other">Other</option>
+            </select>
+            <select name="prior_payment" id="priorPayment" class="hero-select-hidden" aria-hidden="true" tabindex="-1">
+              <option value="">Have you used InstaHelp before?</option>
+              <option value="no">No, not yet</option>
+              <option value="yes_here">Yes, through this website</option>
+              <option value="yes_elsewhere">Yes, through a different app or platform</option>
+            </select>
 
             <input type="hidden" name="referrer_url" id="referrer_url">
             <input type="hidden" name="utm_source" id="utm_source">
@@ -1225,10 +1219,6 @@
       <div class="footer-brand">
         <span class="footer-logo">InstaHelp<span>&reg;</span></span>
         <p class="footer-tag">India's personal Assistant since 2015. One team for home, business, travel, and almost anything else &mdash; arranged through verified third-party providers.</p>
-        <div class="footer-badge">
-          <span class="footer-badge-dot" aria-hidden="true"></span>
-          Operating since April 2015 &middot; Bengaluru
-        </div>
         <div class="footer-socials" aria-label="Contact channels">
           <a href="https://wa.me/917022702220" class="footer-social-btn wa" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
             <i data-lucide="message-circle" aria-hidden="true"></i>
@@ -1286,120 +1276,108 @@
       </nav>
     </div>
 
-    <div class="footer-info seo-footer-strip">
-      <p class="seo-lede">InstaHelp&reg; coordinates verified third-party providers for home, business, and travel across India.</p>
-
-      <details class="footer-expand">
-        <summary>About InstaHelp</summary>
-        <div class="seo-kw">
-          <p>
-            <strong>InstaHelp&reg;</strong> operates as a <strong>Assistant-based commercial intermediation platform</strong> (Trademark Class 35) connecting users with verified <strong>third-party service providers</strong> across India. Whether you are looking for <strong>InstaHelp home services</strong> (repairs, cleaning, maintenance), <strong>InstaHelp business support</strong> (CAs, legal, procurement, office functions), or <strong>InstaHelp travel and event coordination</strong>, our human Assistant team handles end-to-end sourcing, <strong>arranging contracts</strong> and coordinating delivery on your behalf.
-          </p>
-          <p>
-            We arrange and intermediate trusted professionals with deep operational coverage across all major regional hubs in <strong>Tier-1 metros</strong> like <strong>Delhi NCR, Mumbai, Bangalore, Hyderabad, Chennai, and Kolkata</strong>. We also bring the same seamless coordination to booming <strong>Tier-2 and Tier-3 cities (coming soon)</strong>, including <strong>Pune, Ahmedabad, Jaipur, Surat, Siliguri, Coimbatore, Amritsar, Lucknow, Indore, Bhopal, Chandigarh, Kochi and many more</strong>.
-          </p>
-          <p>
-            Instead of endlessly searching for "reliable <strong>services near me</strong>," simply tell us your task. <strong>InstaHelp&reg;</strong> will intermediate the right local expert matched to your exact location and timeline. We do not perform the underlying work directly &mdash; we arrange it through verified providers under our Class 35 mandate of <strong>commercial intermediation, business management for others, and arranging contracts for the supply of services</strong>.
-          </p>
-        </div>
-      </details>
-
-      <details class="footer-expand">
-        <summary>Cities we serve</summary>
-        <div class="seo-cities" aria-label="Service areas across India">
-          <span class="instaHelp-city-pill">Delhi</span>
-          <span class="instaHelp-city-pill">Mumbai</span>
-          <span class="instaHelp-city-pill">Bangalore</span>
-          <span class="instaHelp-city-pill">Hyderabad</span>
-          <span class="instaHelp-city-pill">Chennai</span>
-          <span class="instaHelp-city-pill">Kolkata</span>
-          <span class="instaHelp-city-pill">Pune</span>
-          <span class="instaHelp-city-pill">Ahmedabad</span>
-          <span class="instaHelp-city-pill">Surat</span>
-          <span class="instaHelp-city-pill">Jaipur</span>
-          <span class="instaHelp-city-pill">Lucknow</span>
-          <span class="instaHelp-city-pill">Kanpur</span>
-          <span class="instaHelp-city-pill">Nagpur</span>
-          <span class="instaHelp-city-pill">Indore</span>
-          <span class="instaHelp-city-pill">Bhopal</span>
-          <span class="instaHelp-city-pill">Visakhapatnam</span>
-          <span class="instaHelp-city-pill">Patna</span>
-          <span class="instaHelp-city-pill">Vadodara</span>
-          <span class="instaHelp-city-pill">Ghaziabad</span>
-          <span class="instaHelp-city-pill">Ludhiana</span>
-          <span class="instaHelp-city-pill">Agra</span>
-          <span class="instaHelp-city-pill">Nashik</span>
-          <span class="instaHelp-city-pill">Faridabad</span>
-          <span class="instaHelp-city-pill">Rajkot</span>
-          <span class="instaHelp-city-pill">Varanasi</span>
-          <span class="instaHelp-city-pill">Amritsar</span>
-          <span class="instaHelp-city-pill">Ranchi</span>
-          <span class="instaHelp-city-pill">Gwalior</span>
-          <span class="instaHelp-city-pill">Jabalpur</span>
-          <span class="instaHelp-city-pill">Coimbatore</span>
-          <span class="instaHelp-city-pill">Vijayawada</span>
-          <span class="instaHelp-city-pill">Jodhpur</span>
-          <span class="instaHelp-city-pill">Madurai</span>
-          <span class="instaHelp-city-pill">Raipur</span>
-          <span class="instaHelp-city-pill">Kota</span>
-          <span class="instaHelp-city-pill">Guwahati</span>
-          <span class="instaHelp-city-pill">Chandigarh</span>
-          <span class="instaHelp-city-pill">Thiruvananthapuram</span>
-          <span class="instaHelp-city-pill">Coming Soon</span>
-          <span class="instaHelp-city-pill">Ujjain</span>
-          <span class="instaHelp-city-pill">Mysore</span>
-          <span class="instaHelp-city-pill">Dehradun</span>
-          <span class="instaHelp-city-pill">Udaipur</span>
-          <span class="instaHelp-city-pill">Kochi</span>
-          <span class="instaHelp-city-pill">Bhubaneswar</span>
-          <span class="instaHelp-city-pill">Jamshedpur</span>
-          <span class="instaHelp-city-pill">Bikaner</span>
-          <span class="instaHelp-city-pill">Mangalore</span>
-          <span class="instaHelp-city-pill">Belagavi</span>
-          <span class="instaHelp-city-pill">Hubli</span>
-          <span class="instaHelp-city-pill">Salem</span>
-          <span class="instaHelp-city-pill">Tiruchirappalli</span>
-          <span class="instaHelp-city-pill">Cuttack</span>
-          <span class="instaHelp-city-pill">Bokaro</span>
-          <span class="instaHelp-city-pill">Durgapur</span>
-          <span class="instaHelp-city-pill">Rourkela</span>
-          <span class="instaHelp-city-pill">Kolhapur</span>
-          <span class="instaHelp-city-pill">Ajmer</span>
-          <span class="instaHelp-city-pill">Jamnagar</span>
-          <span class="instaHelp-city-pill">Rohtak</span>
-          <span class="instaHelp-city-pill">Jhansi</span>
-          <span class="instaHelp-city-pill">Aligarh</span>
-          <span class="instaHelp-city-pill">Mathura</span>
-          <span class="instaHelp-city-pill">Shimla</span>
-          <span class="instaHelp-city-pill">Shillong</span>
-          <span class="instaHelp-city-pill">Request for your city!</span>
-        </div>
-      </details>
-    </div>
-
     <div class="footer-bottom">
-      <div class="footer-bottom-row">
+      <div class="footer-legal">
+        <div class="footer-expand-row">
+          <details class="footer-expand footer-expand-mini">
+            <summary>About InstaHelp</summary>
+            <div class="seo-kw">
+              <p>
+                <strong>InstaHelp&reg;</strong> operates as a <strong>Assistant-based commercial intermediation platform</strong> (Trademark Class 35) connecting users with verified <strong>third-party service providers</strong> across India. Whether you are looking for <strong>InstaHelp home services</strong> (repairs, cleaning, maintenance), <strong>InstaHelp business support</strong> (CAs, legal, procurement, office functions), or <strong>InstaHelp travel and event coordination</strong>, our human Assistant team handles end-to-end sourcing, <strong>arranging contracts</strong> and coordinating delivery on your behalf.
+              </p>
+              <p>
+                We arrange and intermediate trusted professionals with deep operational coverage across all major regional hubs in <strong>Tier-1 metros</strong> like <strong>Delhi NCR, Mumbai, Bangalore, Hyderabad, Chennai, and Kolkata</strong>. We also bring the same seamless coordination to booming <strong>Tier-2 and Tier-3 cities (coming soon)</strong>, including <strong>Pune, Ahmedabad, Jaipur, Surat, Siliguri, Coimbatore, Amritsar, Lucknow, Indore, Bhopal, Chandigarh, Kochi and many more</strong>.
+              </p>
+              <p>
+                Instead of endlessly searching for "reliable <strong>services near me</strong>," simply tell us your task. <strong>InstaHelp&reg;</strong> will intermediate the right local expert matched to your exact location and timeline. We do not perform the underlying work directly &mdash; we arrange it through verified providers under our Class 35 mandate of <strong>commercial intermediation, business management for others, and arranging contracts for the supply of services</strong>.
+              </p>
+            </div>
+          </details>
+
+          <details class="footer-expand footer-expand-mini">
+            <summary>Cities we serve</summary>
+            <div class="seo-cities" aria-label="Service areas across India">
+              <span class="instaHelp-city-pill">Delhi</span>
+              <span class="instaHelp-city-pill">Mumbai</span>
+              <span class="instaHelp-city-pill">Bangalore</span>
+              <span class="instaHelp-city-pill">Hyderabad</span>
+              <span class="instaHelp-city-pill">Chennai</span>
+              <span class="instaHelp-city-pill">Kolkata</span>
+              <span class="instaHelp-city-pill">Pune</span>
+              <span class="instaHelp-city-pill">Ahmedabad</span>
+              <span class="instaHelp-city-pill">Surat</span>
+              <span class="instaHelp-city-pill">Jaipur</span>
+              <span class="instaHelp-city-pill">Lucknow</span>
+              <span class="instaHelp-city-pill">Kanpur</span>
+              <span class="instaHelp-city-pill">Nagpur</span>
+              <span class="instaHelp-city-pill">Indore</span>
+              <span class="instaHelp-city-pill">Bhopal</span>
+              <span class="instaHelp-city-pill">Visakhapatnam</span>
+              <span class="instaHelp-city-pill">Patna</span>
+              <span class="instaHelp-city-pill">Vadodara</span>
+              <span class="instaHelp-city-pill">Ghaziabad</span>
+              <span class="instaHelp-city-pill">Ludhiana</span>
+              <span class="instaHelp-city-pill">Agra</span>
+              <span class="instaHelp-city-pill">Nashik</span>
+              <span class="instaHelp-city-pill">Faridabad</span>
+              <span class="instaHelp-city-pill">Rajkot</span>
+              <span class="instaHelp-city-pill">Varanasi</span>
+              <span class="instaHelp-city-pill">Amritsar</span>
+              <span class="instaHelp-city-pill">Ranchi</span>
+              <span class="instaHelp-city-pill">Gwalior</span>
+              <span class="instaHelp-city-pill">Jabalpur</span>
+              <span class="instaHelp-city-pill">Coimbatore</span>
+              <span class="instaHelp-city-pill">Vijayawada</span>
+              <span class="instaHelp-city-pill">Jodhpur</span>
+              <span class="instaHelp-city-pill">Madurai</span>
+              <span class="instaHelp-city-pill">Raipur</span>
+              <span class="instaHelp-city-pill">Kota</span>
+              <span class="instaHelp-city-pill">Guwahati</span>
+              <span class="instaHelp-city-pill">Chandigarh</span>
+              <span class="instaHelp-city-pill">Thiruvananthapuram</span>
+              <span class="instaHelp-city-pill">Coming Soon</span>
+              <span class="instaHelp-city-pill">Ujjain</span>
+              <span class="instaHelp-city-pill">Mysore</span>
+              <span class="instaHelp-city-pill">Dehradun</span>
+              <span class="instaHelp-city-pill">Udaipur</span>
+              <span class="instaHelp-city-pill">Kochi</span>
+              <span class="instaHelp-city-pill">Bhubaneswar</span>
+              <span class="instaHelp-city-pill">Jamshedpur</span>
+              <span class="instaHelp-city-pill">Bikaner</span>
+              <span class="instaHelp-city-pill">Mangalore</span>
+              <span class="instaHelp-city-pill">Belagavi</span>
+              <span class="instaHelp-city-pill">Hubli</span>
+              <span class="instaHelp-city-pill">Salem</span>
+              <span class="instaHelp-city-pill">Tiruchirappalli</span>
+              <span class="instaHelp-city-pill">Cuttack</span>
+              <span class="instaHelp-city-pill">Bokaro</span>
+              <span class="instaHelp-city-pill">Durgapur</span>
+              <span class="instaHelp-city-pill">Rourkela</span>
+              <span class="instaHelp-city-pill">Kolhapur</span>
+              <span class="instaHelp-city-pill">Ajmer</span>
+              <span class="instaHelp-city-pill">Jamnagar</span>
+              <span class="instaHelp-city-pill">Rohtak</span>
+              <span class="instaHelp-city-pill">Jhansi</span>
+              <span class="instaHelp-city-pill">Aligarh</span>
+              <span class="instaHelp-city-pill">Mathura</span>
+              <span class="instaHelp-city-pill">Shimla</span>
+              <span class="instaHelp-city-pill">Shillong</span>
+              <span class="instaHelp-city-pill">Request for your city!</span>
+            </div>
+          </details>
+        </div>
+
         <p class="footer-copy">&copy; 2015&ndash;2026 InstaHelp. All rights reserved.</p>
-        <nav class="footer-legal-nav" aria-label="Footer links">
-          <a href="https://www.instahelp.co">instahelp.co</a>
-          <a href="https://www.instahelp.in">instahelp.in</a>
-          <a href="/plans">Plans</a>
-          <a href="transactions.html">Transactions</a>
-          <a href="admin-payment.html">PhonePe Setup</a>
-        </nav>
+        <p class="footer-disclaimer">Class 35 commercial intermediation &mdash; providers operate independently.</p>
+        <p class="tm-notice">INSTAHELP&reg; is a registered trademark of Kamlesh Singhvee (Reg. No. 3299283, Class 35 — advertising, business management, business administration, office functions and commercial intermediation services). All rights reserved.</p>
+        <p class="footer-seo-lede">InstaHelp&reg; coordinates verified third-party providers for home, business, and travel across India.</p>
       </div>
-      <p class="footer-disclaimer">Class 35 commercial intermediation &mdash; providers operate independently.</p>
-      <p class="tm-notice">INSTAHELP&reg; is a registered trademark of Kamlesh Singhvee (Reg. No. 3299283, Class 35 — advertising, business management, business administration, office functions and commercial intermediation services). All rights reserved.</p>
     </div>
 
   </div>
 </footer>
 
 <iframe id="ihGsheetFrame" name="ihGsheetFrame" title="Form submission to sheet" aria-hidden="true" tabindex="-1" style="position:absolute;width:0;height:0;left:0;bottom:0;border:0;clip:rect(0,0,0,0)"></iframe>
-
-<a href="https://wa.me/917022702220?text=Hi%20InstaHelp%2C%20I%20need%20assistance." class="fab-wa" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp to message InstaHelp" title="WhatsApp">
-  <i data-lucide="message-circle" aria-hidden="true" class="fab-wa-ic" style="width:25px;height:25px;"></i>
-</a>
 
 <div id="quickHelpModal" class="ih-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="qh-modal-title">
   <div class="ih-modal-panel">
