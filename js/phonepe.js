@@ -21,7 +21,7 @@
       'pay.phonepe.com',
       'pay-uat.phonepe.com'
     ],
-    /* Future API endpoints — used when backend is added */
+    /* Future API endpoints - used when backend is added */
     API: {
       PRODUCTION: 'https://api.phonepe.com/apis/hermes',
       SANDBOX: 'https://api-preprod.phonepe.com/apis/hermes'
@@ -164,7 +164,7 @@
   }
 
   /**
-   * Initialize PhonePe — validate config, return status.
+   * Initialize PhonePe - validate config, return status.
    * Call on admin load and checkout page load.
    */
   function initPhonePe() {
@@ -176,7 +176,7 @@
   }
 
   /**
-   * Start payment — main entry point (like an API call).
+   * Start payment - main entry point (like an API call).
    * Returns { ok, redirectUrl, error, status }
    */
   function startPayment(orderMeta, options) {
@@ -218,7 +218,7 @@
   }
 
   /**
-   * Future API stub — when backend exists, replace body with fetch() to your server.
+   * Future API stub - when backend exists, replace body with fetch() to your server.
    * Server should call PhonePe /pg/v1/pay and return redirectUrl.
    */
   function initiatePaymentAPI(payload) {

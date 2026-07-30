@@ -1,5 +1,5 @@
 /**
- * InstaHelp Plans — fixed pricing, no random amounts
+ * InstaHelp Plans - fixed pricing, no random amounts
  */
 (function (global) {
   'use strict';

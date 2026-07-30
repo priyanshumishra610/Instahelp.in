@@ -1,5 +1,5 @@
 /**
- * Doodle Theme — decoration loader
+ * Doodle Theme - decoration loader
  * Injects floating stars/strings when <body class="doodle-page">.
  * Requires css/doodle.css from this folder.
  */

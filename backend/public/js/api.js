@@ -1,6 +1,6 @@
 /**
  * InstaHelp API Client
- * All PhonePe operations go through the backend — never call PhonePe directly.
+ * All PhonePe operations go through the backend - never call PhonePe directly.
  */
 (function (global) {
   'use strict';

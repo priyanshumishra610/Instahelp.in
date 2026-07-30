@@ -2,7 +2,7 @@
 
 This guide deploys the **backend API + frontend** as one service (Express serves static HTML and `/api/*`).
 
-You already use **Supabase PostgreSQL** — keep that `DATABASE_URL`; you only need a Node host (Render, Railway, Fly.io, or any VPS with Docker).
+You already use **Supabase PostgreSQL** - keep that `DATABASE_URL`; you only need a Node host (Render, Railway, Fly.io, or any VPS with Docker).
 
 ---
 
@@ -18,7 +18,7 @@ Copy values from `backend/.env` into your host’s secret env panel. Required:
 | `PORT` | `4000` (or host-assigned `PORT`) |
 | `DATABASE_URL` | Supabase connection string (Session pooler recommended) |
 | `JWT_SECRET` | Long random string (32+ chars) |
-| `ENCRYPTION_KEY` | 64-char hex (same as local — **do not change** after encrypting credentials) |
+| `ENCRYPTION_KEY` | 64-char hex (same as local - **do not change** after encrypting credentials) |
 | `API_BASE_URL` | `https://your-domain.com` |
 | `FRONTEND_URL` | `https://your-domain.com` |
 | `CORS_ORIGINS` | `https://your-domain.com` |
@@ -61,7 +61,7 @@ The Docker start command also runs `prisma migrate deploy` automatically.
 
 ---
 
-## Option A — Render (recommended)
+## Option A - Render (recommended)
 
 1. Push this project to GitHub (private repo is fine).
 2. Go to [render.com](https://render.com) → **New** → **Blueprint** → connect repo.
@@ -75,7 +75,7 @@ The Docker start command also runs `prisma migrate deploy` automatically.
 
 ---
 
-## Option B — Docker on a VPS
+## Option B - Docker on a VPS
 
 ```bash
 # On the server
@@ -98,7 +98,7 @@ Put **Nginx/Caddy** in front for HTTPS on port 443.
 
 ---
 
-## Option C — Railway / Fly.io
+## Option C - Railway / Fly.io
 
 - **Railway:** New project → Deploy from GitHub → set root `Dockerfile`, add env vars, expose port `4000`.
 - **Fly.io:** `fly launch` in repo root, set secrets with `fly secrets set`, deploy.

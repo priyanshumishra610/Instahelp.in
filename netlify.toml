@@ -1,4 +1,4 @@
-# Netlify build settings — connect this repo and deploy from main branch.
+# Netlify build settings - connect this repo and deploy from main branch.
 # Site settings → Build & deploy → Link repository → Instahelp.in
 
 [build]

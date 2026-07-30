@@ -1,4 +1,4 @@
-# instahelp.in — Implementation Brief v2
+# instahelp.in - Implementation Brief v2
 
 **Supersedes v1 entirely.** Several positions in v1 were wrong and are corrected here.
 
@@ -31,12 +31,12 @@ This produces one narrow rule, and it is narrower than v1 stated:
 > offer need not be.**
 
 That distinction is the spine of this document. It lets the site keep every city, every
-locality and every category — the SEO surface stays intact — while removing the specific
+locality and every category - the SEO surface stays intact - while removing the specific
 sentences that would require an invoice to defend under cross-examination.
 
 ### Do not touch
 
-- `Since 2015`, `Operating since April 2015`, `© 2015–2026`
+- `Since 2015`, `Operating since April 2015`, `© 2015-2026`
 - The footer trade mark notice referencing Reg. No. 3299283, Class 35
 - `+91 70227 02220`, WhatsApp links, `mail@instahelp.in`, `@i7022702220`
 - The core positioning: InstaHelp arranges and coordinates independent providers and does
@@ -49,7 +49,7 @@ placeholder in your completion summary.
 
 ---
 
-# P0 — Legal exposure. Ship first.
+# P0 - Legal exposure. Ship first.
 
 ## P0-1. Change the verb on every coverage claim. Keep the cities.
 
@@ -60,14 +60,14 @@ from *delivery* to *intake and reach*.
 
 | Claim type | Needs proof? | Use freely |
 |---|---|---|
-| "We serve 30+ cities" | Yes — an invoice per city | No |
+| "We serve 30+ cities" | Yes - an invoice per city | No |
 | "On-demand assistant services across Rourkela" | Yes | No |
 | "We take requests from anywhere in India" | No | Yes |
 | "Send your pin code and we will confirm coverage" | No | Yes |
 | "We source providers nationwide" | No | Yes |
 | "Available in Whitefield, Marathahalli, Sarjapur Road" | Where genuinely operating | Yes, for real operating areas |
 
-**Action — string replacements:**
+**Action - string replacements:**
 
 | Remove | Replace with |
 |---|---|
@@ -78,7 +78,7 @@ from *delivery* to *intake and reach*.
 | `30+ Indian Cities` in `<title>` | `Nationwide` or `India` |
 
 **Keep as-is:** the "Coming Soon" tags. They are honest and they are a shield, not a
-liability — they say explicitly that a city is not yet live.
+liability - they say explicitly that a city is not yet live.
 
 **Keep as-is:** the honest depth statement. Saying Bengaluru is the strongest market is
 truthful, defensible, and reads as credible rather than inflated.
@@ -100,7 +100,7 @@ honest use.
 
 What is **not** defensible is framing that implies traction inside, or appointment by, that
 development. `Popular in apartment complexes including Prestige Shantiniketan` is not a
-coverage statement — it asserts standing within a named private community. Builders and
+coverage statement - it asserts standing within a named private community. Builders and
 resident associations do send cease-and-desist letters over exactly this, and many gated
 communities run exclusive vendor panels they actively police. A C&D landing while the
 rectification is pending is the specific harm to avoid; litigation is unlikely.
@@ -127,11 +127,11 @@ rectification is pending is the specific harm to avoid; litigation is unlikely.
 
 3. **Restructure for SEO, which matters more than the legal point here.** Forty complex
    names listed on the homepage is a keyword block. It will not rank in 2026 and it dilutes
-   the homepage. See **P1-1** — these terms belong on individual location pages with real
+   the homepage. See **P1-1** - these terms belong on individual location pages with real
    content, and that is where they will actually earn traffic.
 
 4. Remove any complex name where the business has genuinely never taken a request from that
-   community. Not for legal reasons — because a location page for a place you have never
+   community. Not for legal reasons - because a location page for a place you have never
    served will be thin content and will drag the whole location cluster down.
 
 ---
@@ -153,16 +153,16 @@ competitor's offering.
 | Remove | Replace with |
 |---|---|
 | `Skip JustDial's paid listings and endless Google scrolling.` | `Directories give you twenty numbers. We give you one person who makes the calls.` |
-| `Skip JustDial and Google — tell us what you need, we get it done.` | `Instead of a list of numbers, one team that sees it through.` |
+| `Skip JustDial and Google - tell us what you need, we get it done.` | `Instead of a list of numbers, one team that sees it through.` |
 
 The problem was the implication that JustDial's listings are pay-to-play and therefore
 untrustworthy. That is a statement about the quality of their service and it is the
-denigration. Describing the *category* limitation — a directory hands you a list, we hand
-you an outcome — is honest positioning and is not actionable.
+denigration. Describing the *category* limitation - a directory hands you a list, we hand
+you an outcome - is honest positioning and is not actionable.
 
 **Keep the competitor names.** They are legitimate and, for a challenger brand, valuable.
 
-**Action — build comparison pages** (see P1-2). Rules for their content:
+**Action - build comparison pages** (see P1-2). Rules for their content:
 
 - Compare like with like. Compare your intermediation model against their directory or
   marketplace model. Do not compare against a mischaracterised version of their offering.
@@ -191,7 +191,7 @@ InstaHelp is not affiliated with any of them.
 The owner has confirmed a genuine vetting process exists and that several aspects are
 personally checked. **v1's instruction to strip the word `verified` is withdrawn.**
 
-But an undescribed `verified` is still weak — under the Consumer Protection Act 2019 an
+But an undescribed `verified` is still weak - under the Consumer Protection Act 2019 an
 unsubstantiated quality claim is a misrepresentation, and if a provider causes loss at a
 customer's premises, "verified by InstaHelp" is the first exhibit against you. The fix is
 specificity, and specificity is also the strongest differentiator you have against a
@@ -216,7 +216,7 @@ Then, on marketing pages, replace bare claims with specific ones:
 
 | Remove | Replace with |
 |---|---|
-| `vetted third-party providers` | `providers we have checked ourselves — <one concrete check>` linking to `/how-we-vet` |
+| `vetted third-party providers` | `providers we have checked ourselves - <one concrete check>` linking to `/how-we-vet` |
 | `verified property agents` | `agents we have worked with and checked` linking to `/how-we-vet` |
 
 **Do not state any check that is not actually performed.** A vetting page describing checks
@@ -237,7 +237,7 @@ and represents that an app exists when it does not.
 `play.google.com/.../badges` URLs. Replace with:
 
 ```
-InstaHelp app — in development.
+InstaHelp app - in development.
 [ Join the waitlist ]  ->  /app-waitlist
 ```
 
@@ -277,7 +277,7 @@ content must be visible to human visitors in normal rendering.
 ## P0-8. Statutory disclosures in the footer
 
 **Holding this from v1 and strengthening it.** If the objective is to become a marketplace
-competing with JustDial and IndiaMART, these disclosures move from advisable to mandatory —
+competing with JustDial and IndiaMART, these disclosures move from advisable to mandatory -
 and Google's E-E-A-T signals actively reward visible, verifiable business identity. Anonymity
 suppresses rankings for commercial-intent queries. Compliance and ranking align completely
 here.
@@ -291,7 +291,7 @@ safe harbour under Section 79 of the IT Act.
 
 ```
 Operated by [[FILL: exact legal name of the InstaHelp operating entity, as on its
-GST registration — NOT Singhvee Ventures]]
+GST registration - NOT Singhvee Ventures]]
 [[FILL: full principal place of business address, Bengaluru]]
 GSTIN: [[FILL: GSTIN of the InstaHelp operating entity]]
 
@@ -318,7 +318,7 @@ framework requires notice at the point of collection covering purpose, retention
 individual's rights.
 
 > The commencement and rules position under DPDP has been moving. The owner must confirm
-> the operative compliance date with counsel. Implement regardless — it costs nothing and a
+> the operative compliance date with counsel. Implement regardless - it costs nothing and a
 > marketplace handling consumer data at scale will need it.
 
 **Action:**
@@ -336,7 +336,7 @@ individual's rights.
 2. Collection notice beneath the form:
 
    ```
-   We collect your name, contact details and — only if you choose to share it —
+   We collect your name, contact details and - only if you choose to share it -
    your location, in order to match your request to a provider. We keep this for
    [[FILL: retention period]] and then delete it. You can ask us to correct or
    delete your data at any time at mail@instahelp.in. Full details in our
@@ -354,7 +354,7 @@ individual's rights.
 
 Copy that recites statutory classification language reads as drafted-for-litigation, which
 reduces its evidentiary weight. It is also meaningless to customers, **and it actively
-degrades LLM retrieval** — models answering "who can arrange a plumber and a CA in
+degrades LLM retrieval** - models answering "who can arrange a plumber and a CA in
 Bangalore?" match against plain descriptions of what you do, not against classification
 terminology. The jargon makes you harder to cite, not easier.
 
@@ -364,13 +364,13 @@ terminology. The jargon makes you harder to cite, not easier.
 |---|---|
 | `operates as a **Assistant-based commercial intermediation platform** (Trademark Class 35)` | `is a Bengaluru-based assistant service. You tell us what you need; we find, check and manage the right independent provider, and stay on it until it is done.` |
 | `under our Class 35 mandate of **commercial intermediation, business management for others, and arranging contracts for the supply of services**` | `We do not carry out the work ourselves. We source it, brief it, negotiate it and follow it through.` |
-| `Class 35 commercial intermediation — providers operate independently.` (footer strip) | `We arrange work through independent providers who operate on their own account.` |
+| `Class 35 commercial intermediation - providers operate independently.` (footer strip) | `We arrange work through independent providers who operate on their own account.` |
 | `commercial intermediation`, `Class 35 services India` in `<meta name="keywords">` | delete |
 
 **Keep unchanged:** the single footer notice
-`INSTAHELP® is a registered trademark of Kamlesh Singhvee (Reg. No. 3299283, Class 35 — ...)`.
+`INSTAHELP® is a registered trademark of Kamlesh Singhvee (Reg. No. 3299283, Class 35 - ...)`.
 
-**Keep in plain English throughout** — this substance is load-bearing and must survive:
+**Keep in plain English throughout** - this substance is load-bearing and must survive:
 
 - InstaHelp does not perform the underlying services
 - providers are independent third parties, not employees or agents
@@ -378,7 +378,7 @@ terminology. The jargon makes you harder to cite, not easier.
 
 ---
 
-## P0-11. Terms, Privacy, Refund, Pricing, Legal — read and report only
+## P0-11. Terms, Privacy, Refund, Pricing, Legal - read and report only
 
 **Do not edit these five pages.** They go to the owner's advocate first.
 
@@ -391,18 +391,18 @@ Read each and report which of the following are missing:
 - [ ] Customer indemnity for claims arising from the provider engagement
 - [ ] Clear statement of InstaHelp's fee and when it is charged
 - [ ] Whether provider payment is collected by InstaHelp or paid direct
-- [ ] Governing law and jurisdiction — Bengaluru
+- [ ] Governing law and jurisdiction - Bengaluru
 - [ ] Grievance escalation route
 - [ ] Provider-side terms: onboarding, conduct standards, removal grounds
 - [ ] Non-affiliation with named developments and competitors
 
 ---
 
-# P1 — SEO architecture for a marketplace-scale site
+# P1 - SEO architecture for a marketplace-scale site
 
 ## P1-1. Replace keyword blocks with a real location × category matrix
 
-The current approach — dozens of city and complex names concatenated on the homepage — is a
+The current approach - dozens of city and complex names concatenated on the homepage - is a
 2012 tactic. It does not rank now and it suppresses the homepage's own topical clarity.
 
 **The architecture that ranks:**
@@ -415,7 +415,7 @@ The current approach — dozens of city and complex names concatenated on the ho
 /<city>/<locality>/<category>/               e.g. /bangalore/whitefield/plumber/
 ```
 
-**Doorway-page rule — non-negotiable.** Google's spam policies treat near-duplicate pages
+**Doorway-page rule - non-negotiable.** Google's spam policies treat near-duplicate pages
 generated at scale as doorway pages, and the penalty is sitewide. Every generated page must
 carry content that exists nowhere else on the site. A template with the city name swapped in
 is a doorway page.
@@ -450,7 +450,7 @@ High commercial intent, high conversion, and legitimate under P0-3.
 ```
 
 Each page: an honest, dated, factual comparison table; a clear statement of who each option
-suits best — including cases where the competitor is the better choice, which raises
+suits best - including cases where the competitor is the better choice, which raises
 credibility and is the single strongest trust signal on a comparison page; the identification
 disclaimer from P0-3.
 
@@ -462,7 +462,7 @@ Do not build a page for any competitor whose model you cannot describe accuratel
    while the site resolves at `https://instahelp.in/`. Choose one host, 301 the other
    permanently, and align canonical, `og:url`, sitemap and all internal links.
 2. **Verify `/og-cover.jpg` returns 200** at the canonical host. A broken OG image kills
-   WhatsApp and LinkedIn previews — a direct loss for a WhatsApp-led business.
+   WhatsApp and LinkedIn previews - a direct loss for a WhatsApp-led business.
 3. **`instahelp.co`.** Decide: 301 to `.in`, or run as a distinct property with distinct
    content. Do not run duplicate content across both. `[[FILL: which?]]`
 4. **Core Web Vitals.** Measure LCP, INP and CLS on mobile before and after. Report both.
@@ -518,13 +518,13 @@ shipping them.
 
 ---
 
-# P2 — Ranking in LLM answers
+# P2 - Ranking in LLM answers
 
 An honest assessment, because there is a lot of noise in this area.
 
 ## P2-1. Remove the `meta-ai.*` tags
 
-The site carries custom tags — `meta-ai.category`, `meta-ai.description`,
+The site carries custom tags - `meta-ai.category`, `meta-ai.description`,
 `meta-ai.differentiator`, `meta-ai.alternatives_to`, `meta-ai.use_cases`.
 
 **There is no evidence that any major LLM crawler reads custom `meta-ai.*` tags.** They are
@@ -535,13 +535,13 @@ They are not neutral, though: they carry claims that are as discoverable as visi
 `meta-ai.alternatives_to: JustDial, IndiaMART, Sulekha` is a competitor-comparison assertion
 sitting in your markup where you cannot contextualise or date it.
 
-**Action:** delete all `meta-ai.*` tags. Move the genuinely useful content — the description
-of what InstaHelp does, the differentiator, the use cases — into **visible page text**, which
+**Action:** delete all `meta-ai.*` tags. Move the genuinely useful content - the description
+of what InstaHelp does, the differentiator, the use cases - into **visible page text**, which
 is what actually gets retrieved and cited.
 
 ## P2-2. What does appear to work
 
-Stated with appropriate uncertainty — this field is young and practices are unsettled:
+Stated with appropriate uncertainty - this field is young and practices are unsettled:
 
 1. **Plain, factual, self-contained sentences.** Models cite text that answers a question
    without needing surrounding context. `InstaHelp is a Bengaluru-based service that finds
@@ -576,10 +576,10 @@ substantiates the vetting claim from P0-4 with numbers instead of adjectives.
 
 ---
 
-# P3 — Marketplace build-out. Flag now, decide later.
+# P3 - Marketplace build-out. Flag now, decide later.
 
 If the direction is a JustDial or IndiaMART competitor, note these before architecture
-decisions get baked in. **Do not implement — surface them to the owner.**
+decisions get baked in. **Do not implement - surface them to the owner.**
 
 1. **Payment handling.** If InstaHelp collects customer money and remits to providers, RBI's
    Payment Aggregator framework applies and either authorisation or an authorised PA partner
@@ -592,7 +592,7 @@ decisions get baked in. **Do not implement — surface them to the owner.**
 4. **Trade mark class coverage.** The registration is Class 35, which covers provision of an
    online marketplace and is well positioned for this. A software platform may implicate
    Class 42; payment services Class 36; transport and travel arrangement Class 39. Worth
-   putting to the owner's advocate before launch — this is a note for counsel, not an
+   putting to the owner's advocate before launch - this is a note for counsel, not an
    instruction.
 5. **Listing-scraping.** Do not populate provider listings by scraping competitor
    directories. Database rights, terms-of-service breach, and a catastrophic look given
@@ -600,18 +600,18 @@ decisions get baked in. **Do not implement — surface them to the owner.**
 
 ---
 
-# P4 — Conversion
+# P4 - Conversion
 
 1. **Pricing signal.** No price, no range, no indication that enquiring is free. Largest
    single drop-off cause on a services page. Add near the primary CTA:
    `Asking costs nothing. We confirm the provider's price and our fee in writing before any
-   work starts.` `[[FILL: fee basis — flat, percentage, or free to customer]]`
+   work starts.` `[[FILL: fee basis - flat, percentage, or free to customer]]`
 2. **Proof.** No testimonial, named person, photograph or review count. Surface real Google
    Business reviews with attribution. Add one named human with a photograph. Add dated,
    anonymised job examples. Real content only.
 3. **Category sprawl.** Ten categories each with "+N more" reads as no specialism. Lead with
    three or four; move the rest behind one "Something else? Ask us." link.
-   `[[FILL: which 3–4 to lead with]]`
+   `[[FILL: which 3-4 to lead with]]`
 4. **WhatsApp primary.** WhatsApp is one tap and the business is WhatsApp-led. Promote it to
    sole primary CTA; demote the multi-step form to `Prefer a form?`. Reduce required fields
    to task, name, phone.
@@ -646,19 +646,19 @@ decisions get baked in. **Do not implement — surface them to the owner.**
 - [ ] Terms / Privacy / Refund / Pricing / Legal unedited
 - [ ] Every `[[FILL:]]` listed in the completion summary
 
-# Completion summary — required output
+# Completion summary - required output
 
 1. Every unresolved `[[FILL:]]`
-2. Missing-clause findings from P0-11 — findings only, no drafting
+2. Missing-clause findings from P0-11 - findings only, no drafting
 3. Result of the hidden-text audit (P0-7), stated explicitly
 4. Core Web Vitals before and after
 5. Count of generated pages published, with the unique word count of the thinnest
 6. Any claim found on the site not covered by this brief that you believe cannot be
-   substantiated — flag it, do not silently retain it
+   substantiated - flag it, do not silently retain it
 
 # Post-deployment, for the owner
 
 Submit `https://instahelp.in/` and `https://instahelp.co/` to the Internet Archive Save Page
 Now, and repeat monthly. Record the archive URLs. Third-party timestamped captures are
 materially better evidence than self-generated screenshots, and they close a gap that
-already exists in the 2020–2024 record.
+already exists in the 2020-2024 record.

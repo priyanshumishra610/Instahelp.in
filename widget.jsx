@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 // ═══════════════════════════════════════════════════════════════
-// CONFIGURATION LAYER — JSON-driven, non-engineer editable
+// CONFIGURATION LAYER - JSON-driven, non-engineer editable
 // ═══════════════════════════════════════════════════════════════
 
 const CATEGORIES_CONFIG = {
@@ -752,7 +752,7 @@ export default function InstaHelpWidget() {
                     <div style={styles.priceLabel}>Estimated Range</div>
                     <div style={styles.priceValues}>
                       <span style={styles.priceMin}>₹{pricing.min.toLocaleString("en-IN")}</span>
-                      <span style={styles.priceDash}>—</span>
+                      <span style={styles.priceDash}>-</span>
                       <span style={styles.priceMax}>₹{pricing.max.toLocaleString("en-IN")}</span>
                     </div>
                     <div style={styles.priceUnit}>{pricing.unit}</div>
@@ -804,7 +804,7 @@ export default function InstaHelpWidget() {
               <div style={{ animation: "fadeInUp 0.3s ease" }}>
                 <div style={styles.sectionTitle}>Get Help Now</div>
 
-                {/* Primary CTA — WhatsApp */}
+                {/* Primary CTA - WhatsApp */}
                 <a href={whatsappLink} target="_blank" rel="noopener noreferrer" style={styles.whatsappCTA}>
                   <div style={styles.waCTAContent}>
                     <div style={styles.waIcon}>
@@ -814,7 +814,7 @@ export default function InstaHelpWidget() {
                     </div>
                     <div>
                       <div style={styles.waCTATitle}>Chat with InstaHelp</div>
-                      <div style={styles.waCTASub}>Get instant help on WhatsApp — typically responds in 5 minutes</div>
+                      <div style={styles.waCTASub}>Get instant help on WhatsApp - typically responds in 5 minutes</div>
                     </div>
                   </div>
                   <div style={styles.waCTAArrow}>→</div>

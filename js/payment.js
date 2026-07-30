@@ -1,5 +1,5 @@
 /**
- * InstaHelp Payment Flow — frontend-only PhonePe payment link redirect
+ * InstaHelp Payment Flow - frontend-only PhonePe payment link redirect
  */
 (function (global) {
   'use strict';
@@ -110,7 +110,7 @@
   }
 
   /**
-   * Initiate checkout — PhonePe SDK (backend) redirects straight to PhonePe checkout.
+   * Initiate checkout - PhonePe SDK (backend) redirects straight to PhonePe checkout.
    * Legacy payment-link mode still uses pay.html as a redirect shim.
    */
   function initiateCheckout(orderData) {
@@ -132,7 +132,7 @@
     window.location.href = 'pay.html?' + qs.toString();
   }
 
-  /** Alias — start PhonePe SDK checkout without custom InstaHelp pay UI */
+  /** Alias - start PhonePe SDK checkout without custom InstaHelp pay UI */
   function redirectToPhonePeCheckout(orderData) {
     return initiateCheckout(orderData);
   }
@@ -223,7 +223,7 @@
   }
 
   /**
-   * Process payment — validate, create records, redirect to PhonePe (link or backend API)
+   * Process payment - validate, create records, redirect to PhonePe (link or backend API)
    */
   function processPayment(order, options) {
     options = options || {};

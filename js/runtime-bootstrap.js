@@ -1,11 +1,11 @@
 /**
- * Production API bootstrap — load before payment-config.js and api.js.
+ * Production API bootstrap - load before payment-config.js and api.js.
  * Netlify frontend → same-origin /api/* (proxied in netlify.toml to Render).
  */
 (function (global) {
   'use strict';
 
-  /** Primary backend — change if you use Railway instead of Render */
+  /** Primary backend - change if you use Railway instead of Render */
   var BACKEND_API = 'https://instahelp-in.onrender.com';
 
   function hostname() {

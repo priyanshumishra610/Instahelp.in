@@ -1,5 +1,5 @@
 /**
- * UI Marathon — scroll reveals, header motion, hero parallax, micro-interactions
+ * UI Marathon - scroll reveals, header motion, hero parallax, micro-interactions
  */
 (function () {
   'use strict';

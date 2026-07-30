@@ -1,4 +1,4 @@
-/** Apps Script web app — must match latest code.gs deployment (see code.gs doGet version). */
+/** Apps Script web app - must match latest code.gs deployment (see code.gs doGet version). */
 const IH_SHEET_URL =
   'https://script.google.com/macros/s/AKfycbwVllMnXYQ35TmWUHAP52bmdPa45zYcfOoz5Q4O6DKF-csF7K-Ekh-Riu1EhLHmwsCLAA/exec';
 const IH_SHEET_VERSION_EXPECTED = '2026-07-29';
@@ -15,7 +15,7 @@ async function verifySheetWebApp() {
     }
     if (!info || !info.postSupported) {
       console.warn(
-        '[InstaHelp] Form sheet web app is not ready. POST may fail — redeploy code.gs as Web app (Anyone). GET response:',
+        '[InstaHelp] Form sheet web app is not ready. POST may fail - redeploy code.gs as Web app (Anyone). GET response:',
         text.slice(0, 200)
       );
       return;
@@ -25,7 +25,7 @@ async function verifySheetWebApp() {
         '[InstaHelp] Sheet web app version mismatch. Site expects',
         IH_SHEET_VERSION_EXPECTED + ', deployed:',
         info.version,
-        '— paste code.gs and redeploy.'
+        '- paste code.gs and redeploy.'
       );
     }
   } catch (err) {
@@ -409,7 +409,7 @@ const HERO_CATEGORIES = [
   { label: 'Plumber', icon: 'wrench', prompt: 'I need a plumber to fix a leaking tap in my kitchen.', phrase: 'a plumber in Whitefield by tomorrow' },
   { label: 'CA / GST', icon: 'file-text', prompt: 'I need a CA to file my GST returns this month.', phrase: 'a CA for GST filing this week' },
   { label: 'Packers', icon: 'truck', prompt: 'I need packers and movers for a 2BHK shift next weekend.', phrase: 'packers for my 2BHK move to Pune' },
-  { label: 'Electrician', icon: 'zap', prompt: 'I need an electrician — the fuse keeps tripping.', phrase: 'an electrician for a power issue at home' },
+  { label: 'Electrician', icon: 'zap', prompt: 'I need an electrician - the fuse keeps tripping.', phrase: 'an electrician for a power issue at home' },
   { label: 'Deep cleaning', icon: 'sparkles', prompt: 'I need deep cleaning for my 3BHK before guests arrive.', phrase: 'deep cleaning before guests arrive' },
   { label: 'Photographer', icon: 'camera', prompt: 'I need a wedding photographer for next month.', phrase: 'a wedding photographer for my event' },
   { label: 'Interior designer', icon: 'palette', prompt: 'I need an interior designer for my new apartment.', phrase: 'an interior designer for my 2BHK' },
@@ -417,7 +417,7 @@ const HERO_CATEGORIES = [
   { label: 'Pest control', icon: 'bug', prompt: 'I need pest control for cockroaches in my kitchen.', phrase: 'pest control for my apartment' },
   { label: 'Visa help', icon: 'plane', prompt: 'I need help with Schengen visa documentation.', phrase: 'Schengen visa help for Europe trip' },
   { label: 'Web developer', icon: 'code', prompt: 'I need a website developer for my small business.', phrase: 'a website developer for my startup' },
-  { label: 'AC repair', icon: 'wind', prompt: 'I need urgent AC repair — not cooling properly.', phrase: 'urgent AC repair this afternoon' },
+  { label: 'AC repair', icon: 'wind', prompt: 'I need urgent AC repair - not cooling properly.', phrase: 'urgent AC repair this afternoon' },
   { label: 'Event planner', icon: 'calendar-days', prompt: 'I need an event planner for a corporate offsite.', phrase: 'an event planner for a corporate event' },
   { label: 'Salon at home', icon: 'scissors', prompt: 'I need salon services at home this weekend.', phrase: 'salon at home for this Saturday' },
   { label: 'Lawyer', icon: 'scale', prompt: 'I need a lawyer to review a rental agreement.', phrase: 'a lawyer to review my contract' },
@@ -437,7 +437,18 @@ function renderHeroCategoryChips(container) {
   return container.querySelectorAll('.hero-prompt-chip');
 }
 
-function setHeroCategoryIndex(index, { animateWord = true } = {}) {
+function scrollChipIntoView(scroller, chip, smooth = true) {
+  const sr = scroller.getBoundingClientRect();
+  const br = chip.getBoundingClientRect();
+  const pad = 8;
+  let delta = 0;
+  if (br.left < sr.left) delta = br.left - sr.left - pad;
+  else if (br.right > sr.right) delta = br.right - sr.right + pad;
+  if (!delta) return;
+  scroller.scrollBy({ left: delta, behavior: smooth ? 'smooth' : 'auto' });
+}
+
+function setHeroCategoryIndex(index, { animateWord = true, scrollChips = true } = {}) {
   const chips = document.querySelectorAll('.hero-prompt-chip');
   const cycleWord = document.getElementById('heroCatCycleWord');
   const cat = HERO_CATEGORIES[index];
@@ -450,12 +461,8 @@ function setHeroCategoryIndex(index, { animateWord = true } = {}) {
 
   const activeChip = chips[index];
   const chipScroller = document.getElementById('heroCategoryChips');
-  if (activeChip && chipScroller && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const cr = chipScroller.getBoundingClientRect();
-    const br = activeChip.getBoundingClientRect();
-    if (br.left < cr.left || br.right > cr.right) {
-      activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
+  if (scrollChips && activeChip && chipScroller && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    scrollChipIntoView(chipScroller, activeChip);
   }
 
   if (cycleWord && animateWord) {
@@ -534,7 +541,17 @@ function initHeroPromptDemo() {
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let userPaused = false;
+  let heroInView = true;
   let phraseIndex = 0;
+
+  const heroSection = document.getElementById('home') || document.querySelector('.hero-section');
+  if (heroSection && 'IntersectionObserver' in window) {
+    const heroObserver = new IntersectionObserver(
+      ([entry]) => { heroInView = entry.isIntersecting; },
+      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+    );
+    heroObserver.observe(heroSection);
+  }
 
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
@@ -560,13 +577,13 @@ function initHeroPromptDemo() {
   const CYCLE_GAP_MS = 120;
 
   function runCycle() {
-    if (userPaused) {
+    if (userPaused || !heroInView) {
       setTimeout(runCycle, 250);
       return;
     }
 
     const phrase = HERO_PROMPT_PHRASES[phraseIndex];
-    setHeroCategoryIndex(phraseIndex);
+    setHeroCategoryIndex(phraseIndex, { scrollChips: heroInView });
 
     heroAnimatePhraseSwap(typed, phrase, () => {
       setTimeout(() => {
@@ -627,7 +644,7 @@ if (sel) {
    Reasons:
    - The window.outerHeight/innerHeight check fires false-positives on
      mobile browsers, on resized desktop windows, and when the user has
-     a bookmarks bar — showing the "close devtools" overlay to legit users.
+     a bookmarks bar - showing the "close devtools" overlay to legit users.
    - Disabling copy/cut/paste breaks email/phone autofill on mobile
      and is a major conversion killer. It does not stop bots either.
    Real protection lives server-side: rate limiting, honeypot (kept),
@@ -681,7 +698,7 @@ function secureSubmitForm(e) {
     return;
   }
 
-  // Consent gates — both required, unticked by default
+  // Consent gates - both required, unticked by default
   const providerConsent = form.querySelector('input[name="evidence_consent"]');
   const privacyConsent = form.querySelector('input[name="privacy_consent"]');
   if (providerConsent && !providerConsent.checked) {
@@ -778,7 +795,7 @@ function secureSubmitForm(e) {
   // Web app (same project as code.gs) → spreadsheet 1d_OP7QSblYraIfMDUBbbNZIAV4Gx7aJSy_wDNTX62pk
   const SHEET_URL = IH_SHEET_URL;
 
-  // BELT + SUSPENDERS — we send the payload via TWO independent paths.
+  // BELT + SUSPENDERS - we send the payload via TWO independent paths.
   // Either is enough; both running in parallel reduces lead loss if one
   // path is blocked by an extension, network condition, or browser quirk.
   let deliveryAttempted = false;
@@ -823,7 +840,7 @@ function secureSubmitForm(e) {
   // PATH 3: If BOTH client paths failed to even fire, surface a mailto
   // fallback so the lead is never silently dropped.
   if (!deliveryAttempted) {
-    const subject = encodeURIComponent('InstaHelp request — ' + (data.name || 'New lead'));
+    const subject = encodeURIComponent('InstaHelp request - ' + (data.name || 'New lead'));
     const body = encodeURIComponent(
       'Name: ' + data.name + '\n' +
       'Phone: ' + data.phone + '\n' +
@@ -831,7 +848,7 @@ function secureSubmitForm(e) {
       'Address: ' + data.address + '\n' +
       'Service: ' + data.service + '\n\n' +
       'Message:\n' + data.message + '\n\n' +
-      '— sent from instahelp.in fallback —'
+      '- sent from instahelp.in fallback -'
     );
     window.location.href = 'mailto:mail@instahelp.in?subject=' + subject + '&body=' + body;
     return;

@@ -79,7 +79,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gray-300) transparent; }
 ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 10px; border: 2px solid var(--white); }
 ::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
 
-/* Reveal-on-scroll — animated via ui-marathon.css / ui-marathon.js */
+/* Reveal-on-scroll - animated via ui-marathon.css / ui-marathon.js */
 .reveal {
   opacity: 0;
   transform: translateY(28px);
@@ -181,7 +181,7 @@ header {
 }
 
 /* ═══════════════════════════════════════
-   HERO — premium split layout
+   HERO - premium split layout
 ═══════════════════════════════════════ */
 @keyframes heroFloatUp {
   from { opacity: 0; transform: translateY(24px); }
@@ -223,7 +223,7 @@ header {
   overflow: hidden;
 }
 
-/* ── Hero background — warm, minimal, no clutter ── */
+/* ── Hero background - warm, minimal, no clutter ── */
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -695,7 +695,7 @@ header {
   50% { opacity: 0; }
 }
 
-/* CTAs (legacy — kept for other pages) */
+/* CTAs (legacy - kept for other pages) */
 .hero-contacts {
   display: flex;
   gap: var(--space-12);
@@ -1741,7 +1741,7 @@ header {
   flex-wrap: wrap;
 }
 
-/* Equal outer frames — Google Play PNG has extra transparent padding */
+/* Equal outer frames - Google Play PNG has extra transparent padding */
 .app-buttons-inline .store-link {
   display: block;
   width: 135px;
@@ -2882,7 +2882,7 @@ footer .container {
   padding-top: 56px;
 }
 
-/* WhatsApp CTA — first, side-by-side on desktop */
+/* WhatsApp CTA - first, side-by-side on desktop */
 footer .footer-cta {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
@@ -3135,16 +3135,48 @@ footer .qh-pill:hover {
 
 .footer-legal .footer-expand-mini summary::-webkit-details-marker { display: none; }
 
-.footer-legal .footer-expand-mini summary::after {
-  content: '+';
-  font-size: 10px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.28);
+.footer-expand-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 0;
   line-height: 1;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-expand-toggle::before {
+  content: '+';
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 0.2s ease;
+}
+
+.footer-legal .footer-expand-mini[open] .footer-expand-toggle::before {
+  content: '−';
+}
+
+.footer-legal .footer-expand-mini summary:hover .footer-expand-toggle {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.footer-legal .footer-expand-mini summary:hover .footer-expand-toggle::before {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-legal .footer-expand-mini summary::after {
+  display: none;
 }
 
 .footer-legal .footer-expand-mini[open] summary::after {
-  content: '−';
+  display: none;
 }
 
 .footer-legal .footer-expand-mini summary:hover {
@@ -3166,6 +3198,46 @@ footer .qh-pill:hover {
 .footer-legal .footer-expand-mini .seo-kw {
   font-size: 11px;
   line-height: 1.6;
+}
+
+.footer-expand-legal[open] {
+  flex: 1 1 100%;
+  width: 100%;
+}
+
+.footer-legal-body {
+  padding: 0 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-legal-body p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.footer-legal-body a {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.footer-legal-body a:hover {
+  color: var(--yellow);
+}
+
+.footer-legal-body .tm-notice {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.28);
+  line-height: 1.65;
+}
+
+.footer-legal-body .footer-disclaimer {
+  color: rgba(255, 255, 255, 0.42);
 }
 
 .footer-legal .footer-expand-mini .instaHelp-city-pill {
@@ -3807,7 +3879,7 @@ footer .instaHelp-city-pill:hover {
 }
 
 
-/* Screen-reader / crawler only — visually hidden */
+/* Screen-reader / crawler only - visually hidden */
 .sr-only {
   position: absolute;
   width: 1px;

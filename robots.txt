@@ -1,4 +1,4 @@
-# InstaHelp — https://www.instahelp.in
+# InstaHelp - https://www.instahelp.in
 # LLM context: https://www.instahelp.in/llms.txt
 
 User-agent: *

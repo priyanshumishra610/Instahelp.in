@@ -1,7 +1,7 @@
 /**
  * InstaHelp Payment Configuration
  * All settings stored in localStorage under `paymentSettings`.
- * PhonePe config lives under `phonepe` key — managed via admin-payment.html.
+ * PhonePe config lives under `phonepe` key - managed via admin-payment.html.
  */
 (function (global) {
   'use strict';
@@ -70,7 +70,7 @@
     supportNumber: '+91 70227 02220',
     supportEmail: 'mail@instahelp.in',
     paymentsEnabled: true,
-    /* PhonePe — primary gateway */
+    /* PhonePe - primary gateway */
     apiMode: 'backend',
     apiBaseUrl: 'http://localhost:4001',
     phonepe: {

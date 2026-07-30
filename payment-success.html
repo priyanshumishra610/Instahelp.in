@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment Successful — InstaHelp</title>
+  <title>Payment Successful - InstaHelp</title>
   <meta name="robots" content="noindex">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,23 +30,23 @@
     <div class="pay-status-details" id="successDetails">
       <div class="pay-status-row">
         <span>Order Number</span>
-        <span id="orderId">—</span>
+        <span id="orderId">-</span>
       </div>
       <div class="pay-status-row">
         <span>Transaction ID</span>
-        <span id="transactionId">—</span>
+        <span id="transactionId">-</span>
       </div>
       <div class="pay-status-row">
         <span>Date</span>
-        <span id="paymentDate">—</span>
+        <span id="paymentDate">-</span>
       </div>
       <div class="pay-status-row">
         <span>Amount Paid</span>
-        <span id="paymentAmount">—</span>
+        <span id="paymentAmount">-</span>
       </div>
       <div class="pay-status-row">
         <span>Service</span>
-        <span id="paymentService">—</span>
+        <span id="paymentService">-</span>
       </div>
     </div>
 
@@ -73,7 +73,7 @@
     'use strict';
 
     function formatDate(iso) {
-      if (!iso) return '—';
+      if (!iso) return '-';
       try {
         return new Date(iso).toLocaleString('en-IN', {
           day: 'numeric', month: 'short', year: 'numeric',
@@ -98,14 +98,14 @@
         InstaHelpPayment.markPaymentSuccess();
       }
 
-      var orderId = params.get('orderId') || (pending && pending.orderId) || '—';
-      var txId = params.get('txn') || (pending && pending.transactionId) || '—';
+      var orderId = params.get('orderId') || (pending && pending.orderId) || '-';
+      var txId = params.get('txn') || (pending && pending.transactionId) || '-';
       var amount = params.get('amount') || (pending && pending.amount);
       var date = pending && pending.date;
-      var service = params.get('service') || (pending && pending.serviceName) || '—';
+      var service = params.get('service') || (pending && pending.serviceName) || '-';
 
       /* Fallback: latest successful transaction */
-      if (orderId === '—') {
+      if (orderId === '-') {
         var txs = InstaHelpTransactions.getAllTransactions();
         var latest = txs.find(function (t) { return t.status === 'success'; }) || txs[0];
         if (latest) {
@@ -121,7 +121,7 @@
       document.getElementById('transactionId').textContent = txId;
       document.getElementById('paymentDate').textContent = formatDate(date);
       document.getElementById('paymentAmount').textContent = amount
-        ? InstaHelpPayment.formatINR(amount) : '—';
+        ? InstaHelpPayment.formatINR(amount) : '-';
       document.getElementById('paymentService').textContent = service;
     });
   })();

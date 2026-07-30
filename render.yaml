@@ -1,4 +1,4 @@
-# Render Blueprint — https://render.com/docs/blueprint-spec
+# Render Blueprint - https://render.com/docs/blueprint-spec
 # Connect your Git repo, set secret env vars in the dashboard, then deploy.
 services:
   - type: web

@@ -30,7 +30,7 @@ if (!publicKeyPem) {
 
 if (!privateKey) {
   console.error('Set HUBBLE_PRIVATE_KEY or HUBBLE_PRIVATE_KEY_PATH in backend/.env');
-  console.error('The public key alone cannot sign JWT tokens — you need the matching private key.');
+  console.error('The public key alone cannot sign JWT tokens - you need the matching private key.');
   process.exit(1);
 }
 

@@ -29,7 +29,7 @@ PhonePe credentials (Client ID, Client Secret, Salt Key) are **encrypted at rest
 ```bash
 cd backend
 cp .env.example .env
-# Edit .env — set DATABASE_URL, JWT_SECRET, ENCRYPTION_KEY
+# Edit .env - set DATABASE_URL, JWT_SECRET, ENCRYPTION_KEY
 npm install
 ```
 
@@ -110,21 +110,21 @@ Open `admin-payment.html`:
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| POST | `/api/auth/send-otp` | — | Send OTP |
-| POST | `/api/auth/verify-otp` | — | Verify OTP, get JWT |
+| POST | `/api/auth/send-otp` | - | Send OTP |
+| POST | `/api/auth/verify-otp` | - | Verify OTP, get JWT |
 | GET | `/api/auth/profile` | JWT | User profile |
 | POST | `/api/orders` | Optional | Create order |
 | GET | `/api/orders/:id` | Optional | Get order |
 | GET | `/api/orders/user` | JWT | User orders |
 | POST | `/api/payments/create` | Optional | Create payment + PhonePe redirect |
-| POST | `/api/payments/verify` | — | Verify payment status |
-| GET | `/api/payments/status/:id` | — | Payment status |
-| GET | `/api/payments/callback` | — | PhonePe redirect callback |
+| POST | `/api/payments/verify` | - | Verify payment status |
+| GET | `/api/payments/status/:id` | - | Payment status |
+| GET | `/api/payments/callback` | - | PhonePe redirect callback |
 | POST | `/api/payments/webhook` | Signature | PhonePe S2S webhook |
 | POST | `/api/payments/refund` | Admin | Initiate refund |
 | GET | `/api/transactions` | JWT | List transactions |
-| GET | `/api/vendors` | — | List vendors |
-| POST | `/api/vendors/register` | — | Register vendor |
+| GET | `/api/vendors` | - | List vendors |
+| POST | `/api/vendors/register` | - | Register vendor |
 | GET | `/api/admin/dashboard` | Admin | Dashboard stats |
 | PUT | `/api/admin/payment-settings` | Admin | Configure PhonePe |
 

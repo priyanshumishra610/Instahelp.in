@@ -74,7 +74,7 @@
       name: name,
       email: email,
       phone: phone,
-      service: 'App Waitlist — ' + (platformLabels[platform] || platform),
+      service: 'App Waitlist - ' + (platformLabels[platform] || platform),
       message: 'Platform: ' + (platformLabels[platform] || platform),
       source: 'app_waitlist',
       form_id: 'app_waitlist',

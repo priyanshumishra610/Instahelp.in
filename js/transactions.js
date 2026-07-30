@@ -1,5 +1,5 @@
 /**
- * InstaHelp Transactions — localStorage transaction history
+ * InstaHelp Transactions - localStorage transaction history
  */
 (function (global) {
   'use strict';

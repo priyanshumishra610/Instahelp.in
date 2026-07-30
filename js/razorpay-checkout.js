@@ -1,5 +1,5 @@
 /**
- * InstaHelp Razorpay Checkout — official Razorpay Checkout.js SDK
+ * InstaHelp Razorpay Checkout - official Razorpay Checkout.js SDK
  * https://razorpay.com/docs/payments/payment-gateway/web-integration/standard/
  */
 (function (global) {

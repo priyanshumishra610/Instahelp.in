@@ -1,5 +1,5 @@
 /**
- * InstaHelp Orders — localStorage order management
+ * InstaHelp Orders - localStorage order management
  */
 (function (global) {
   'use strict';

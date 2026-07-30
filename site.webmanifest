@@ -1,7 +1,7 @@
 {
-  "name": "InstaHelp — India's Digital Assistant",
+  "name": "InstaHelp - India's Digital Assistant",
   "short_name": "InstaHelp",
-  "description": "On-demand digital Assistant across 30+ Indian cities. Tell us what you need — we get it done.",
+  "description": "On-demand digital Assistant across 30+ Indian cities. Tell us what you need - we get it done.",
   "start_url": "/",
   "scope": "/",
   "lang": "en-IN",

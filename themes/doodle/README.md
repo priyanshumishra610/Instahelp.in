@@ -1,4 +1,4 @@
-# Doodle Theme — copy-paste package
+# Doodle Theme - copy-paste package
 
 Self-contained folder. Copy **`doodle/`** anywhere and use it.
 
@@ -79,7 +79,7 @@ Full HTML is in `reference/instahelp-index-doodle.html`.
 
 ## Disable decorations only
 
-Omit `js/doodle.js` — CSS still works.
+Omit `js/doodle.js` - CSS still works.
 
 ## CSS variables
 

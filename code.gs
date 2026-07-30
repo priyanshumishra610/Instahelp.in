@@ -66,7 +66,7 @@ function getNotifyEmail_() {
   return (fromProps && String(fromProps).trim()) || DEFAULT_NOTIFY_EMAIL;
 }
 
-/** One row of headers — run installHeaders() once if the sheet is empty */
+/** One row of headers - run installHeaders() once if the sheet is empty */
 var COLUMN_HEADERS = [
   'Server received (UTC)',
   'Name',
@@ -140,7 +140,7 @@ function escapeHtml_(s) {
 
 function displayOrDash_(v) {
   var s = String(v == null ? '' : v).trim();
-  return s || '—';
+  return s || '-';
 }
 
 function formatIst_(isoOrDate) {
@@ -182,14 +182,14 @@ var SOURCE_LABELS = {
 
 var PRIOR_PAYMENT_LABELS = {
   no: 'No, not yet',
-  yes_here: 'Yes — through instahelp.in',
-  yes_elsewhere: 'Yes — different app / platform'
+  yes_here: 'Yes - through instahelp.in',
+  yes_elsewhere: 'Yes - different app / platform'
 };
 
 function labelFor_(map, key) {
   var k = String(key || '').trim().toLowerCase();
   if (!k) {
-    return '—';
+    return '-';
   }
   return map[k] || key;
 }
@@ -268,12 +268,12 @@ function buildLeadEmailHtml_(data, receivedAt) {
   var sheetUrl = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/edit#gid=' + TARGET_SHEET_GID;
 
   var waUrl = buildWhatsAppUrl_(phone, 'Hi ' + (data.name || '') + ', this is InstaHelp. We received your request: "' + (data.message || '').substring(0, 120) + '"');
-  var telUrl = phone !== '—' ? 'tel:' + normalizePhoneDigits_(phone) : '';
-  var mailUrl = email !== '—' ? 'mailto:' + encodeURIComponent(email) : '';
+  var telUrl = phone !== '-' ? 'tel:' + normalizePhoneDigits_(phone) : '';
+  var mailUrl = email !== '-' ? 'mailto:' + encodeURIComponent(email) : '';
 
   var badgeBg = confusion ? BRAND.dangerBg : BRAND.successBg;
   var badgeColor = confusion ? BRAND.danger : BRAND.success;
-  var badgeText = confusion ? '⚠ Review — possible confusion lead' : '✓ Standard lead';
+  var badgeText = confusion ? '⚠ Review - possible confusion lead' : '✓ Standard lead';
 
   var taskRows =
     buildEmailRow_('Task / message', message, { multiline: true }) +
@@ -288,7 +288,7 @@ function buildLeadEmailHtml_(data, receivedAt) {
   var attributionRows =
     buildEmailRow_('How they found us', labelFor_(SOURCE_LABELS, data.source)) +
     buildEmailRow_('Prior InstaHelp use', labelFor_(PRIOR_PAYMENT_LABELS, data.prior_payment)) +
-    buildEmailRow_('Provider consent', String(data.evidence_consent || '').toUpperCase() === 'YES' ? 'Yes — agreed' : displayOrDash_(data.evidence_consent)) +
+    buildEmailRow_('Provider consent', String(data.evidence_consent || '').toUpperCase() === 'YES' ? 'Yes - agreed' : displayOrDash_(data.evidence_consent)) +
     buildEmailRow_('Confusion flag', displayOrDash_(data.confusion_instance)) +
     buildEmailRow_('Referrer confusion', displayOrDash_(data.confusion_referral_flag));
 
@@ -370,7 +370,7 @@ function buildLeadEmailHtml_(data, receivedAt) {
 
 function buildLeadEmailPlain_(data, receivedAt) {
   var lines = [
-    'INSTAHELP — NEW SERVICE REQUEST',
+    'INSTAHELP - NEW SERVICE REQUEST',
     '================================',
     '',
     'Priority: ' + (isConfusionLead_(data) ? 'REVIEW (possible confusion lead)' : 'Standard'),
@@ -396,7 +396,7 @@ function buildLeadEmailPlain_(data, receivedAt) {
     '--- TRAFFIC ---',
     'Landing:  ' + displayOrDash_(data.landing_page),
     'Referrer: ' + displayOrDash_(data.referrer_url),
-    'UTM:      ' + [data.utm_source, data.utm_medium, data.utm_campaign].filter(Boolean).join(' / ') || '—',
+    'UTM:      ' + [data.utm_source, data.utm_medium, data.utm_campaign].filter(Boolean).join(' / ') || '-',
     '',
     '--- META ---',
     'Form:      ' + displayOrDash_(data.form_id),
@@ -417,7 +417,7 @@ function sendLeadNotificationEmail_(data, receivedAt) {
   var name = displayOrDash_(data.name);
   var taskPreview = String(data.message || '').trim().substring(0, 60);
   var prefix = isConfusionLead_(data) ? '[Review] ' : '';
-  var subject = prefix + 'New InstaHelp lead — ' + name + (taskPreview ? ': ' + taskPreview : '');
+  var subject = prefix + 'New InstaHelp lead - ' + name + (taskPreview ? ': ' + taskPreview : '');
 
   MailApp.sendEmail({
     to: to,

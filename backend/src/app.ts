@@ -95,7 +95,7 @@ export function createApp() {
   if (fs.existsSync(indexPath)) {
     logger.info(`Serving frontend from ${frontendPath}`);
   } else {
-    logger.error(`Frontend not found — index.html missing at ${indexPath}`);
+    logger.error(`Frontend not found - index.html missing at ${indexPath}`);
   }
 
   function sendPage(res: express.Response, next: express.NextFunction, file: string): void {

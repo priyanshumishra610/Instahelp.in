@@ -1,5 +1,5 @@
 /**
- * InstaHelp Pay Portal — custom amount checkout (hotel-style)
+ * InstaHelp Pay Portal - custom amount checkout (hotel-style)
  */
 (function (global) {
   'use strict';
@@ -54,7 +54,7 @@
     var serviceName = (formData.note || formData.service || 'Online Payment').trim();
     var guestName = (formData.name || '').trim();
     if (guestName) {
-      serviceName = serviceName + ' — ' + guestName;
+      serviceName = serviceName + ' - ' + guestName;
     }
     if (serviceName.length > 200) {
       serviceName = serviceName.slice(0, 197) + '...';
@@ -176,7 +176,7 @@
     setText('businessName', businessName);
     setText('sidebarBusinessName', businessName);
     setText('footerBusinessName', businessName);
-    document.title = 'Pay Online — ' + businessName;
+    document.title = 'Pay Online - ' + businessName;
 
     var mark = document.getElementById('brandMark');
     if (mark) mark.textContent = brandInitials(businessName);
@@ -212,7 +212,7 @@
       var banner = document.getElementById('testModeBanner');
       if (banner) {
         banner.hidden = false;
-        banner.textContent = 'Test mode — payments are for demonstration only';
+        banner.textContent = 'Test mode - payments are for demonstration only';
       }
     }
 
@@ -248,7 +248,7 @@
       var loadingTitle = document.querySelector('#payLoadingOverlay .portal-loading-title');
       var slowTimer = setTimeout(function () {
         if (loadingTitle) {
-          loadingTitle.textContent = 'Starting secure checkout — this may take a few seconds…';
+          loadingTitle.textContent = 'Starting secure checkout - this may take a few seconds…';
         }
       }, 2500);
 
