@@ -269,6 +269,7 @@
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="css/ui-marathon.css">
+<link rel="stylesheet" href="css/mobile-home.css">
 </head>
 <body>
 
@@ -284,7 +285,23 @@
     <a href="#contact-section">Contact</a>
   </nav>
   <a href="#heroFormCard" class="btn-primary ui-btn-lift ui-btn-shine js-focus-form" aria-label="Fill the request form">We'll get it done</a>
+  <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+    <span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+  </button>
 </header>
+<nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" hidden>
+  <div class="mobile-nav-inner">
+    <a href="#services">Categories</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="/plans">Plans</a>
+    <a href="/shop">Shop</a>
+    <a href="/giftcards">Gift Cards</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact-section">Contact</a>
+    <a href="#heroFormCard" class="is-cta js-focus-form">We'll get it done</a>
+  </div>
+</nav>
+<button type="button" class="mobile-nav-backdrop" id="mobileNavBackdrop" aria-label="Close menu" hidden></button>
 
 <main>
 <section class="hero-section" id="home" aria-labelledby="hero-heading">
@@ -347,13 +364,14 @@
         </div>
       </div>
 
+      <div class="hero-mobile-headline">
+        <h1 class="hero-mobile-title">We'll <span class="hero-mobile-accent">get it done</span></h1>
+        <p class="hero-mobile-lead">Tell us what you need. <span class="hero-mobile-highlight">One team</span> finds, checks and coordinates the right provider <span class="hero-mobile-accent">across India</span>.</p>
+      </div>
+
       <div class="hero-form-panel hero-anim hero-anim-d3" role="complementary" aria-label="Submit a service request">
         <div class="hero-form-card hero-form-interactive" id="heroFormCard">
           <div class="hero-form-head">
-            <span class="hero-form-kicker">
-              <span class="hero-form-kicker-dot" aria-hidden="true"></span>
-              Free · No obligation
-            </span>
             <h2 class="hero-form-title">We'll get it done</h2>
             <p class="hero-form-lead">Fill this form. We reach out in minutes. No need to call or WhatsApp first.</p>
           </div>

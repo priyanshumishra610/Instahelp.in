@@ -1,0 +1,548 @@
+/* ═══════════════════════════════════════
+   MOBILE HOME — overrides only (max-width)
+   Desktop styles in style.css are untouched.
+═══════════════════════════════════════ */
+
+/* ── Mobile nav (hidden on desktop) ── */
+.nav-toggle,
+.mobile-nav,
+.mobile-nav-backdrop,
+.hero-mobile-headline {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  /* ── Header / navbar ── */
+  header {
+    top: 10px;
+    padding: 8px 14px;
+    gap: 10px;
+    width: calc(100% - 24px);
+  }
+
+  .logo {
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  header > .btn-primary {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    margin-left: auto;
+    border: 1px solid var(--gray-200);
+    border-radius: 50%;
+    background: var(--gray-50);
+    color: var(--black);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: var(--transition);
+  }
+
+  .nav-toggle:hover,
+  .nav-toggle:focus-visible {
+    background: var(--gray-100);
+    outline: none;
+  }
+
+  .nav-toggle-icon {
+    width: 18px;
+    height: 18px;
+    position: relative;
+  }
+
+  .nav-toggle-icon span {
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 18px;
+    height: 2px;
+    background: var(--black);
+    border-radius: 2px;
+    transition: transform 0.22s ease, opacity 0.22s ease, top 0.22s ease;
+  }
+
+  .nav-toggle-icon span:nth-child(1) { top: 3px; }
+  .nav-toggle-icon span:nth-child(2) { top: 8px; }
+  .nav-toggle-icon span:nth-child(3) { top: 13px; }
+
+  header.is-nav-open .nav-toggle-icon span:nth-child(1) {
+    top: 8px;
+    transform: rotate(45deg);
+  }
+
+  header.is-nav-open .nav-toggle-icon span:nth-child(2) {
+    opacity: 0;
+  }
+
+  header.is-nav-open .nav-toggle-icon span:nth-child(3) {
+    top: 8px;
+    transform: rotate(-45deg);
+  }
+
+  .mobile-nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    background: rgba(5, 5, 5, 0.42);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .mobile-nav-backdrop.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-nav {
+    display: block;
+    position: fixed;
+    top: 68px;
+    left: 12px;
+    right: 12px;
+    z-index: 999;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
+  }
+
+  .mobile-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .mobile-nav-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobile-nav-inner a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--black);
+    transition: var(--transition);
+  }
+
+  .mobile-nav-inner a:hover,
+  .mobile-nav-inner a:focus-visible {
+    background: var(--gray-50);
+    outline: none;
+  }
+
+  .mobile-nav-inner a.is-cta {
+    margin-top: 6px;
+    background: var(--yellow);
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  .mobile-nav-inner a.is-cta:hover {
+    background: var(--yellow-dk);
+  }
+
+  /* ── Hero: form first, no copy text ── */
+  .hero-section {
+    padding-top: 72px;
+    min-height: auto;
+    padding-bottom: 20px;
+  }
+
+  .hero-inner {
+    padding: 4px 0 12px;
+  }
+
+  .hero-top {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .hero-copy {
+    display: none !important;
+  }
+
+  .hero-mobile-headline {
+    display: block;
+    order: 0;
+    margin-bottom: 12px;
+    padding: 0 2px;
+  }
+
+  .hero-mobile-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+    line-height: 1.12;
+    color: var(--black);
+    margin: 0 0 8px;
+  }
+
+  .hero-mobile-accent {
+    color: var(--accent);
+  }
+
+  .hero-mobile-highlight {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .hero-mobile-lead {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--gray-700);
+    margin: 0;
+    max-width: 36ch;
+  }
+
+  .hero-form-panel {
+    order: 1;
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .hero-foot {
+    order: 2;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--gray-200);
+    gap: 10px;
+  }
+
+  .hero-app-text {
+    font-size: 12px;
+  }
+
+  .hero-app-badge {
+    font-size: 9px;
+    padding: 4px 8px;
+  }
+
+  .hero-form-interactive {
+    padding: 14px 12px;
+    border-radius: var(--radius-md);
+  }
+
+  .hero-form-title {
+    display: none;
+  }
+
+  .hero-form-lead {
+    font-size: 11px;
+  }
+
+  .hero-form-section-label {
+    font-size: 10.5px;
+  }
+
+  .hero-form-step-num {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .hero-field-float label,
+  .hero-field-float input,
+  .hero-field-float textarea,
+  .hero-field-address textarea {
+    font-size: 14px;
+  }
+
+  .hero-schedule-pill {
+    font-size: 11px;
+    padding: 7px 10px;
+  }
+
+  .hero-form-interactive .btn-hero-submit {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+
+  .hero-form .consent-row-compact label {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  /* ── Marquee ── */
+  .marquee-wrapper {
+    margin-top: 8px;
+  }
+
+  .query-pill {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  /* ── Sections: tighter type ── */
+  .section {
+    padding: 48px 0;
+  }
+
+  .section-title {
+    font-size: 24px;
+    letter-spacing: -0.6px;
+    margin-bottom: 10px;
+    line-height: 1.15;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .services-intro {
+    margin-bottom: 24px;
+  }
+
+  /* ── Bento cards ── */
+  .bento-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .bento-card,
+  .bento-card-featured {
+    grid-column: span 1;
+    padding: 16px;
+    border-radius: var(--radius-md);
+  }
+
+  .bento-card-header {
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .bento-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .bento-card-icon [data-lucide] {
+    width: 17px;
+    height: 17px;
+  }
+
+  .bento-card h3,
+  .bento-card-featured h3 {
+    font-size: 15px;
+    letter-spacing: -0.25px;
+    padding-top: 0;
+  }
+
+  .bento-card p,
+  .bento-card-featured p {
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  .tags {
+    padding-top: 12px;
+    gap: 5px;
+  }
+
+  .tag {
+    font-size: 10.5px;
+    padding: 4px 9px;
+  }
+
+  .services-plans-note {
+    font-size: 12.5px;
+    margin-top: 16px;
+  }
+
+  /* ── Steps ── */
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .step {
+    padding: 18px;
+    border-radius: var(--radius-md);
+  }
+
+  .step h3 {
+    font-size: 15px;
+  }
+
+  .step p {
+    font-size: 13px;
+  }
+
+  .step-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+  }
+
+  /* ── FAQ ── */
+  .faq-section {
+    padding: 48px 0 56px;
+  }
+
+  .faq-head h2 {
+    font-size: 24px;
+    letter-spacing: -0.5px;
+  }
+
+  .faq-head p {
+    font-size: 14px;
+  }
+
+  .faq-summary {
+    font-size: 14px;
+    padding: 14px 14px;
+  }
+
+  .faq-answer {
+    padding: 0 14px 14px;
+    font-size: 13px;
+  }
+
+  .faq-cta {
+    padding: 18px 14px;
+  }
+
+  .faq-cta p {
+    font-size: 13px;
+  }
+
+  /* ── Bottom CTA ── */
+  .bottom-cta {
+    padding: 48px 16px;
+  }
+
+  .bottom-cta h2 {
+    font-size: 26px;
+    letter-spacing: -0.6px;
+  }
+
+  .bottom-cta-sub {
+    font-size: 14px;
+  }
+
+  .bottom-cta-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bottom-cta-actions .btn-primary,
+  .bottom-cta-actions .btn-ghost {
+    width: 100%;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  /* ── Footer ── */
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  footer .footer-cta {
+    padding: 18px 14px;
+    margin-bottom: 24px;
+  }
+
+  .quick-help-title {
+    font-size: 16px;
+  }
+
+  .quick-help-sub {
+    font-size: 12px;
+  }
+
+  .footer-logo {
+    font-size: 18px;
+  }
+
+  .footer-tag {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-form-card {
+    padding: 0;
+  }
+
+  .hero-form-interactive {
+    padding: 12px 10px;
+  }
+
+  .hero-foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-app-stores {
+    justify-self: start;
+    width: 100%;
+  }
+
+  .store-link img {
+    max-height: 36px;
+    width: auto;
+  }
+
+  .bento-card {
+    padding: 14px;
+  }
+
+  .section-title {
+    font-size: 22px;
+  }
+
+  .hero-mobile-title {
+    font-size: 24px;
+  }
+
+  .hero-mobile-lead {
+    font-size: 13px;
+  }
+
+  .bottom-cta h2 {
+    font-size: 22px;
+  }
+
+  .faq-head h2 {
+    font-size: 22px;
+  }
+}

@@ -1338,5 +1338,39 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     } else {
       ihScrollTo(target);
     }
+    if (typeof window._ihCloseMobileNav === 'function') window._ihCloseMobileNav();
   });
 });
+
+/* ── MOBILE NAV ── */
+(function initMobileNav() {
+  const header = document.getElementById('siteHeader');
+  const toggle = document.getElementById('navToggle');
+  const nav = document.getElementById('mobileNav');
+  const backdrop = document.getElementById('mobileNavBackdrop');
+  if (!header || !toggle || !nav || !backdrop) return;
+
+  function setOpen(open) {
+    header.classList.toggle('is-nav-open', open);
+    nav.classList.toggle('is-open', open);
+    backdrop.classList.toggle('is-visible', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    nav.hidden = !open;
+    backdrop.hidden = !open;
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  window._ihCloseMobileNav = function () { setOpen(false); };
+
+  toggle.addEventListener('click', () => setOpen(!header.classList.contains('is-nav-open')));
+  backdrop.addEventListener('click', () => setOpen(false));
+
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => setOpen(false));
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && header.classList.contains('is-nav-open')) setOpen(false);
+  });
+})();
