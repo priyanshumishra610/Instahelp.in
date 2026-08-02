@@ -170,7 +170,7 @@ function getBrowserLocation(force) {
 }
 
 function syncFloatLabel(input) {
-  const wrap = input && input.closest('.hero-field-float');
+  const wrap = input && input.closest('.hero-field-float, .hero-field-address');
   if (wrap) wrap.classList.toggle('is-filled', !!String(input.value || '').trim());
 }
 
@@ -188,7 +188,7 @@ function fillAddressInput(inputId, buttonId, options) {
 
   const btn = buttonId ? document.getElementById(buttonId) : null;
   if (!input.dataset.defaultPlaceholder) {
-    input.dataset.defaultPlaceholder = input.placeholder;
+    input.dataset.defaultPlaceholder = input.placeholder || 'Address';
   }
   if (btn && !btn.dataset.defaultLabel) {
     const labelEl = btn.querySelector('.btn-qh-detect-label');
@@ -199,6 +199,9 @@ function fillAddressInput(inputId, buttonId, options) {
     btn.disabled = true;
     setDetectButtonState(btn, 'Detecting…');
   }
+
+  const wrap = input.closest('.hero-field-float, .hero-field-address');
+  if (wrap) wrap.classList.add('is-loading');
   input.placeholder = 'Detecting your location…';
 
   getBrowserLocation(opts.force)
@@ -216,8 +219,9 @@ function fillAddressInput(inputId, buttonId, options) {
       alert('Could not detect your location. Please type it manually or allow location access.');
     })
     .finally(() => {
-      input.placeholder = input.dataset.defaultPlaceholder || '';
+      input.placeholder = input.dataset.defaultPlaceholder || 'Address';
       syncFloatLabel(input);
+      input.closest('.hero-field-float, .hero-field-address')?.classList.remove('is-loading');
       if (btn) {
         btn.disabled = false;
         setDetectButtonState(btn, btn.dataset.defaultLabel || 'Use my location');
@@ -230,18 +234,12 @@ function fillAddressInput(inputId, buttonId, options) {
 document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) lucide.createIcons();
 
-  const heroDetect = document.getElementById('heroDetectAddress');
-  if (heroDetect) {
-    heroDetect.addEventListener('click', () => {
-      const ok = window.confirm(
-        'InstaHelp will ask your browser for location only to help fill your address. You can skip this and type your address manually.'
-      );
-      if (!ok) return;
-      fillAddressInput('exact_address', 'heroDetectAddress', { alertOnFail: true, force: true });
-    });
+  if (document.getElementById('exact_address')) {
+    fillAddressInput('exact_address', null, { alertOnFail: false, force: false });
   }
 
   initHeroInteractiveForm();
+  initHeroSchedule();
   initHeroPromptDemo();
   verifySheetWebApp();
 
@@ -344,13 +342,14 @@ function initHeroInteractiveForm() {
   const serviceSel = document.getElementById('serviceSelect');
 
   function validateField(input) {
-    const wrap = input.closest('.hero-field-float');
+    const wrap = input.closest('.hero-field-float, .hero-field-address');
     if (!wrap) return true;
     const status = wrap.querySelector('.hero-field-status');
     let ok = true;
     if (input.hasAttribute('required') && !input.value.trim()) ok = false;
     if (input.type === 'tel' && input.value.trim() && !/^[\d\s+\-()]{8,15}$/.test(input.value.trim())) ok = false;
     if (input.type === 'email' && input.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) ok = false;
+    if (input.id === 'exact_address' && input.value.trim() && !/\b\d{6}\b/.test(input.value.trim())) ok = false;
     wrap.classList.toggle('is-valid', ok && input.value.trim().length > 0);
     wrap.classList.toggle('is-invalid', !ok && input.value.trim().length > 0);
     if (status) status.classList.toggle('is-valid', ok && input.value.trim().length > 0);
@@ -383,7 +382,7 @@ function initHeroInteractiveForm() {
     updateCount();
   }
 
-  form.querySelectorAll('.hero-field-float input, .hero-field-float textarea').forEach(input => {
+  form.querySelectorAll('.hero-field-float input, .hero-field-float textarea, .hero-field-address textarea').forEach(input => {
     syncFloatLabel(input);
     input.addEventListener('blur', () => {
       syncFloatLabel(input);
@@ -392,18 +391,430 @@ function initHeroInteractiveForm() {
     input.addEventListener('input', () => {
       syncFloatLabel(input);
       if (input.value.trim()) validateField(input);
-      else input.closest('.hero-field-float')?.classList.remove('is-valid', 'is-invalid');
+      else input.closest('.hero-field-float, .hero-field-address')?.classList.remove('is-valid', 'is-invalid');
     });
   });
 
   window._ih_resetHeroForm = function resetHeroForm() {
     document.querySelectorAll('.hero-cat-chip').forEach(c => c.classList.remove('is-selected'));
-    form.querySelectorAll('.hero-field-float').forEach(f => {
-      f.classList.remove('is-valid', 'is-invalid', 'is-filled');
+    form.querySelectorAll('.hero-field-float, .hero-field-address').forEach(f => {
+      f.classList.remove('is-valid', 'is-invalid', 'is-filled', 'is-loading');
     });
+    const address = document.getElementById('exact_address');
+    if (address) address.placeholder = address.dataset.defaultPlaceholder || 'Address';
+    if (typeof window._ih_resetHeroSchedule === 'function') window._ih_resetHeroSchedule();
     if (msgCount && msg) msgCount.textContent = '0 / 1000';
   };
 }
+
+function formatLocalDate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + day;
+}
+
+function formatDisplayDate(isoDate) {
+  if (!isoDate) return '';
+  try {
+    const [y, m, d] = isoDate.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString('en-IN', {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  } catch (err) {
+    return isoDate;
+  }
+}
+
+function formatDisplayTime(timeVal) {
+  if (!timeVal) return '';
+  const [h, min] = timeVal.split(':').map(Number);
+  if (Number.isNaN(h) || Number.isNaN(min)) return timeVal;
+  const d = new Date();
+  d.setHours(h, min, 0, 0);
+  return d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true });
+}
+
+function buildPreferredWhenSummary() {
+  const preset = document.getElementById('preferred_when')?.value || 'ASAP';
+  const dateVal = document.getElementById('preferred_date')?.value || '';
+  const timeVal = document.getElementById('preferred_time')?.value || '';
+
+  if (preset === 'ASAP') return 'ASAP';
+  if (preset === 'Today') {
+    return timeVal ? 'Today, ' + formatDisplayTime(timeVal) : 'Today';
+  }
+  if (preset === 'Tomorrow') {
+    return timeVal ? 'Tomorrow, ' + formatDisplayTime(timeVal) : 'Tomorrow';
+  }
+  if (dateVal || timeVal) {
+    const parts = [];
+    if (dateVal) parts.push(formatDisplayDate(dateVal));
+    if (timeVal) parts.push(formatDisplayTime(timeVal));
+    return parts.join(', ');
+  }
+  return preset || 'ASAP';
+}
+
+function buildTime24FromExact(hour12, minute, ampm) {
+  let h = parseInt(hour12, 10);
+  if (Number.isNaN(h)) h = 9;
+  const m = minute || '00';
+  if (ampm === 'AM') {
+    if (h === 12) h = 0;
+  } else if (h !== 12) {
+    h += 12;
+  }
+  return String(h).padStart(2, '0') + ':' + m;
+}
+
+function parseTime24ToClockState(time24) {
+  if (!time24 || !/^\d{2}:\d{2}$/.test(time24)) return null;
+  const [h24Raw, minuteRaw] = time24.split(':');
+  let h24 = parseInt(h24Raw, 10);
+  const minuteNum = parseInt(minuteRaw, 10);
+  if (Number.isNaN(h24) || Number.isNaN(minuteNum)) return null;
+  const minute = String(Math.min(59, Math.max(0, minuteNum))).padStart(2, '0');
+  const ampm = h24 >= 12 ? 'PM' : 'AM';
+  let hour12 = h24 % 12;
+  if (hour12 === 0) hour12 = 12;
+  return { hour12, minute, ampm };
+}
+
+function renderClockHours(faceEl) {
+  if (!faceEl || faceEl.dataset.rendered === '1') return;
+  const cx = 50;
+  const cy = 50;
+  const r = 34;
+  for (let h = 1; h <= 12; h++) {
+    const angle = ((h % 12) * 30 - 90) * (Math.PI / 180);
+    const x = cx + r * Math.cos(angle);
+    const y = cy + r * Math.sin(angle);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'hero-clock-hour';
+    btn.dataset.hour = String(h);
+    btn.textContent = String(h);
+    btn.style.left = x + '%';
+    btn.style.top = y + '%';
+    btn.setAttribute('aria-label', 'Hour ' + h);
+    faceEl.appendChild(btn);
+  }
+  faceEl.dataset.rendered = '1';
+}
+
+function initHeroSchedule() {
+  const schedule = document.getElementById('heroSchedule');
+  const fieldsWrap = document.getElementById('heroScheduleFields');
+  const dateInput = document.getElementById('preferred_date');
+  const timeInput = document.getElementById('preferred_time');
+  const whenHidden = document.getElementById('preferred_when');
+  const pills = document.querySelectorAll('.hero-schedule-pill');
+  const clockFace = document.getElementById('heroClockFace');
+  const clockPanel = document.getElementById('heroClockPanel');
+  const clockReadout = document.getElementById('heroClockReadout');
+  const timeTrigger = document.getElementById('heroTimeTrigger');
+  const timeTriggerLabel = document.getElementById('heroTimeTriggerLabel');
+  const flexibleBtn = document.getElementById('heroClockFlexibleBtn');
+  const manualTimeInput = document.getElementById('heroTimeManual');
+  const handHour = document.getElementById('heroClockHandHour');
+  const handMinute = document.getElementById('heroClockHandMinute');
+  const timeField = document.querySelector('.hero-schedule-field--time');
+
+  if (!schedule || !fieldsWrap || !dateInput || !timeInput || !whenHidden) return;
+
+  const today = new Date();
+  dateInput.min = formatLocalDate(today);
+
+  const clockState = { hour12: 9, minute: '00', ampm: 'AM', open: false, flexible: true };
+
+  renderClockHours(clockFace);
+
+  function positionClockPanel() {
+    if (!clockPanel || !timeTrigger || !clockState.open) return;
+    const triggerRect = timeTrigger.getBoundingClientRect();
+    const panelWidth = Math.max(triggerRect.width, 310);
+    let left = triggerRect.left;
+    if (left + panelWidth > window.innerWidth - 12) {
+      left = window.innerWidth - panelWidth - 12;
+    }
+    left = Math.max(12, left);
+    clockPanel.style.width = panelWidth + 'px';
+    clockPanel.style.left = left + 'px';
+    const panelHeight = clockPanel.offsetHeight;
+    let top = triggerRect.bottom + 6;
+    if (top + panelHeight > window.innerHeight - 12) {
+      top = triggerRect.top - panelHeight - 6;
+    }
+    clockPanel.style.top = Math.max(12, top) + 'px';
+  }
+
+  function mountClockPanel() {
+    if (clockPanel && clockPanel.parentElement !== document.body) {
+      document.body.appendChild(clockPanel);
+    }
+  }
+
+  function unmountClockPanel() {
+    if (clockPanel && timeField && clockPanel.parentElement === document.body) {
+      timeField.appendChild(clockPanel);
+    }
+  }
+
+  function setActivePill(preset) {
+    pills.forEach(p => {
+      const active = p.dataset.preset === preset;
+      p.classList.toggle('is-active', active);
+      p.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+  }
+
+  function syncWhenHidden() {
+    whenHidden.value = buildPreferredWhenSummary();
+  }
+
+  function updateClockHands() {
+    const h = clockState.hour12 % 12;
+    const m = parseInt(clockState.minute, 10) || 0;
+    const hourDeg = h * 30 + m * 0.5;
+    const minuteDeg = m * 6;
+    if (handHour) handHour.style.transform = 'rotate(' + hourDeg + 'deg)';
+    if (handMinute) handMinute.style.transform = 'rotate(' + minuteDeg + 'deg)';
+  }
+
+  function updateClockReadout() {
+    if (!clockReadout) return;
+    clockReadout.textContent =
+      clockState.hour12 + ':' + clockState.minute + ' ' + clockState.ampm;
+  }
+
+  function syncTimeInputFromClock() {
+    if (clockState.flexible) {
+      timeInput.value = '';
+      return;
+    }
+    timeInput.value = buildTime24FromExact(
+      clockState.hour12,
+      clockState.minute,
+      clockState.ampm
+    );
+  }
+
+  function syncManualInputFromClock() {
+    if (!manualTimeInput) return;
+    if (clockState.flexible) {
+      manualTimeInput.value = '';
+      return;
+    }
+    manualTimeInput.value = buildTime24FromExact(
+      clockState.hour12,
+      clockState.minute,
+      clockState.ampm
+    );
+  }
+
+  function applyManualTimeValue(value) {
+    if (!value) {
+      setFlexible();
+      return;
+    }
+    const parsed = parseTime24ToClockState(value);
+    if (!parsed) return;
+    clockState.hour12 = parsed.hour12;
+    clockState.minute = parsed.minute;
+    clockState.ampm = parsed.ampm;
+    clockState.flexible = false;
+    refreshClockUI();
+  }
+
+  function updateTimeTriggerLabel() {
+    if (!timeTriggerLabel) return;
+    timeTriggerLabel.textContent = clockState.flexible
+      ? 'Flexible'
+      : clockState.hour12 + ':' + clockState.minute + ' ' + clockState.ampm;
+  }
+
+  function setClockOpen(open) {
+    clockState.open = open;
+    if (open) {
+      mountClockPanel();
+      if (clockPanel) clockPanel.hidden = false;
+      requestAnimationFrame(() => {
+        positionClockPanel();
+        if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+      });
+    } else {
+      if (clockPanel) clockPanel.hidden = true;
+      unmountClockPanel();
+    }
+    if (timeTrigger) {
+      timeTrigger.classList.toggle('is-open', open);
+      timeTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+  }
+
+  function refreshClockUI() {
+    document.querySelectorAll('.hero-clock-hour').forEach(btn => {
+      const active = parseInt(btn.dataset.hour, 10) === clockState.hour12;
+      btn.classList.toggle('is-active', active);
+    });
+    if (flexibleBtn) {
+      flexibleBtn.classList.toggle('is-active', clockState.flexible);
+    }
+    if (clockPanel && clockState.open) {
+      requestAnimationFrame(positionClockPanel);
+    }
+    updateClockHands();
+    updateClockReadout();
+    updateTimeTriggerLabel();
+    syncTimeInputFromClock();
+    syncManualInputFromClock();
+    syncWhenHidden();
+  }
+
+  function setFlexible() {
+    clockState.flexible = true;
+    if (manualTimeInput) manualTimeInput.value = '';
+    refreshClockUI();
+  }
+
+  function pickTime() {
+    clockState.flexible = false;
+    refreshClockUI();
+  }
+
+  function resetTimePicker() {
+    clockState.hour12 = 9;
+    clockState.minute = '00';
+    clockState.ampm = 'AM';
+    clockState.flexible = true;
+    setClockOpen(false);
+    refreshClockUI();
+  }
+
+  function applyPreset(preset) {
+    setActivePill(preset);
+
+    if (preset === 'asap') {
+      fieldsWrap.hidden = true;
+      dateInput.value = '';
+      resetTimePicker();
+      whenHidden.value = 'ASAP';
+      return;
+    }
+
+    setClockOpen(false);
+
+    if (preset === 'today') {
+      fieldsWrap.hidden = false;
+      dateInput.value = formatLocalDate(today);
+      whenHidden.value = 'Today';
+      syncWhenHidden();
+      return;
+    }
+
+    if (preset === 'tomorrow') {
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      fieldsWrap.hidden = false;
+      dateInput.value = formatLocalDate(tomorrow);
+      whenHidden.value = 'Tomorrow';
+      syncWhenHidden();
+      return;
+    }
+
+    fieldsWrap.hidden = false;
+    whenHidden.value = 'Custom';
+    syncWhenHidden();
+    setTimeout(() => dateInput.focus(), 60);
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      applyPreset(pill.dataset.preset || 'asap');
+    });
+  });
+
+  if (timeTrigger) {
+    timeTrigger.addEventListener('click', e => {
+      e.stopPropagation();
+      setClockOpen(!clockState.open);
+    });
+  }
+
+  document.addEventListener('click', e => {
+    if (!clockState.open) return;
+    if (e.target.closest('#heroClockPanel') || e.target.closest('#heroTimeTrigger')) return;
+    setClockOpen(false);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && clockState.open) setClockOpen(false);
+  });
+
+  window.addEventListener('resize', () => {
+    if (clockState.open) positionClockPanel();
+  });
+
+  window.addEventListener('scroll', () => {
+    if (clockState.open) positionClockPanel();
+  }, true);
+
+  if (flexibleBtn) {
+    flexibleBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      setFlexible();
+      setClockOpen(false);
+    });
+  }
+
+  if (manualTimeInput) {
+    manualTimeInput.addEventListener('change', () => {
+      if (!manualTimeInput.value) {
+        setFlexible();
+        return;
+      }
+      applyManualTimeValue(manualTimeInput.value);
+      setActivePill('custom');
+      whenHidden.value = 'Custom';
+    });
+    manualTimeInput.addEventListener('input', () => {
+      if (!manualTimeInput.value) setFlexible();
+    });
+  }
+
+  if (clockFace) {
+    clockFace.addEventListener('click', e => {
+      const hourBtn = e.target.closest('.hero-clock-hour');
+      if (!hourBtn) return;
+      clockState.hour12 = parseInt(hourBtn.dataset.hour, 10) || 9;
+      pickTime();
+      setActivePill('custom');
+      whenHidden.value = 'Custom';
+      refreshClockUI();
+    });
+  }
+
+  dateInput.addEventListener('change', () => {
+    setActivePill('custom');
+    whenHidden.value = 'Custom';
+    syncWhenHidden();
+  });
+  dateInput.addEventListener('input', syncWhenHidden);
+
+  window._ih_resetHeroSchedule = function resetHeroSchedule() {
+    applyPreset('asap');
+    resetTimePicker();
+  };
+
+  applyPreset('asap');
+  resetTimePicker();
+}
+
+const HERO_FEATURED_INDICES = [0, 1, 2, 3]; // Plumber, CA / GST, Packers, Electrician
 
 const HERO_CATEGORIES = [
   { label: 'Plumber', icon: 'wrench', prompt: 'I need a plumber to fix a leaking tap in my kitchen.', phrase: 'a plumber in Whitefield by tomorrow' },
@@ -423,7 +834,7 @@ const HERO_CATEGORIES = [
   { label: 'Lawyer', icon: 'scale', prompt: 'I need a lawyer to review a rental agreement.', phrase: 'a lawyer to review my contract' },
 ];
 
-const HERO_PROMPT_PHRASES = HERO_CATEGORIES.map(c => c.phrase);
+const HERO_PROMPT_PHRASES = HERO_FEATURED_INDICES.map(i => HERO_CATEGORIES[i].phrase);
 
 function renderHeroCategoryChips(container) {
   if (!container) return [];
@@ -440,7 +851,7 @@ function renderHeroCategoryChips(container) {
 function scrollChipIntoView(scroller, chip, smooth = true) {
   const sr = scroller.getBoundingClientRect();
   const br = chip.getBoundingClientRect();
-  const pad = 8;
+  const pad = 12;
   let delta = 0;
   if (br.left < sr.left) delta = br.left - sr.left - pad;
   else if (br.right > sr.right) delta = br.right - sr.right + pad;
@@ -448,18 +859,19 @@ function scrollChipIntoView(scroller, chip, smooth = true) {
   scroller.scrollBy({ left: delta, behavior: smooth ? 'smooth' : 'auto' });
 }
 
-function setHeroCategoryIndex(index, { animateWord = true, scrollChips = true } = {}) {
+function setHeroCategoryIndex(catIndex, { animateWord = true, scrollChips = true } = {}) {
   const chips = document.querySelectorAll('.hero-prompt-chip');
   const cycleWord = document.getElementById('heroCatCycleWord');
-  const cat = HERO_CATEGORIES[index];
+  const cat = HERO_CATEGORIES[catIndex];
   if (!cat) return;
 
-  chips.forEach((chip, i) => {
-    chip.classList.toggle('is-cycle-active', i === index);
-    chip.classList.toggle('is-active', i === index);
+  chips.forEach((chip) => {
+    const idx = parseInt(chip.dataset.index, 10);
+    chip.classList.toggle('is-cycle-active', idx === catIndex);
+    chip.classList.toggle('is-active', idx === catIndex);
   });
 
-  const activeChip = chips[index];
+  const activeChip = [...chips].find(c => parseInt(c.dataset.index, 10) === catIndex);
   const chipScroller = document.getElementById('heroCategoryChips');
   if (scrollChips && activeChip && chipScroller && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     scrollChipIntoView(chipScroller, activeChip);
@@ -485,30 +897,36 @@ function heroAnimatePhraseSwap(typedEl, nextText, onComplete) {
     return;
   }
 
-  typedEl.classList.remove('is-entering');
-  typedEl.classList.add('is-exiting');
+  const deleteSpeed = 14;
+  typedEl.classList.add('is-typing');
 
-  setTimeout(() => {
-    typedEl.classList.remove('is-exiting');
-    typedEl.textContent = '';
-    typedEl.classList.add('is-entering');
+  function typeDelay(char) {
+    if (char === ' ') return 28;
+    if (char === ',') return 140;
+    return 34;
+  }
 
-    let i = 0;
-    const typeSpeed = 12;
-
-    function typeStep() {
-      i += 1;
-      typedEl.textContent = nextText.slice(0, i);
-      if (i >= nextText.length) {
-        typedEl.classList.remove('is-entering');
-        onComplete?.();
-        return;
-      }
-      setTimeout(typeStep, typeSpeed);
+  function deleteStep() {
+    const text = typedEl.textContent;
+    if (text.length <= 0) {
+      typeStep(1);
+      return;
     }
+    typedEl.textContent = text.slice(0, -1);
+    setTimeout(deleteStep, deleteSpeed);
+  }
 
-    typeStep();
-  }, 180);
+  function typeStep(i) {
+    typedEl.textContent = nextText.slice(0, i);
+    if (i >= nextText.length) {
+      typedEl.classList.remove('is-typing');
+      onComplete?.();
+      return;
+    }
+    setTimeout(() => typeStep(i + 1), typeDelay(nextText[i - 1]));
+  }
+
+  deleteStep();
 }
 
 function focusHeroForm(messageText) {
@@ -542,7 +960,7 @@ function initHeroPromptDemo() {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let userPaused = false;
   let heroInView = true;
-  let phraseIndex = 0;
+  let featuredPos = 0;
 
   const heroSection = document.getElementById('home') || document.querySelector('.hero-section');
   if (heroSection && 'IntersectionObserver' in window) {
@@ -556,25 +974,27 @@ function initHeroPromptDemo() {
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
       userPaused = true;
-      phraseIndex = parseInt(chip.dataset.index, 10) || 0;
-      setHeroCategoryIndex(phraseIndex);
+      const catIndex = parseInt(chip.dataset.index, 10) || 0;
+      const featIdx = HERO_FEATURED_INDICES.indexOf(catIndex);
+      featuredPos = featIdx >= 0 ? featIdx : featuredPos;
+      setHeroCategoryIndex(catIndex);
       chips.forEach(c => c.classList.remove('is-active'));
       chip.classList.add('is-active');
       focusHeroForm(chip.dataset.prompt || '');
-      typed.textContent = HERO_CATEGORIES[phraseIndex].phrase;
+      heroAnimatePhraseSwap(typed, HERO_CATEGORIES[catIndex].phrase);
       setTimeout(() => { userPaused = false; }, 8000);
     });
   });
 
-  if (reducedMotion || HERO_CATEGORIES.length < 2) {
-    typed.textContent = HERO_CATEGORIES[0].phrase;
+  if (reducedMotion || HERO_FEATURED_INDICES.length < 2) {
+    typed.textContent = HERO_CATEGORIES[HERO_FEATURED_INDICES[0]].phrase;
     if (cursor) cursor.style.display = 'none';
-    setHeroCategoryIndex(0, { animateWord: false });
+    setHeroCategoryIndex(HERO_FEATURED_INDICES[0], { animateWord: false });
     return;
   }
 
-  const HOLD_MS = 850;
-  const CYCLE_GAP_MS = 120;
+  const HOLD_MS = 2400;
+  const CYCLE_GAP_MS = 400;
 
   function runCycle() {
     if (userPaused || !heroInView) {
@@ -582,18 +1002,22 @@ function initHeroPromptDemo() {
       return;
     }
 
-    const phrase = HERO_PROMPT_PHRASES[phraseIndex];
-    setHeroCategoryIndex(phraseIndex, { scrollChips: heroInView });
+    const catIndex = HERO_FEATURED_INDICES[featuredPos];
+    const phrase = HERO_CATEGORIES[catIndex].phrase;
+    setHeroCategoryIndex(catIndex, { scrollChips: heroInView });
 
     heroAnimatePhraseSwap(typed, phrase, () => {
       setTimeout(() => {
-        phraseIndex = (phraseIndex + 1) % HERO_PROMPT_PHRASES.length;
+        featuredPos = (featuredPos + 1) % HERO_FEATURED_INDICES.length;
         setTimeout(runCycle, CYCLE_GAP_MS);
       }, HOLD_MS);
     });
   }
 
-  setTimeout(runCycle, 350);
+  setHeroCategoryIndex(HERO_FEATURED_INDICES[0], { animateWord: false });
+  featuredPos = 1;
+
+  setTimeout(runCycle, 2800);
 }
 
 /* ── SERVICE OPTIONS ── */
@@ -698,15 +1122,10 @@ function secureSubmitForm(e) {
     return;
   }
 
-  // Consent gates - both required, unticked by default
-  const providerConsent = form.querySelector('input[name="evidence_consent"]');
-  const privacyConsent = form.querySelector('input[name="privacy_consent"]');
-  if (providerConsent && !providerConsent.checked) {
-    providerConsent.focus();
-    return;
-  }
-  if (privacyConsent && !privacyConsent.checked) {
-    privacyConsent.focus();
+  // Consent gate - single checkbox, unticked by default
+  const consent = form.querySelector('input[name="consent"]');
+  if (consent && !consent.checked) {
+    consent.focus();
     return;
   }
 
@@ -727,13 +1146,23 @@ function secureSubmitForm(e) {
     addressEl.focus();
     return;
   }
+  if (addressEl && addressEl.value.trim() && !/\b\d{6}\b/.test(addressEl.value.trim())) {
+    addressEl.focus();
+    alert('Please include your 6-digit pincode in the address so we can confirm coverage.');
+    return;
+  }
 
   const defaultLabel = btn?.dataset.defaultLabel || 'Send request';
   const labelEl = btn?.querySelector('.btn-hero-submit-text');
 
   if (labelEl) labelEl.textContent = 'Sending…';
   else if (btn) btn.textContent = 'Sending…';
-  if (btn) btn.disabled = true;
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add('is-sending');
+  }
+  const submitLoader = document.getElementById('heroSubmitLoader');
+  if (submitLoader) submitLoader.hidden = false;
 
   // Determine confusion instance
   const sourceVal   = (form.querySelector('select[name="source"]')?.value    || '').toLowerCase();
@@ -768,12 +1197,15 @@ function secureSubmitForm(e) {
     address:  g('address'),
     service:  g('service'),
     message:  g('message'),
+    preferred_when: buildPreferredWhenSummary(),
+    preferred_date: g('preferred_date'),
+    preferred_time: g('preferred_time'),
 
     // Evidence fields
     source:                  g('source'),
     prior_payment:           g('prior_payment'),
-    evidence_consent:        providerConsent?.checked ? 'YES' : 'NO',
-    privacy_consent:         privacyConsent?.checked ? 'YES' : 'NO',
+    evidence_consent:        consent?.checked ? 'YES' : 'NO',
+    privacy_consent:         consent?.checked ? 'YES' : 'NO',
     confusion_instance:      isConfusion ? 'YES,REVIEW' : 'no',
 
     // Traffic
@@ -846,6 +1278,7 @@ function secureSubmitForm(e) {
       'Phone: ' + data.phone + '\n' +
       'Email: ' + data.email + '\n' +
       'Address: ' + data.address + '\n' +
+      'Preferred when: ' + (data.preferred_when || 'ASAP') + '\n' +
       'Service: ' + data.service + '\n\n' +
       'Message:\n' + data.message + '\n\n' +
       '- sent from instahelp.in fallback -'
@@ -868,7 +1301,7 @@ function secureSubmitForm(e) {
     setV('landing_page', window.location.href);
     setV('confusion_referral_flag', window._ih_referrer_confusion ? 'YES' : 'no');
   })();
-  fillAddressInput('exact_address', 'heroDetectAddress', { alertOnFail: false });
+  fillAddressInput('exact_address', null, { alertOnFail: false });
 
   showNotif();
 
@@ -877,7 +1310,11 @@ function secureSubmitForm(e) {
   setTimeout(() => {
     if (labelEl) labelEl.textContent = defaultLabel;
     else if (btn) btn.textContent = defaultLabel;
-    if (btn) btn.disabled = false;
+    if (btn) {
+      btn.disabled = false;
+      btn.classList.remove('is-sending');
+    }
+    if (submitLoader) submitLoader.hidden = true;
     if (typeof window._ih_resetHeroForm === 'function') window._ih_resetHeroForm();
   }, 2500);
 }
@@ -896,6 +1333,10 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const target = document.querySelector(href);
     if (!target) return;
     e.preventDefault();
-    ihScrollTo(target);
+    if (href === '#heroFormCard' || a.classList.contains('js-focus-form')) {
+      focusHeroForm('');
+    } else {
+      ihScrollTo(target);
+    }
   });
 });

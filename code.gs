@@ -75,6 +75,9 @@ var COLUMN_HEADERS = [
   'Address',
   'Service',
   'Message',
+  'Preferred when',
+  'Preferred date',
+  'Preferred time',
   'Source',
   'Prior payment',
   'Evidence consent',
@@ -277,6 +280,9 @@ function buildLeadEmailHtml_(data, receivedAt) {
 
   var taskRows =
     buildEmailRow_('Task / message', message, { multiline: true }) +
+    buildEmailRow_('Preferred when', displayOrDash_(data.preferred_when)) +
+    buildEmailRow_('Preferred date', displayOrDash_(data.preferred_date)) +
+    buildEmailRow_('Preferred time', displayOrDash_(data.preferred_time)) +
     buildEmailRow_('Service category', service || 'Not specified');
 
   var contactRows =
@@ -503,6 +509,9 @@ function doPost(e) {
     safeCell_(data.address),
     safeCell_(data.service),
     safeCell_(data.message),
+    safeCell_(data.preferred_when),
+    safeCell_(data.preferred_date),
+    safeCell_(data.preferred_time),
     safeCell_(data.source),
     safeCell_(data.prior_payment),
     safeCell_(data.evidence_consent),

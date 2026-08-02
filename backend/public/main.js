@@ -405,6 +405,8 @@ function initHeroInteractiveForm() {
   };
 }
 
+const HERO_FEATURED_INDICES = [0, 1, 2, 3]; // Plumber, CA / GST, Packers, Electrician
+
 const HERO_CATEGORIES = [
   { label: 'Plumber', icon: 'wrench', prompt: 'I need a plumber to fix a leaking tap in my kitchen.', phrase: 'a plumber in Whitefield by tomorrow' },
   { label: 'CA / GST', icon: 'file-text', prompt: 'I need a CA to file my GST returns this month.', phrase: 'a CA for GST filing this week' },
@@ -423,7 +425,7 @@ const HERO_CATEGORIES = [
   { label: 'Lawyer', icon: 'scale', prompt: 'I need a lawyer to review a rental agreement.', phrase: 'a lawyer to review my contract' },
 ];
 
-const HERO_PROMPT_PHRASES = HERO_CATEGORIES.map(c => c.phrase);
+const HERO_PROMPT_PHRASES = HERO_FEATURED_INDICES.map(i => HERO_CATEGORIES[i].phrase);
 
 function renderHeroCategoryChips(container) {
   if (!container) return [];
@@ -440,7 +442,7 @@ function renderHeroCategoryChips(container) {
 function scrollChipIntoView(scroller, chip, smooth = true) {
   const sr = scroller.getBoundingClientRect();
   const br = chip.getBoundingClientRect();
-  const pad = 8;
+  const pad = 12;
   let delta = 0;
   if (br.left < sr.left) delta = br.left - sr.left - pad;
   else if (br.right > sr.right) delta = br.right - sr.right + pad;
@@ -448,18 +450,19 @@ function scrollChipIntoView(scroller, chip, smooth = true) {
   scroller.scrollBy({ left: delta, behavior: smooth ? 'smooth' : 'auto' });
 }
 
-function setHeroCategoryIndex(index, { animateWord = true, scrollChips = true } = {}) {
+function setHeroCategoryIndex(catIndex, { animateWord = true, scrollChips = true } = {}) {
   const chips = document.querySelectorAll('.hero-prompt-chip');
   const cycleWord = document.getElementById('heroCatCycleWord');
-  const cat = HERO_CATEGORIES[index];
+  const cat = HERO_CATEGORIES[catIndex];
   if (!cat) return;
 
-  chips.forEach((chip, i) => {
-    chip.classList.toggle('is-cycle-active', i === index);
-    chip.classList.toggle('is-active', i === index);
+  chips.forEach((chip) => {
+    const idx = parseInt(chip.dataset.index, 10);
+    chip.classList.toggle('is-cycle-active', idx === catIndex);
+    chip.classList.toggle('is-active', idx === catIndex);
   });
 
-  const activeChip = chips[index];
+  const activeChip = [...chips].find(c => parseInt(c.dataset.index, 10) === catIndex);
   const chipScroller = document.getElementById('heroCategoryChips');
   if (scrollChips && activeChip && chipScroller && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     scrollChipIntoView(chipScroller, activeChip);
@@ -485,30 +488,36 @@ function heroAnimatePhraseSwap(typedEl, nextText, onComplete) {
     return;
   }
 
-  typedEl.classList.remove('is-entering');
-  typedEl.classList.add('is-exiting');
+  const deleteSpeed = 14;
+  typedEl.classList.add('is-typing');
 
-  setTimeout(() => {
-    typedEl.classList.remove('is-exiting');
-    typedEl.textContent = '';
-    typedEl.classList.add('is-entering');
+  function typeDelay(char) {
+    if (char === ' ') return 28;
+    if (char === ',') return 140;
+    return 34;
+  }
 
-    let i = 0;
-    const typeSpeed = 12;
-
-    function typeStep() {
-      i += 1;
-      typedEl.textContent = nextText.slice(0, i);
-      if (i >= nextText.length) {
-        typedEl.classList.remove('is-entering');
-        onComplete?.();
-        return;
-      }
-      setTimeout(typeStep, typeSpeed);
+  function deleteStep() {
+    const text = typedEl.textContent;
+    if (text.length <= 0) {
+      typeStep(1);
+      return;
     }
+    typedEl.textContent = text.slice(0, -1);
+    setTimeout(deleteStep, deleteSpeed);
+  }
 
-    typeStep();
-  }, 180);
+  function typeStep(i) {
+    typedEl.textContent = nextText.slice(0, i);
+    if (i >= nextText.length) {
+      typedEl.classList.remove('is-typing');
+      onComplete?.();
+      return;
+    }
+    setTimeout(() => typeStep(i + 1), typeDelay(nextText[i - 1]));
+  }
+
+  deleteStep();
 }
 
 function focusHeroForm(messageText) {
@@ -542,7 +551,7 @@ function initHeroPromptDemo() {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let userPaused = false;
   let heroInView = true;
-  let phraseIndex = 0;
+  let featuredPos = 0;
 
   const heroSection = document.getElementById('home') || document.querySelector('.hero-section');
   if (heroSection && 'IntersectionObserver' in window) {
@@ -556,25 +565,27 @@ function initHeroPromptDemo() {
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
       userPaused = true;
-      phraseIndex = parseInt(chip.dataset.index, 10) || 0;
-      setHeroCategoryIndex(phraseIndex);
+      const catIndex = parseInt(chip.dataset.index, 10) || 0;
+      const featIdx = HERO_FEATURED_INDICES.indexOf(catIndex);
+      featuredPos = featIdx >= 0 ? featIdx : featuredPos;
+      setHeroCategoryIndex(catIndex);
       chips.forEach(c => c.classList.remove('is-active'));
       chip.classList.add('is-active');
       focusHeroForm(chip.dataset.prompt || '');
-      typed.textContent = HERO_CATEGORIES[phraseIndex].phrase;
+      heroAnimatePhraseSwap(typed, HERO_CATEGORIES[catIndex].phrase);
       setTimeout(() => { userPaused = false; }, 8000);
     });
   });
 
-  if (reducedMotion || HERO_CATEGORIES.length < 2) {
-    typed.textContent = HERO_CATEGORIES[0].phrase;
+  if (reducedMotion || HERO_FEATURED_INDICES.length < 2) {
+    typed.textContent = HERO_CATEGORIES[HERO_FEATURED_INDICES[0]].phrase;
     if (cursor) cursor.style.display = 'none';
-    setHeroCategoryIndex(0, { animateWord: false });
+    setHeroCategoryIndex(HERO_FEATURED_INDICES[0], { animateWord: false });
     return;
   }
 
-  const HOLD_MS = 850;
-  const CYCLE_GAP_MS = 120;
+  const HOLD_MS = 2400;
+  const CYCLE_GAP_MS = 400;
 
   function runCycle() {
     if (userPaused || !heroInView) {
@@ -582,18 +593,22 @@ function initHeroPromptDemo() {
       return;
     }
 
-    const phrase = HERO_PROMPT_PHRASES[phraseIndex];
-    setHeroCategoryIndex(phraseIndex, { scrollChips: heroInView });
+    const catIndex = HERO_FEATURED_INDICES[featuredPos];
+    const phrase = HERO_CATEGORIES[catIndex].phrase;
+    setHeroCategoryIndex(catIndex, { scrollChips: heroInView });
 
     heroAnimatePhraseSwap(typed, phrase, () => {
       setTimeout(() => {
-        phraseIndex = (phraseIndex + 1) % HERO_PROMPT_PHRASES.length;
+        featuredPos = (featuredPos + 1) % HERO_FEATURED_INDICES.length;
         setTimeout(runCycle, CYCLE_GAP_MS);
       }, HOLD_MS);
     });
   }
 
-  setTimeout(runCycle, 350);
+  setHeroCategoryIndex(HERO_FEATURED_INDICES[0], { animateWord: false });
+  featuredPos = 1;
+
+  setTimeout(runCycle, 2800);
 }
 
 /* ── SERVICE OPTIONS ── */
@@ -698,15 +713,10 @@ function secureSubmitForm(e) {
     return;
   }
 
-  // Consent gates - both required, unticked by default
-  const providerConsent = form.querySelector('input[name="evidence_consent"]');
-  const privacyConsent = form.querySelector('input[name="privacy_consent"]');
-  if (providerConsent && !providerConsent.checked) {
-    providerConsent.focus();
-    return;
-  }
-  if (privacyConsent && !privacyConsent.checked) {
-    privacyConsent.focus();
+  // Consent gate - single checkbox, unticked by default
+  const consent = form.querySelector('input[name="consent"]');
+  if (consent && !consent.checked) {
+    consent.focus();
     return;
   }
 
@@ -772,8 +782,8 @@ function secureSubmitForm(e) {
     // Evidence fields
     source:                  g('source'),
     prior_payment:           g('prior_payment'),
-    evidence_consent:        providerConsent?.checked ? 'YES' : 'NO',
-    privacy_consent:         privacyConsent?.checked ? 'YES' : 'NO',
+    evidence_consent:        consent?.checked ? 'YES' : 'NO',
+    privacy_consent:         consent?.checked ? 'YES' : 'NO',
     confusion_instance:      isConfusion ? 'YES,REVIEW' : 'no',
 
     // Traffic

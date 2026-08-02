@@ -12,7 +12,7 @@
   --gray-100:  #f2f2f2;
   --gray-200:  #e5e5e5;
   --gray-300:  #d4d4d4;
-  --gray-400:  #9e9e9e;
+  --gray-400:  #6e6e6e;
   --gray-700:  #444;
 
   --accent:    #004aad;
@@ -215,11 +215,11 @@ header {
 
 .hero-section {
   position: relative;
-  padding-top: 112px;
+  padding-top: 88px;
   padding-bottom: var(--space-32);
   min-height: min(100svh, 900px);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   overflow: hidden;
 }
 
@@ -235,7 +235,7 @@ header {
 .hero-bg-base {
   position: absolute;
   inset: 0;
-  background: #FFFBEB;
+  background: var(--white);
 }
 
 .hero-bg-blob {
@@ -247,7 +247,7 @@ header {
 .hero-bg-blob-yellow {
   width: min(58vw, 540px);
   height: min(58vw, 540px);
-  background: rgba(255, 214, 0, 0.2);
+  background: rgba(0, 74, 173, 0.05);
   top: -18%;
   right: -10%;
   animation: heroBlobDrift1 22s ease-in-out infinite;
@@ -268,7 +268,7 @@ header {
   width: 100%;
   max-width: var(--container);
   margin: 0 auto;
-  padding: var(--space-32) var(--gutter) var(--space-24);
+  padding: var(--space-12) var(--gutter) var(--space-24);
 }
 
 .hero-top {
@@ -301,6 +301,8 @@ header {
   .hero-prompt-typed.is-exiting,
   .hero-prompt-typed.is-entering { animation: none; filter: none; transform: none; }
   .hero-prompt-chips--cycle .hero-prompt-chip { opacity: 1; filter: none; transform: none; }
+  .ih-hand-minute,
+  .ih-hand-second { animation: none !important; }
 }
 
 /* LEFT: COPY */
@@ -321,10 +323,9 @@ header {
   font-weight: 800;
   padding: 7px 16px;
   border-radius: var(--radius-pill);
-  margin-bottom: var(--space-16);
+  margin-bottom: var(--space-12);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  box-shadow: 0 2px 12px rgba(255, 214, 0, 0.35);
 }
 
 .hero-pill-dot {
@@ -333,14 +334,13 @@ header {
   background: var(--black);
   border-radius: 50%;
   display: inline-block;
-  animation: heroDotPop 1.8s ease-in-out infinite;
 }
 
 .hero-copy h1 {
   font-size: clamp(40px, 4.8vw, 64px);
   font-weight: 800;
   line-height: 1.05;
-  letter-spacing: -2.2px;
+  letter-spacing: -0.03em;
   margin-bottom: var(--space-16);
 }
 
@@ -433,133 +433,139 @@ header {
 }
 
 .hero-prompt-kicker {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gray-400);
 }
 
 .hero-prompt-bubble {
   position: relative;
-  padding: 16px 18px;
-  margin-bottom: 14px;
-  border-radius: 18px 18px 18px 6px;
+  padding: 18px 20px;
+  margin-bottom: 22px;
+  border-radius: 16px 16px 16px 4px;
   background: var(--white);
-  border: 1.5px solid var(--gray-200);
-  box-shadow:
-    0 8px 28px rgba(0, 0, 0, 0.07),
-    0 0 0 1px rgba(255, 214, 0, 0.15);
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.hero-prompt-bubble::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--accent);
+  opacity: 0.85;
 }
 
 .hero-prompt-bubble::after {
   content: '';
   position: absolute;
-  left: 18px;
-  bottom: -8px;
-  width: 14px;
-  height: 14px;
+  left: 20px;
+  bottom: -7px;
+  width: 12px;
+  height: 12px;
   background: var(--white);
-  border-right: 1.5px solid var(--gray-200);
-  border-bottom: 1.5px solid var(--gray-200);
+  border-right: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
   transform: rotate(45deg);
 }
 
 .hero-prompt-line {
   display: block;
   font-size: clamp(15px, 2.2vw, 17px);
-  line-height: 1.45;
-  font-weight: 600;
+  line-height: 1.5;
+  font-weight: 500;
   color: var(--black);
-  min-height: 1.45em;
+  min-height: 2.25em;
+  padding-left: 10px;
 }
 
 .hero-prompt-prefix {
   color: var(--gray-700);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .hero-prompt-typed {
-  font-weight: 800;
-  background: linear-gradient(105deg, var(--accent) 0%, #690690 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  will-change: transform, opacity, filter;
+  font-weight: 700;
+  color: var(--accent);
 }
 
 .hero-prompt-cursor {
   display: inline-block;
   width: 2px;
   height: 1.05em;
-  margin-left: 2px;
+  margin-left: 1px;
   vertical-align: text-bottom;
-  background: var(--yellow-dk);
-  animation: heroPromptBlink 1s step-end infinite;
+  background: var(--accent);
+  border-radius: 1px;
+  animation: heroPromptBlink 1.1s ease-in-out infinite;
 }
 
 .hero-prompt-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
-.hero-prompt-chips--cycle {
-  max-height: 72px;
-  overflow-x: auto;
-  overflow-y: hidden;
+.hero-prompt-chips--scroll {
   flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: visible;
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding-bottom: 2px;
-  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-  gap: 5px;
+  margin-top: 6px;
+  padding: 4px 0 6px;
+  gap: 8px;
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
 }
 
-.hero-prompt-chips--cycle::-webkit-scrollbar {
+.hero-prompt-chips--scroll::-webkit-scrollbar {
   display: none;
 }
 
-.hero-prompt-chips--cycle .hero-prompt-chip {
+.hero-prompt-chips--scroll .hero-prompt-chip {
   flex: 0 0 auto;
   min-width: auto;
-  padding: 7px 11px;
-  opacity: 0.55;
-  transform: scale(0.96);
-  filter: blur(0.3px);
+  padding: 9px 14px;
+  font-size: 11px;
+  opacity: 0.72;
+  transform: none;
+  filter: none;
   transition:
-    transform 0.28s cubic-bezier(0.34, 1.4, 0.64, 1),
-    box-shadow 0.28s ease,
-    border-color 0.28s ease,
-    background 0.28s ease,
-    opacity 0.28s ease,
-    filter 0.28s ease;
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s ease,
+    border-color 0.32s ease,
+    background 0.32s ease,
+    opacity 0.32s ease,
+    color 0.32s ease;
 }
 
 .hero-prompt-chip.is-cycle-active {
   opacity: 1;
-  filter: blur(0);
-  border-color: var(--yellow-dk);
-  background: linear-gradient(135deg, #FFF9D6 0%, #fff 55%, #FFFBE6 100%);
-  box-shadow:
-    0 0 0 2px rgba(255, 214, 0, 0.4),
-    0 6px 20px rgba(255, 214, 0, 0.22);
-  transform: scale(1.06);
+  border-color: var(--accent);
+  background: var(--white);
+  box-shadow: 0 4px 16px rgba(0, 74, 173, 0.1);
+  transform: scale(1.02);
   color: var(--black);
   z-index: 1;
 }
 
 .hero-prompt-chip.is-cycle-active .hero-prompt-chip-icon {
   color: var(--accent);
-  animation: heroChipIconPop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: heroChipIconPop 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @keyframes heroChipIconPop {
-  0% { transform: scale(0.5) rotate(-12deg); opacity: 0; }
-  70% { transform: scale(1.12) rotate(4deg); }
-  100% { transform: scale(1) rotate(0); opacity: 1; }
+  0% { transform: scale(0.85); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* Hero headline category word cycle */
@@ -569,43 +575,39 @@ header {
   min-width: 8ch;
   text-align: left;
   overflow: hidden;
+  padding: 0.12em 0;
+  line-height: 1.25;
 }
 
 .hero-cat-cycle-inner {
   display: inline-block;
-  background: linear-gradient(105deg, var(--yellow-dk) 0%, #690690 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  will-change: transform, opacity, filter;
+  color: var(--accent);
+  will-change: opacity, transform;
 }
 
 .hero-cat-cycle-inner.is-exiting {
-  animation: heroCatWordOut 0.14s cubic-bezier(0.4, 0, 1, 1) forwards;
+  animation: heroCatWordOut 0.16s cubic-bezier(0.4, 0, 0.8, 0.2) forwards;
 }
 
 .hero-cat-cycle-inner.is-entering {
-  animation: heroCatWordIn 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: heroCatWordIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes heroCatWordOut {
   to {
     opacity: 0;
-    filter: blur(5px);
-    transform: translateY(-14px) scale(0.92);
+    transform: translateY(-5px);
   }
 }
 
 @keyframes heroCatWordIn {
   from {
     opacity: 0;
-    filter: blur(8px);
-    transform: translateY(16px) scale(0.9);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;
-    filter: blur(0);
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
@@ -659,40 +661,50 @@ header {
   white-space: nowrap;
   font-family: inherit;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 8px 8px;
   border-radius: var(--radius-pill);
-  border: 1.5px solid var(--gray-200);
-  background: var(--white);
-  color: var(--black);
+  border: 1px solid var(--gray-200);
+  background: var(--gray-50);
+  color: var(--gray-700);
   cursor: pointer;
   transition: var(--transition);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .hero-prompt-chip-icon {
   width: 14px;
   height: 14px;
   flex-shrink: 0;
+  color: var(--gray-400);
+  transition: color 0.32s ease;
+}
+
+.hero-prompt-chip.is-cycle-active .hero-prompt-chip-icon {
   color: var(--accent);
 }
 
 .hero-prompt-chip:hover {
-  border-color: var(--yellow-dk);
-  background: #FFFBEB;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(255, 214, 0, 0.22);
+  border-color: var(--accent);
+  background: var(--white);
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 74, 173, 0.08);
+  color: var(--black);
+}
+
+.hero-prompt-chip:hover .hero-prompt-chip-icon {
+  color: var(--accent);
 }
 
 .hero-prompt-chip.is-active {
-  border-color: var(--black);
-  background: var(--yellow);
-  box-shadow: 0 4px 14px rgba(255, 214, 0, 0.35);
+  border-color: var(--accent);
+  background: var(--white);
+  box-shadow: 0 4px 16px rgba(0, 74, 173, 0.12);
+  color: var(--black);
 }
 
 @keyframes heroPromptBlink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  50% { opacity: 0.25; }
 }
 
 /* CTAs (legacy - kept for other pages) */
@@ -835,12 +847,12 @@ header {
 .hero-form-interactive {
   background: var(--white);
   border: 1px solid rgba(0, 0, 0, 0.07);
-  border-radius: 20px;
-  padding: 20px 20px 18px;
+  border-radius: 18px;
+  padding: 14px 16px 12px;
   box-shadow:
     0 1px 2px rgba(0, 0, 0, 0.04),
     0 10px 36px rgba(0, 0, 0, 0.07),
-    0 24px 56px rgba(0, 74, 173, 0.07);
+    0 24px 56px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -881,21 +893,8 @@ header {
   background: var(--yellow);
 }
 
-.hero-form-interactive::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 120px;
-  height: 120px;
-  background: rgba(255, 214, 0, 0.08);
-  border-radius: 50%;
-  transform: translate(40%, -40%);
-  pointer-events: none;
-}
-
 .hero-form-interactive .hero-form-head {
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   display: block;
   position: relative;
   z-index: 1;
@@ -905,7 +904,7 @@ header {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -926,18 +925,18 @@ header {
 }
 
 .hero-form-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.5px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   line-height: 1.15;
   color: var(--black);
 }
 
 .hero-form-lead {
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--gray-700);
-  line-height: 1.45;
+  line-height: 1.4;
   margin: 0;
 }
 
@@ -950,20 +949,28 @@ header {
 .hero-form-body {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .hero-form-block {
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  border-radius: 14px;
-  padding: 12px 12px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 .hero-form-section {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.hero-form-section:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .hero-form-section-head {
@@ -1002,7 +1009,7 @@ header {
 .hero-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 6px;
 }
 
 .hero-form-row .hero-field {
@@ -1037,10 +1044,12 @@ header {
 }
 
 .hero-form-consent {
-  background: rgba(0, 74, 173, 0.04);
-  border: 1px solid rgba(0, 74, 173, 0.12);
-  border-radius: 12px;
-  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  border-top: 1px solid var(--gray-200);
+  padding-top: 10px;
 }
 
 .hero-form-interactive .hero-form-footer {
@@ -1049,13 +1058,13 @@ header {
   flex-wrap: nowrap;
   align-items: stretch;
   justify-content: flex-start;
-  gap: 8px;
+  gap: 6px;
   margin-top: 0;
 }
 
 .hero-form-interactive .btn-hero-submit {
   width: 100%;
-  padding: 13px 20px;
+  padding: 11px 18px;
   font-size: 14px;
   font-weight: 800;
   min-width: 0;
@@ -1065,10 +1074,13 @@ header {
   justify-content: center;
   gap: 8px;
   letter-spacing: 0.01em;
+  background: var(--black);
+  color: var(--white);
+  border: none;
 }
 
 .hero-form-interactive .btn-hero-submit:hover:not(:disabled) {
-  background: #111;
+  background: #222;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
   transform: translateY(-1px);
 }
@@ -1122,6 +1134,7 @@ header {
 .hero-form-interactive .btn-qh-detect-hero:hover:not(:disabled) {
   border-color: var(--yellow-dk);
   background: #FFFBEB;
+  color: var(--black);
 }
 
 .hero-form-interactive .hero-category-chips {
@@ -1136,14 +1149,922 @@ header {
 
 .hero-form-interactive .hero-cat-chip:hover {
   border-color: var(--yellow-dk);
-  background: var(--white);
+  background: #FFFBEB;
   box-shadow: 0 2px 8px rgba(255, 214, 0, 0.2);
 }
 
 .hero-form-interactive .hero-cat-chip.is-selected {
   border-color: var(--black);
   background: var(--yellow);
+  color: var(--black);
   box-shadow: 0 2px 10px rgba(255, 214, 0, 0.35);
+}
+
+.hero-field-hint {
+  margin: -2px 0 4px;
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: var(--gray-400);
+}
+
+.hero-field-hint-row {
+  margin-top: 0;
+}
+
+/* Schedule: date & time */
+.hero-schedule {
+  margin-top: 2px;
+  padding: 10px 10px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 214, 0, 0.35);
+  background: linear-gradient(165deg, #FFFBEB 0%, #fff 55%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.hero-schedule-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.hero-schedule-head-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: var(--yellow);
+  color: var(--black);
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(255, 214, 0, 0.45);
+}
+
+.hero-schedule-head-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.hero-schedule-head-text {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
+.hero-schedule-optional {
+  margin-left: auto;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+}
+
+.hero-schedule-optional--inline {
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.hero-form-section--schedule .hero-form-section-head {
+  align-items: center;
+}
+
+.hero-form-section--schedule .hero-schedule {
+  margin-top: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+.hero-schedule-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 0;
+}
+
+.hero-schedule-fields[hidden],
+.hero-clock-panel[hidden] {
+  display: none !important;
+}
+
+.hero-schedule-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.hero-schedule-fields:not([hidden]) {
+  animation: heroScheduleIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes heroScheduleIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-schedule-pill {
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  background: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.hero-schedule-pill:hover {
+  border-color: var(--yellow-dk);
+  background: #fffef5;
+  transform: translateY(-1px);
+}
+
+.hero-schedule-pill.is-active {
+  border-color: var(--black);
+  background: var(--yellow);
+  box-shadow: 0 2px 8px rgba(255, 214, 0, 0.4);
+}
+
+.hero-schedule-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.hero-schedule-label {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  padding-left: 2px;
+}
+
+.hero-schedule-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.hero-schedule-input-icon {
+  position: absolute;
+  right: 10px;
+  left: auto;
+  width: 14px;
+  height: 14px;
+  color: var(--gray-400);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-schedule-input-wrap input {
+  width: 100%;
+  min-height: 34px;
+  padding: 7px 36px 7px 10px;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--black);
+  background: var(--white);
+  outline: none;
+  color-scheme: light;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-schedule-input-wrap--date input {
+  padding-right: 38px;
+}
+
+.hero-schedule-input-wrap--date input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 38px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.hero-schedule-input-wrap--date input::-webkit-datetime-edit {
+  padding: 0;
+}
+
+.hero-schedule-input-wrap--date input::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+.hero-schedule-input-wrap--date input:invalid::-webkit-datetime-edit {
+  color: var(--gray-400);
+}
+
+.hero-schedule-input-wrap--time input {
+  padding-right: 34px;
+}
+
+.hero-schedule-input-wrap--time input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.hero-schedule-input-wrap input:focus {
+  border-color: var(--yellow-dk);
+  box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.22);
+}
+
+.hero-schedule-input-wrap input:focus + .hero-schedule-input-icon,
+.hero-schedule-input-wrap:focus-within .hero-schedule-input-icon {
+  color: var(--black);
+}
+
+.hero-time-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 34px;
+  padding: 4px 10px 4px 10px;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  background: var(--white);
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.hero-time-trigger-end {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.hero-time-trigger-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: rgba(255, 214, 0, 0.22);
+  color: var(--black);
+}
+
+.hero-time-trigger-icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+.hero-time-trigger.is-open .hero-time-trigger-icon {
+  background: var(--yellow);
+}
+
+.hero-schedule-field--time {
+  position: relative;
+  gap: 6px;
+}
+
+.hero-time-trigger:hover {
+  border-color: var(--yellow-dk);
+  background: #fffef8;
+}
+
+.hero-time-trigger.is-open {
+  border-color: var(--black);
+  box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.22);
+}
+
+.hero-time-trigger-text {
+  flex: 1;
+  text-align: left;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.hero-time-trigger-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--gray-400);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.hero-time-trigger.is-open .hero-time-trigger-chevron {
+  transform: rotate(180deg);
+}
+
+.hero-clock-panel {
+  position: fixed;
+  z-index: 10050;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  background: var(--white);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+.hero-clock-panel:not([hidden]) {
+  animation: heroScheduleIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-clock-body {
+  display: grid;
+  grid-template-columns: minmax(132px, 148px) minmax(0, 1fr);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.hero-clock-face-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  min-width: 0;
+}
+
+.hero-clock-face {
+  position: relative;
+  width: 100%;
+  max-width: 148px;
+  aspect-ratio: 1;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 28%, #fff 0%, #fafafa 45%, #f0f0f0 100%);
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    inset 0 2px 10px rgba(0, 0, 0, 0.05),
+    0 6px 20px rgba(0, 0, 0, 0.07);
+}
+
+.hero-clock-controls {
+  display: flex;
+  min-width: 0;
+  min-height: 100%;
+}
+
+.hero-clock-controls-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  min-height: 132px;
+  padding: 8px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 251, 235, 0.55) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.hero-clock-controls-card .hero-clock-readout {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--black);
+  line-height: 1.05;
+  text-align: left;
+}
+
+.hero-clock-controls-stack {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+}
+
+.hero-clock-controls .hero-schedule-input-wrap input {
+  min-height: 34px;
+  padding: 7px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 8px;
+  border-color: rgba(0, 0, 0, 0.08);
+  background: var(--white);
+}
+
+.hero-clock-controls .hero-schedule-input-wrap input:focus {
+  border-color: var(--yellow-dk);
+  box-shadow: 0 0 0 2px rgba(255, 214, 0, 0.2);
+}
+
+.hero-clock-flexible-btn {
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 7px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--white);
+  color: var(--gray-700);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.hero-clock-flexible-btn--block {
+  width: 100%;
+  margin-top: auto;
+  padding: 7px 8px;
+  border-radius: 8px;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hero-clock-flexible-btn:hover,
+.hero-clock-flexible-btn.is-active {
+  border-color: var(--black);
+  background: var(--yellow);
+  color: var(--black);
+}
+
+.hero-clock-readout {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  line-height: 1;
+}
+
+.hero-clock-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-clock-toolbar .hero-clock-ampm {
+  flex-shrink: 0;
+}
+
+.hero-clock-toolbar .hero-clock-minutes {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Uiverse micro clock by aadium (wonderful-otter-43) - MIT License */
+.ih-cloader-wrap {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.ih-cloader-wrap--trigger {
+  display: none;
+}
+
+.ih-cloader-wrap--btn {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.ih-cloader {
+  width: 10em;
+  height: 10em;
+  border: 0.35em solid var(--black);
+  border-radius: 50%;
+  position: relative;
+  padding: 2rem;
+  background: radial-gradient(circle at 35% 28%, #fff 0%, #fafafa 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 214, 0, 0.25);
+  transform: scale(0.52);
+  transform-origin: top left;
+}
+
+.ih-cloader--trigger {
+  transform: scale(0.32);
+  border-width: 0.4em;
+}
+
+.ih-cloader-wrap--trigger .ih-cloader.is-paused .ih-hand-minute,
+.ih-cloader-wrap--trigger .ih-cloader.is-paused .ih-hand-second {
+  animation-play-state: paused;
+}
+
+.ih-cloader-wrap--btn .ih-cloader {
+  transform: scale(0.22);
+  border-width: 0.45em;
+  border-color: var(--yellow);
+  background: transparent;
+  box-shadow: none;
+}
+
+.ih-cloader-wrap--btn .ih-hand {
+  background-color: var(--yellow);
+}
+
+.ih-cloader-wrap--btn .ih-hand-second {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.ih-cloader-wrap--btn .ih-pin-main,
+.ih-cloader-wrap--btn .ih-pin-sub {
+  background: var(--yellow);
+}
+
+.ih-cloader-wrap--btn .ih-tick {
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+.ih-clface {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-3px);
+}
+
+.ih-tick {
+  position: absolute;
+  background-color: var(--gray-400);
+  border-radius: 5em;
+}
+
+.ih-tick-top {
+  height: 10px;
+  width: 4px;
+  top: -30px;
+  left: 42px;
+}
+
+.ih-tick-bottom {
+  height: 10px;
+  width: 4px;
+  top: 135px;
+  left: 42px;
+}
+
+.ih-tick-left {
+  height: 4px;
+  width: 10px;
+  top: 53px;
+  left: 112px;
+}
+
+.ih-tick-right {
+  height: 4px;
+  width: 10px;
+  top: 53px;
+  left: -35px;
+}
+
+.ih-clsface {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin-left: 24px;
+  margin-top: 15px;
+  border-radius: 6em;
+  border: 2px solid var(--gray-300);
+}
+
+.ih-hand {
+  width: 65%;
+  height: 4px;
+  background-color: var(--black);
+  border-radius: 3em;
+  border: none;
+  position: absolute;
+  top: 85%;
+  left: -15%;
+  transform-origin: 100%;
+  transform: rotate(90deg);
+}
+
+.ih-pin {
+  border-radius: 50%;
+  background: var(--yellow);
+  position: absolute;
+  top: 86%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ih-pin-main {
+  width: 25%;
+  height: 25%;
+}
+
+.ih-pin-sub {
+  width: 10%;
+  height: 10%;
+  background: var(--gray-700);
+  top: 40%;
+}
+
+.ih-hand-minute {
+  animation: ihClockRotate 4s linear infinite;
+}
+
+.ih-hand-second {
+  width: 45%;
+  left: 5%;
+  top: 45%;
+  background-color: var(--yellow-dk);
+  animation: ihClockRotate 1s linear infinite;
+}
+
+.ih-cloader.is-paused .ih-hand-minute,
+.ih-cloader.is-paused .ih-hand-second {
+  animation-play-state: paused;
+}
+
+@keyframes ihClockRotate {
+  from { transform: rotate(90deg); }
+  to { transform: rotate(450deg); }
+}
+
+.hero-form-interactive .btn-hero-submit.is-sending .btn-hero-submit-icon {
+  display: none;
+}
+
+.hero-form-interactive .btn-hero-submit.is-sending .ih-cloader-wrap--btn {
+  display: inline-flex !important;
+}
+
+.hero-clock-ampm {
+  display: flex;
+  gap: 3px;
+  padding: 2px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.hero-clock-ampm-btn {
+  font-family: inherit;
+  font-size: 9.5px;
+  font-weight: 800;
+  min-width: 34px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--gray-400);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.hero-clock-ampm-btn.is-active {
+  background: var(--black);
+  color: var(--yellow);
+}
+
+.hero-clock-face-ring {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0, 0, 0, 0.07);
+  pointer-events: none;
+}
+
+.hero-clock-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--black);
+  border: 2px solid var(--yellow);
+  z-index: 4;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-clock-hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 3px;
+  z-index: 2;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-clock-hand-hour {
+  width: 3px;
+  height: 32px;
+  margin-left: -1.5px;
+  background: var(--black);
+}
+
+.hero-clock-hand-minute {
+  width: 2px;
+  height: 42px;
+  margin-left: -1px;
+  background: var(--yellow-dk);
+  z-index: 3;
+}
+
+.hero-clock-hour {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  background: transparent;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--gray-700);
+  cursor: pointer;
+  z-index: 5;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-clock-hour:hover {
+  background: rgba(255, 214, 0, 0.25);
+  color: var(--black);
+}
+
+.hero-clock-hour.is-active {
+  background: var(--yellow);
+  border-color: var(--black);
+  color: var(--black);
+  box-shadow: 0 2px 8px rgba(255, 214, 0, 0.45);
+  transform: scale(1.08);
+}
+
+.hero-clock-minutes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  width: 100%;
+}
+
+.hero-clock-toolbar .hero-clock-minutes {
+  flex: 1;
+  min-width: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 3px;
+}
+
+.hero-clock-minute {
+  font-family: inherit;
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 4px 2px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(0, 0, 0, 0.07);
+  background: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-clock-minute:hover {
+  border-color: var(--yellow-dk);
+  background: #fffef8;
+}
+
+.hero-clock-minute.is-active {
+  border-color: var(--black);
+  background: var(--yellow);
+  box-shadow: 0 2px 6px rgba(255, 214, 0, 0.35);
+}
+
+.hero-form-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.hero-form-suggestions-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  flex-shrink: 0;
+}
+
+.hero-form-suggestions-label svg {
+  width: 11px;
+  height: 11px;
+  color: var(--yellow-dk, #E6C200);
+}
+
+.hero-form-suggestions-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-form-suggest-chip {
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  background: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.hero-form-suggest-chip:hover {
+  border-color: var(--yellow-dk);
+  background: #FFFBEB;
+}
+
+.hero-form-suggest-chip.is-selected {
+  border-color: var(--black);
+  background: var(--yellow);
+}
+
+.hero-form-suggest-dropdown {
+  position: relative;
+  z-index: 4;
+  margin-top: -6px;
+  margin-bottom: var(--space-8);
+  background: var(--white);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.hero-form-suggest-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  padding: 10px 12px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.hero-form-suggest-option:last-child {
+  border-bottom: none;
+}
+
+.hero-form-suggest-option:hover {
+  background: #FFFBEB;
+}
+
+.hero-form-suggest-option-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--black);
+  margin-bottom: 2px;
+}
+
+.hero-form-suggest-option-text {
+  display: block;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--gray-400);
 }
 
 .hero-form.contact-form .hero-field-float input:not([type="checkbox"]):not([type="radio"]),
@@ -1297,15 +2218,16 @@ header {
 }
 
 .hero-cat-chip:hover {
-  border-color: var(--yellow-dk);
-  background: #FFFBEB;
+  border-color: var(--accent);
+  background: rgba(0, 74, 173, 0.06);
   transform: translateY(-1px);
 }
 
 .hero-cat-chip.is-selected {
-  border-color: var(--black);
-  background: var(--yellow);
-  box-shadow: 0 2px 10px rgba(255, 214, 0, 0.4);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--white);
+  box-shadow: 0 2px 10px rgba(0, 74, 173, 0.3);
 }
 
 /* Floating label fields */
@@ -1413,25 +2335,22 @@ header {
 .hero-form.contact-form .hero-field-float input:not([type="checkbox"]):not([type="radio"]),
 .hero-form.contact-form .hero-field-float textarea {
   background: var(--white);
-  padding: 14px 11px 5px;
-  min-height: 42px;
+  padding: 10px 10px 4px;
+  min-height: 36px;
   font-size: 13px;
-}
-
-.hero-form-section .hero-category-chips {
-  margin-bottom: 0;
+  border-radius: 10px;
 }
 
 .hero-form.contact-form .hero-field-float textarea {
-  min-height: 64px;
-  padding-top: 24px;
-  padding-bottom: 8px;
-  line-height: 1.4;
+  min-height: 48px;
+  padding-top: 18px;
+  padding-bottom: 6px;
+  line-height: 1.35;
   resize: vertical;
 }
 
 .hero-form.contact-form .hero-field-float textarea + label {
-  top: 8px;
+  top: 7px;
   transform: none;
   font-size: 10px;
   font-weight: 700;
@@ -1447,16 +2366,91 @@ header {
 
 .hero-form.contact-form .hero-field-float textarea:focus + label,
 .hero-form.contact-form .hero-field-float textarea:not(:placeholder-shown) + label {
-  top: 8px;
+  top: 7px;
   font-size: 10px;
-  color: var(--accent);
+  color: var(--yellow-dk);
 }
 
 .hero-form.contact-form .hero-field-float input:focus + label,
 .hero-form.contact-form .hero-field-float input:not(:placeholder-shown) + label,
 .hero-form.contact-form .hero-field-float.is-filled input + label {
-  top: 6px;
+  top: 5px;
   font-size: 10px;
+}
+
+.hero-field-address {
+  position: relative;
+  margin-bottom: 0;
+}
+
+.hero-field-address textarea {
+  width: 100%;
+  min-height: 36px;
+  max-height: 56px;
+  padding: 8px 10px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.35;
+  background: var(--white);
+  color: var(--black);
+  outline: none;
+  resize: none;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.hero-form.contact-form .hero-field-address textarea {
+  min-height: 36px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.hero-field-address textarea:focus {
+  border-color: var(--yellow-dk);
+  box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.22);
+}
+
+.hero-field-address textarea::placeholder {
+  color: var(--gray-400);
+  font-weight: 500;
+}
+
+.hero-field-address.is-filled textarea::placeholder {
+  color: transparent;
+}
+
+.hero-field-address .hero-field-status {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+.hero-field-address.is-loading textarea {
+  color: var(--gray-400);
+}
+
+.hero-field-address.is-loading textarea::placeholder {
+  color: var(--gray-400);
+}
+
+.hero-field-float.is-filled label,
+.hero-field-float input:not(:placeholder-shown) + label,
+.hero-field-float textarea:not(:placeholder-shown) + label {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.hero-form.contact-form .hero-field-float.is-filled input,
+.hero-form.contact-form .hero-field-float.is-filled textarea {
+  padding: 8px 10px;
 }
 
 .hero-field-status.is-valid::after {
@@ -3543,12 +4537,12 @@ footer .instaHelp-city-pill:hover {
   .btn-primary { font-size: 13px; padding: 9px 18px; }
 
   .hero-section {
-    padding-top: 90px;
+    padding-top: 76px;
     min-height: auto;
   }
 
   .hero-inner {
-    padding: var(--space-24) var(--gutter) var(--space-16);
+    padding: var(--space-8) var(--gutter) var(--space-16);
     display: flex;
     flex-direction: column;
   }
@@ -3613,26 +4607,14 @@ footer .instaHelp-city-pill:hover {
     max-width: none;
   }
 
-  .hero-prompt-chips--cycle {
-    max-height: none;
-    flex-wrap: wrap;
-    mask-image: none;
-    overflow: visible;
+  .hero-prompt-chips--scroll {
+    mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
   }
 
-  .hero-prompt-chips {
-    gap: 5px;
-  }
-
-  .hero-prompt-chip {
-    padding: 7px 5px;
-    font-size: 10px;
-    gap: 4px;
-  }
-
-  .hero-prompt-chip-icon {
-    width: 12px;
-    height: 12px;
+  .hero-prompt-chips--scroll .hero-prompt-chip {
+    padding: 9px 12px;
+    font-size: 11px;
   }
 
   .hero-contacts {
@@ -3668,6 +4650,37 @@ footer .instaHelp-city-pill:hover {
 
   .hero-form-row {
     grid-template-columns: 1fr;
+  }
+
+  .hero-schedule-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-clock-body {
+    grid-template-columns: minmax(112px, 124px) minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .hero-clock-controls-card {
+    min-height: 124px;
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .hero-clock-controls-card .hero-clock-readout {
+    font-size: 18px;
+  }
+
+  .hero-clock-face {
+    max-width: 124px;
+  }
+
+  .hero-clock-hand-hour {
+    height: 26px;
+  }
+
+  .hero-clock-hand-minute {
+    height: 34px;
   }
 
   .hero-form-section .form-address-row {
@@ -3898,17 +4911,6 @@ footer .instaHelp-city-pill:hover {
   line-height: 1.65;
   color: var(--gray-700);
   max-width: 52ch;
-  margin-top: 12px;
-}
-
-.hero-pricing {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--black);
-  background: rgba(255, 214, 0, 0.18);
-  display: inline-block;
-  padding: 8px 14px;
-  border-radius: var(--radius-pill);
   margin-top: 12px;
 }
 

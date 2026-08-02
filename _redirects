@@ -11,3 +11,4 @@ http://www.instahelp.in/*  https://instahelp.in/:splat  301!
 /app-waitlist  /app-waitlist.html  200
 /plans  /plans.html  200
 /giftcards  /giftcards.html  200
+/shop  /shop.html  200

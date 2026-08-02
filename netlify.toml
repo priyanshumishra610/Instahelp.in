@@ -57,6 +57,11 @@
   to = "/giftcards.html"
   status = 200
 
+[[redirects]]
+  from = "/shop"
+  to = "/shop.html"
+  status = 200
+
 [[headers]]
   for = "/js/*"
   [headers.values]
