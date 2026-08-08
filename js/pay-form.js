@@ -169,9 +169,8 @@
     var settings = Config.getSettings();
     var query = parseQuery();
     var alertEl = document.getElementById('payFormAlert');
-    var selectedGateway = 'PHONEPE';
-    var availableGateways = ['PHONEPE', 'RAZORPAY'];
-    var gatewayButtons = form.querySelectorAll('.portal-gateway-pick');
+    var selectedGateway = 'RAZORPAY';
+    var availableGateways = ['RAZORPAY'];
 
     if (query.service) form.dataset.prefillService = query.service;
     if (query.vendor) form.dataset.prefillVendor = query.vendor;
@@ -190,19 +189,29 @@
       sidebarPhone.textContent = settings.supportNumber;
     }
 
-    var footerContact = document.getElementById('footerContact');
-    if (footerContact) {
-      var parts = [];
-      if (settings.supportNumber) parts.push(settings.supportNumber);
-      if (settings.supportEmail) parts.push(settings.supportEmail);
-      footerContact.textContent = parts.join(' · ');
-    }
-
     var payHelpPhone = document.getElementById('payHelpPhone');
+    var payHelpPhoneLabel = document.getElementById('payHelpPhoneLabel');
     if (payHelpPhone && settings.supportNumber) {
       var tel = String(settings.supportNumber).replace(/\s/g, '');
       payHelpPhone.href = 'tel:' + tel;
-      payHelpPhone.textContent = settings.supportNumber;
+      if (payHelpPhoneLabel) payHelpPhoneLabel.textContent = settings.supportNumber;
+    }
+
+    var payHelpEmail = document.getElementById('payHelpEmail');
+    var payHelpEmailLabel = document.getElementById('payHelpEmailLabel');
+    if (payHelpEmail && settings.supportEmail) {
+      payHelpEmail.href = 'mailto:' + settings.supportEmail;
+      payHelpEmail.title = settings.supportEmail;
+      if (payHelpEmailLabel) payHelpEmailLabel.textContent = 'Email';
+    } else if (payHelpEmail) {
+      payHelpEmail.hidden = true;
+    }
+
+    var payHelpWhatsApp = document.getElementById('payHelpWhatsApp');
+    if (payHelpWhatsApp && settings.supportNumber) {
+      var waTel = String(settings.supportNumber).replace(/\D/g, '');
+      if (waTel.length === 10) waTel = '91' + waTel;
+      payHelpWhatsApp.href = 'https://wa.me/' + waTel + '?text=' + encodeURIComponent('Hi ' + businessName + ', I need help with a payment');
     }
 
     if (query.amount) document.getElementById('payAmount').value = query.amount;
@@ -210,15 +219,6 @@
     if (query.email) document.getElementById('payEmail').value = query.email;
     if (query.phone) document.getElementById('payPhone').value = query.phone;
     if (query.note) document.getElementById('payNote').value = query.note;
-
-    var pp = settings.phonepe || {};
-    if (pp.environment === 'sandbox') {
-      var banner = document.getElementById('testModeBanner');
-      if (banner) {
-        banner.hidden = false;
-        banner.textContent = 'Test mode - payments are for demonstration only';
-      }
-    }
 
     function refreshFees() {
       var data = readForm(form);
@@ -228,42 +228,20 @@
     form.addEventListener('input', refreshFees);
     refreshFees();
 
-    function refreshGatewayUI() {
-      gatewayButtons.forEach(function (btn) {
-        var gw = btn.getAttribute('data-gateway');
-        var enabled = availableGateways.indexOf(gw) !== -1;
-        var selected = gw === selectedGateway;
-        btn.disabled = !enabled;
-        btn.hidden = !enabled;
-        btn.classList.toggle('is-selected', selected);
-        btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
-      });
-
-      if (availableGateways.indexOf(selectedGateway) === -1) {
-        selectedGateway = availableGateways[0] || 'PHONEPE';
-        refreshGatewayUI();
-      }
-    }
-
-    gatewayButtons.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        if (btn.disabled) return;
-        selectedGateway = btn.getAttribute('data-gateway');
-        refreshGatewayUI();
-      });
-    });
-
     if (API && API.getPaymentGateways) {
       API.getPaymentGateways().then(function (res) {
         if (res.data && res.data.gateways && res.data.gateways.length) {
-          availableGateways = res.data.gateways.map(function (g) { return g.id; });
-          refreshGatewayUI();
+          availableGateways = res.data.gateways
+            .map(function (g) { return g.id; })
+            .filter(function (id) { return id === 'RAZORPAY'; });
+          if (availableGateways.indexOf('RAZORPAY') === -1) {
+            availableGateways = [];
+          }
+          selectedGateway = 'RAZORPAY';
         }
       }).catch(function () {
-        refreshGatewayUI();
+        /* keep Razorpay default */
       });
-    } else {
-      refreshGatewayUI();
     }
 
     if (API && API.warmupBackend) {
@@ -283,18 +261,18 @@
         return;
       }
 
-      if (!settings.paymentsEnabled || !pp.enabled) {
+      if (!settings.paymentsEnabled) {
         showAlert(alertEl, 'Payments are temporarily unavailable. Please contact support.');
         return;
       }
 
-      if (availableGateways.indexOf(selectedGateway) === -1) {
-        showAlert(alertEl, 'Selected payment method is not available. Please choose another option.');
+      if (availableGateways.indexOf('RAZORPAY') === -1) {
+        showAlert(alertEl, 'Razorpay is not available right now. Please contact support.');
         return;
       }
 
-      if (selectedGateway === 'RAZORPAY' && !Payment.useBackendApi()) {
-        showAlert(alertEl, 'Razorpay requires the InstaHelp payment backend. Please choose PhonePe or contact support.');
+      if (!Payment.useBackendApi()) {
+        showAlert(alertEl, 'Razorpay requires the InstaHelp payment backend. Please contact support.');
         return;
       }
 
@@ -303,9 +281,7 @@
 
       var loadingTitle = document.querySelector('#payLoadingOverlay .portal-loading-title');
       if (loadingTitle) {
-        loadingTitle.textContent = selectedGateway === 'RAZORPAY'
-          ? 'Opening Razorpay checkout'
-          : 'Opening secure checkout';
+        loadingTitle.textContent = 'Opening Razorpay checkout';
       }
       var slowTimer = setTimeout(function () {
         if (loadingTitle) {

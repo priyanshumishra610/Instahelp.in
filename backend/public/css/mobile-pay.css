@@ -237,30 +237,65 @@
     font-size: 10px;
   }
 
-  .portal-trust-mini {
-    display: none;
+  .portal-checkout-foot {
+    margin-top: 14px;
+    padding-top: 14px;
   }
 
-  .portal-help-strip {
-    font-size: 12px;
-    gap: 6px;
-    margin-top: 10px;
+  .portal-trust-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .portal-trust-chip {
+    flex-direction: row;
+    justify-content: flex-start;
+    min-height: auto;
+    padding: 11px 12px;
+    font-size: 11px;
+  }
+
+  .portal-trust-chip-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .portal-support-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .portal-support-head p {
+    font-size: 13px;
+  }
+
+  .portal-support-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .portal-support-btn--wa {
+    grid-column: 1 / -1;
+  }
+
+  .portal-support-btn,
+  .portal-support-link {
+    justify-content: center;
   }
 
   .portal-legal {
     font-size: 10.5px;
     line-height: 1.45;
-    margin-top: 10px;
   }
 
-  .portal-main-footer {
-    margin-top: 12px;
-    padding-top: 12px;
-    font-size: 11px;
-  }
-
-  .portal-main-footer p {
-    font-size: 11px;
+  .portal-copy {
+    margin-top: 6px;
+    font-size: 10px;
   }
 
   .portal-mobile-bar {

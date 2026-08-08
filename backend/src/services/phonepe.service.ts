@@ -189,19 +189,37 @@ export async function initiatePhonePePayment(
       expireAt: response.expireAt,
     };
   } catch (err: unknown) {
-    const pe = err as { message?: string; code?: string; httpStatusCode?: number };
+    const pe = err as {
+      message?: string;
+      code?: string;
+      httpStatusCode?: number;
+      type?: string;
+    };
     logger.error('PhonePe pay() failed', {
       err,
       merchantOrderId: input.merchantOrderId,
       environment: creds.environment,
+      phonePeCode: pe.code,
+      phonePeMessage: pe.message,
     });
 
     if (pe.httpStatusCode === 401 || pe.code === '401') {
+      if (pe.code === 'BLOCKED_MERCHANT') {
+        throw new AppError(
+          502,
+          creds.environment === 'production'
+            ? 'PhonePe merchant is not live yet. Your credentials are valid, but PhonePe has not activated production checkout for this merchant. Complete KYC and merchant activation in the PhonePe Business dashboard, or switch to sandbox credentials with PHONEPE_ENVIRONMENT=sandbox for testing.'
+            : 'PhonePe sandbox merchant is blocked or inactive. Regenerate sandbox credentials in the PhonePe Business dashboard with Test Mode enabled.',
+          'PHONEPE_MERCHANT_BLOCKED'
+        );
+      }
+
       throw new AppError(
         502,
         creds.environment === 'sandbox'
           ? 'PhonePe auth failed. Sandbox credentials require PHONEPE_ENVIRONMENT=sandbox. Live credentials require production.'
-          : 'PhonePe auth failed. Verify Client ID, Client Secret, and Client Version match your PhonePe dashboard environment.',
+          : pe.message ??
+              'PhonePe auth failed. Verify Client ID, Client Secret, and Client Version match your PhonePe dashboard environment.',
         'PHONEPE_UNAUTHORIZED'
       );
     }
