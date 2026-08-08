@@ -163,11 +163,15 @@
 
     var Config = global.InstaHelpPaymentConfig;
     var Payment = global.InstaHelpPayment;
+    var API = global.InstaHelpAPI;
     if (!Config || !Payment) return;
 
     var settings = Config.getSettings();
     var query = parseQuery();
     var alertEl = document.getElementById('payFormAlert');
+    var selectedGateway = 'PHONEPE';
+    var availableGateways = ['PHONEPE', 'RAZORPAY'];
+    var gatewayButtons = form.querySelectorAll('.portal-gateway-pick');
 
     if (query.service) form.dataset.prefillService = query.service;
     if (query.vendor) form.dataset.prefillVendor = query.vendor;
@@ -224,6 +228,48 @@
     form.addEventListener('input', refreshFees);
     refreshFees();
 
+    function refreshGatewayUI() {
+      gatewayButtons.forEach(function (btn) {
+        var gw = btn.getAttribute('data-gateway');
+        var enabled = availableGateways.indexOf(gw) !== -1;
+        var selected = gw === selectedGateway;
+        btn.disabled = !enabled;
+        btn.hidden = !enabled;
+        btn.classList.toggle('is-selected', selected);
+        btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+
+      if (availableGateways.indexOf(selectedGateway) === -1) {
+        selectedGateway = availableGateways[0] || 'PHONEPE';
+        refreshGatewayUI();
+      }
+    }
+
+    gatewayButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled) return;
+        selectedGateway = btn.getAttribute('data-gateway');
+        refreshGatewayUI();
+      });
+    });
+
+    if (API && API.getPaymentGateways) {
+      API.getPaymentGateways().then(function (res) {
+        if (res.data && res.data.gateways && res.data.gateways.length) {
+          availableGateways = res.data.gateways.map(function (g) { return g.id; });
+          refreshGatewayUI();
+        }
+      }).catch(function () {
+        refreshGatewayUI();
+      });
+    } else {
+      refreshGatewayUI();
+    }
+
+    if (API && API.warmupBackend) {
+      API.warmupBackend();
+    }
+
     function submitPayment() {
       if (Payment.isPayLocked()) {
         showAlert(alertEl, 'Payment already in progress. Please wait.');
@@ -242,10 +288,25 @@
         return;
       }
 
+      if (availableGateways.indexOf(selectedGateway) === -1) {
+        showAlert(alertEl, 'Selected payment method is not available. Please choose another option.');
+        return;
+      }
+
+      if (selectedGateway === 'RAZORPAY' && !Payment.useBackendApi()) {
+        showAlert(alertEl, 'Razorpay requires the InstaHelp payment backend. Please choose PhonePe or contact support.');
+        return;
+      }
+
       showAlert(alertEl, '');
       showLoading(true);
 
       var loadingTitle = document.querySelector('#payLoadingOverlay .portal-loading-title');
+      if (loadingTitle) {
+        loadingTitle.textContent = selectedGateway === 'RAZORPAY'
+          ? 'Opening Razorpay checkout'
+          : 'Opening secure checkout';
+      }
       var slowTimer = setTimeout(function () {
         if (loadingTitle) {
           loadingTitle.textContent = 'Starting secure checkout - this may take a few seconds…';
@@ -253,12 +314,20 @@
       }, 2500);
 
       var order = buildOrder(formData, settings);
+      order.provider = selectedGateway;
       Payment.setPendingOrder(order);
 
-      var result = Payment.processPayment(order, { redirectDelay: 0 });
+      var result = Payment.processPayment(order, {
+        redirectDelay: 0,
+        provider: selectedGateway
+      });
 
       function onResult(res) {
         clearTimeout(slowTimer);
+        if (res && res.ok && res.provider === 'RAZORPAY') {
+          showLoading(false);
+          return;
+        }
         if (!res || !res.ok) {
           showLoading(false);
           showAlert(

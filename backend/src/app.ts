@@ -118,6 +118,8 @@ export function createApp() {
     '/payment-failed': 'payment-failed.html',
     '/pricing': 'pricing.html',
     '/giftcards': 'giftcards.html',
+    '/shop': 'shop.html',
+    '/experiences': 'experiences.html',
     '/app-waitlist': 'app-waitlist.html',
   };
 

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>InstaHelp® Experiences | Luxury Stays &amp; Holidays - India</title>
+  <meta name="description" content="917 handpicked Indian resorts and 424 curated holiday packages. Preferential rates, verified properties, and concierge support from InstaHelp.">
+  <meta name="author" content="InstaHelp - Kamlesh Singhvee, Bengaluru">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="theme-color" content="#FFD600">
+  <link rel="canonical" href="https://www.instahelp.in/experiences">
+  <link rel="icon" type="image/svg+xml" href="https://www.instahelp.in/favicon.svg">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.instahelp.in/experiences">
+  <meta property="og:site_name" content="InstaHelp®">
+  <meta property="og:title" content="InstaHelp® Experiences - Luxury Stays &amp; Holidays">
+  <meta property="og:description" content="Handpicked resorts, international holidays, and a price challenge guarantee through InstaHelp concierge.">
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:image" content="https://www.instahelp.in/og-cover.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://checkout.razorpay.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/ui-marathon.css">
+  <link rel="stylesheet" href="css/experiences.css">
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+</head>
+<body class="experiences-page">
+
+  <header role="banner" id="siteHeader" class="exp-header">
+    <a href="/" class="logo" aria-label="InstaHelp Home"><span>InstaHelp<span>&reg;</span></span></a>
+    <a href="/" class="exp-back-home">Home</a>
+    <nav class="nav-links exp-nav-desktop" role="navigation" aria-label="Main navigation">
+      <a href="/#services">Categories</a>
+      <a href="/experiences" aria-current="page">Experiences</a>
+      <a href="/plans">Plans</a>
+      <a href="/shop">Shop</a>
+      <a href="/giftcards">Gift Cards</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/#contact-section">Contact</a>
+    </nav>
+    <a href="tel:+917022702220" class="btn-primary ui-btn-lift exp-header-btn" aria-label="Call InstaHelp">Get it done</a>
+  </header>
+
+  <section class="exp-hero" aria-labelledby="exp-heading">
+    <div class="exp-hero-bg" aria-hidden="true">
+      <div class="exp-hero-bg-base"></div>
+      <div class="exp-hero-blob exp-hero-blob-gold"></div>
+      <div class="exp-hero-blob exp-hero-blob-navy"></div>
+    </div>
+    <div class="exp-hero-inner">
+      <p class="exp-hero-pill"><span class="exp-hero-pill-dot" aria-hidden="true"></span>Welcome to Extraordinary</p>
+      <h1 id="exp-heading">Escape the Ordinary.<br><em>Experience the best.</em></h1>
+      <p class="exp-hero-lead">Handpicked luxury stays, unforgettable holidays, and personalized concierge service.</p>
+    </div>
+  </section>
+
+  <div class="exp-search-bar" role="search" aria-label="Search experiences">
+    <div class="exp-search-grid">
+      <label class="exp-search-field exp-search-field-main">
+        <span class="exp-search-label">Where are you going?</span>
+        <div class="exp-search-input-wrap">
+          <input type="search" id="exp-destination" placeholder="Resort, region, state, or country" autocomplete="off" enterkeyhint="search">
+          <button type="button" class="exp-search-clear" id="exp-search-clear" aria-label="Clear search" hidden>&times;</button>
+        </div>
+      </label>
+      <label class="exp-search-field">
+        <span class="exp-search-label">Experience type</span>
+        <select id="exp-type-filter" aria-label="Filter by experience type">
+          <option value="">All experiences</option>
+        </select>
+      </label>
+      <label class="exp-search-field">
+        <span class="exp-search-label">Budget band</span>
+        <select id="exp-budget-filter" aria-label="Filter by budget">
+          <option value="">Any budget</option>
+          <option value="value">Value (under ₹8,000)</option>
+          <option value="mid">Midscale (₹8,000–15,000)</option>
+          <option value="upscale">Upscale (₹15,000–30,000)</option>
+          <option value="luxury">Luxury (₹30,000+)</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="exp-trust-strip" aria-label="Experience highlights">
+    <div class="exp-trust-item"><i data-lucide="building-2" aria-hidden="true"></i><strong>917+</strong> Handpicked Resorts</div>
+    <div class="exp-trust-item"><i data-lucide="badge-check" aria-hidden="true"></i> Verified Properties</div>
+    <div class="exp-trust-item"><i data-lucide="tag" aria-hidden="true"></i> Preferential Rates</div>
+    <div class="exp-trust-item"><i data-lucide="headphones" aria-hidden="true"></i> Concierge Support</div>
+  </div>
+
+  <p class="exp-results-meta" id="exp-results-meta" aria-live="polite"></p>
+
+  <div class="exp-tabs" role="tablist" aria-label="Experience categories">
+    <button type="button" class="exp-tab is-active" role="tab" aria-selected="true" aria-controls="panel-stays" id="tab-stays" data-tab="stays">Luxury Stays</button>
+    <button type="button" class="exp-tab" role="tab" aria-selected="false" aria-controls="panel-holidays" id="tab-holidays" data-tab="holidays">Holiday Packages</button>
+  </div>
+
+  <div class="exp-toolbar">
+    <div class="exp-state-filters" id="exp-state-filters" role="toolbar" aria-label="Filter by state"></div>
+  </div>
+
+  <main class="exp-main">
+    <div id="panel-stays" class="exp-panel is-active" role="tabpanel" aria-labelledby="tab-stays">
+      <div class="exp-grid" id="exp-resorts-grid" aria-live="polite"></div>
+      <div id="exp-resorts-empty" class="exp-empty" hidden>
+        <div class="exp-empty-icon" aria-hidden="true"><i data-lucide="search-x"></i></div>
+        <h2>No resorts found</h2>
+        <p>Try another destination, state, or experience type.</p>
+      </div>
+    </div>
+
+    <div id="panel-holidays" class="exp-panel" role="tabpanel" aria-labelledby="tab-holidays" hidden>
+      <div class="exp-grid exp-grid-holidays" id="exp-holidays-grid" aria-live="polite"></div>
+      <div id="exp-holidays-loading" class="exp-empty exp-empty-loading" hidden>
+        <div class="exp-empty-icon" aria-hidden="true"><i data-lucide="loader"></i></div>
+        <h2>Loading holiday packages</h2>
+        <p>Fetching 424 curated itineraries...</p>
+      </div>
+      <div id="exp-holidays-unavailable" class="exp-empty" hidden>
+        <div class="exp-empty-icon" aria-hidden="true"><i data-lucide="cloud-off"></i></div>
+        <h2>Holiday packages unavailable</h2>
+        <p>Package data could not be loaded. Refresh the page or speak with our concierge to plan your trip.</p>
+        <a href="tel:+917022702220" class="exp-empty-cta">Call concierge</a>
+      </div>
+      <div id="exp-holidays-empty" class="exp-empty" hidden>
+        <div class="exp-empty-icon" aria-hidden="true"><i data-lucide="globe"></i></div>
+        <h2>No packages found</h2>
+        <p>Try another destination or country name.</p>
+      </div>
+    </div>
+
+    <aside class="exp-concierge">
+      <div class="exp-concierge-card">
+        <div>
+          <p class="exp-concierge-eyebrow">InstaHelp concierge</p>
+          <h2>Preferential rates, thoughtful upgrades, end-to-end planning.</h2>
+          <p>From first enquiry to checkout, our team handles resort bookings, holiday packages, and custom circuits.</p>
+        </div>
+        <div class="exp-concierge-actions">
+          <a href="tel:+917022702220" class="btn-primary ui-btn-lift">Speak with concierge</a>
+          <a href="https://wa.me/917022702220?text=Hi%20InstaHelp%2C%20I%27d%20like%20help%20planning%20a%20stay%20or%20holiday." class="exp-concierge-wa" target="_blank" rel="noopener noreferrer">
+            <i data-lucide="message-circle" aria-hidden="true"></i> WhatsApp
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <section class="exp-region-index" aria-labelledby="region-index-heading">
+      <div class="exp-region-head">
+        <h2 id="region-index-heading">Discover Premium Resorts</h2>
+        <p>Top-ranked stays by region, curated from our full index.</p>
+      </div>
+      <div class="exp-region-grid" id="exp-region-index"></div>
+    </section>
+
+    <p class="exp-disclaimer">
+      InstaHelp Experiences links to official property websites and curated packages. Rates shown are indicative and subject to availability.
+      <a href="/">Back to InstaHelp home</a>
+    </p>
+  </main>
+
+  <iframe name="ihPriceChallengeFrame" id="ihPriceChallengeFrame" title="Price challenge submission" hidden></iframe>
+  <div class="exp-challenge-backdrop" id="expChallengeBackdrop" hidden aria-hidden="true"></div>
+
+  <script src="js/resorts-data.js"></script>
+  <script src="js/ui-marathon.js"></script>
+  <script src="js/runtime-bootstrap.js"></script>
+  <script src="js/payment-config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/razorpay-checkout.js"></script>
+  <script src="js/payment.js"></script>
+  <script src="js/experiences.js"></script>
+  <script>
+    document.documentElement.classList.add('exp-scroll');
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>

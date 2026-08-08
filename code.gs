@@ -490,10 +490,208 @@ function readPayloadObject_(e) {
   }
 }
 
+/** Price challenge tab name - create this sheet in the spreadsheet or run installPriceChallengeHeaders(). */
+var PRICE_CHALLENGE_SHEET_NAME = 'Price Challenges';
+
+var PRICE_CHALLENGE_HEADERS = [
+  'Server received (UTC)',
+  'Item type',
+  'Item ID',
+  'Property / package',
+  'Listed price (INR)',
+  'Quoted price (INR)',
+  'Locked price (INR)',
+  'Offer type',
+  'Instant discount %',
+  'Threshold price (INR)',
+  'Diff % below listed',
+  'Screenshot required',
+  'Screenshot file name',
+  'Screenshot link',
+  'Travel dates',
+  'Competitor link',
+  'Name',
+  'Phone',
+  'Landing page',
+  'Form token',
+  'Client timestamp (ISO)'
+];
+
+function getPriceChallengeSheet_() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sh = ss.getSheetByName(PRICE_CHALLENGE_SHEET_NAME);
+  if (sh) {
+    return sh;
+  }
+  sh = ss.insertSheet(PRICE_CHALLENGE_SHEET_NAME);
+  sh.getRange(1, 1, 1, PRICE_CHALLENGE_HEADERS.length).setValues([PRICE_CHALLENGE_HEADERS]);
+  sh.setFrozenRows(1);
+  return sh;
+}
+
+/**
+ * Optional: Run once from the Apps Script editor to create the Price Challenges tab.
+ */
+function installPriceChallengeHeaders() {
+  getPriceChallengeSheet_();
+}
+
+function decodeDataUrlBase64_(dataUrl) {
+  if (!dataUrl) {
+    return { bytes: null, mime: 'image/png' };
+  }
+  var s = String(dataUrl);
+  var mime = 'image/png';
+  var base64 = s;
+  var comma = s.indexOf(',');
+  if (s.indexOf('data:') === 0 && comma > -1) {
+    var header = s.substring(0, comma);
+    var mimeMatch = header.match(/data:([^;]+)/);
+    if (mimeMatch && mimeMatch[1]) {
+      mime = mimeMatch[1];
+    }
+    base64 = s.substring(comma + 1);
+  }
+  return {
+    bytes: Utilities.base64Decode(base64),
+    mime: mime
+  };
+}
+
+function savePriceChallengeScreenshot_(data) {
+  if (!data.screenshot_base64) {
+    return '';
+  }
+  try {
+    var decoded = decodeDataUrlBase64_(data.screenshot_base64);
+    if (!decoded.bytes) {
+      return '';
+    }
+    var filename = safeCell_(data.screenshot_name || ('price-challenge-' + (data.token || Date.now()) + '.png'));
+    var blob = Utilities.newBlob(decoded.bytes, decoded.mime, filename);
+    var folderId = PropertiesService.getScriptProperties().getProperty('PRICE_CHALLENGE_FOLDER_ID');
+    var file;
+    if (folderId) {
+      file = DriveApp.getFolderById(folderId).createFile(blob);
+    } else {
+      file = DriveApp.createFile(blob);
+    }
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    return file.getUrl();
+  } catch (err) {
+    console.warn('Screenshot save failed: ' + (err.message || err));
+    return 'SAVE_FAILED';
+  }
+}
+
+function sendPriceChallengeEmail_(data, receivedAt, screenshotUrl) {
+  var to = getNotifyEmail_();
+  if (!to) {
+    return;
+  }
+  var subject = 'Price challenge - ' + displayOrDash_(data.property_name) + ' - ' + displayOrDash_(data.name);
+  var body = [
+    'PRICE CHALLENGE',
+    '================',
+    'Property: ' + displayOrDash_(data.property_name),
+    'Type: ' + displayOrDash_(data.item_type),
+    'Listed: ' + displayOrDash_(data.listed_price),
+    'Quoted: ' + displayOrDash_(data.quoted_price),
+    'Threshold: ' + displayOrDash_(data.threshold_price),
+    'Diff %: ' + displayOrDash_(data.diff_percent),
+    'Screenshot required: ' + displayOrDash_(data.screenshot_required),
+    'Screenshot: ' + (screenshotUrl || '-'),
+    'Dates: ' + displayOrDash_(data.travel_dates),
+    'Link: ' + displayOrDash_(data.competitor_link),
+    'Name: ' + displayOrDash_(data.name),
+    'Phone: ' + displayOrDash_(data.phone),
+    'Received: ' + formatIst_(receivedAt)
+  ].join('\n');
+
+  var options = {
+    to: to,
+    subject: subject,
+    body: body,
+    name: 'InstaHelp Price Challenges'
+  };
+
+  if (data.screenshot_base64) {
+    try {
+      var decoded = decodeDataUrlBase64_(data.screenshot_base64);
+      if (decoded.bytes) {
+        options.attachments = [Utilities.newBlob(
+          decoded.bytes,
+          decoded.mime,
+          safeCell_(data.screenshot_name || 'screenshot.png')
+        )];
+      }
+    } catch (err) {
+      console.warn('Email attachment failed: ' + (err.message || err));
+    }
+  }
+
+  MailApp.sendEmail(options);
+}
+
+function handlePriceChallengePost_(data) {
+  if (isDuplicateSubmission_(data.token)) {
+    return jsonOut_({ success: true, ok: true, duplicate: true });
+  }
+
+  var nowIso = new Date().toISOString();
+  var screenshotUrl = savePriceChallengeScreenshot_(data);
+
+  var row = [
+    safeCell_(nowIso),
+    safeCell_(data.item_type),
+    safeCell_(data.item_id),
+    safeCell_(data.property_name),
+    safeCell_(data.listed_price),
+    safeCell_(data.quoted_price),
+    safeCell_(data.locked_price),
+    safeCell_(data.offer_type),
+    safeCell_(data.instant_discount_pct),
+    safeCell_(data.threshold_price),
+    safeCell_(data.diff_percent),
+    safeCell_(data.screenshot_required),
+    safeCell_(data.screenshot_name),
+    safeCell_(screenshotUrl),
+    safeCell_(data.travel_dates),
+    safeCell_(data.competitor_link),
+    safeCell_(data.name),
+    safeCell_(data.phone),
+    safeCell_(data.landing_page),
+    safeCell_(data.token),
+    safeCell_(data.timestamp)
+  ];
+
+  try {
+    getPriceChallengeSheet_().appendRow(row);
+  } catch (err) {
+    return jsonOut_({
+      success: false,
+      ok: false,
+      error: err.message || 'Price challenge append failed'
+    });
+  }
+
+  try {
+    sendPriceChallengeEmail_(data, nowIso, screenshotUrl);
+  } catch (mailErr) {
+    console.warn('Price challenge email failed: ' + (mailErr.message || mailErr));
+  }
+
+  return jsonOut_({ success: true, ok: true, type: 'price_challenge' });
+}
+
 function doPost(e) {
   var data = readPayloadObject_(e);
   if (!data) {
     return jsonOut_({ success: false, ok: false, error: 'No payload' });
+  }
+
+  if (String(data.form_id || '') === 'price_challenge') {
+    return handlePriceChallengePost_(data);
   }
 
   if (isDuplicateSubmission_(data.token)) {
@@ -548,7 +746,7 @@ function doPost(e) {
 }
 
 /** Bump when redeploying so the /exec GET response confirms the latest script is live. */
-var SCRIPT_VERSION = '2026-07-29';
+var SCRIPT_VERSION = '2026-08-08';
 
 /** Quick check that the web app URL is live (open /exec in a browser after deploy). */
 function doGet() {

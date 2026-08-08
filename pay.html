@@ -15,6 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="css/payment.css">
+  <link rel="stylesheet" href="css/mobile-pay.css">
 </head>
 <body class="pay-page portal-page">
 
@@ -104,6 +105,10 @@
     </aside>
 
     <main class="portal-main portal-enter portal-enter-d2">
+      <div class="portal-mobile-intro">
+        <p class="portal-mobile-kicker">Secure checkout</p>
+        <h1 class="portal-mobile-title">Pay any amount</h1>
+      </div>
       <div class="portal-card">
         <ol class="portal-progress" aria-label="Checkout steps">
           <li class="portal-progress-step is-active" data-step="amount"><span>1</span> Amount</li>
@@ -234,6 +239,30 @@
             </dl>
           </section>
 
+          <section class="portal-section portal-section--gateway" aria-labelledby="gatewayLabel">
+            <p class="portal-gateway-label" id="gatewayLabel">Pay with</p>
+            <div class="portal-gateway-options" role="radiogroup" aria-label="Payment gateway">
+              <button type="button" class="portal-gateway-pick is-selected" data-gateway="PHONEPE" aria-pressed="true">
+                <span class="portal-gateway-logo" aria-hidden="true">
+                  <img src="image/phonepe-logo.svg" alt="" width="88" height="27">
+                </span>
+                <span class="portal-gateway-copy">
+                  <strong>PhonePe</strong>
+                  <small>UPI · Wallet · Cards</small>
+                </span>
+              </button>
+              <button type="button" class="portal-gateway-pick" data-gateway="RAZORPAY" aria-pressed="false">
+                <span class="portal-gateway-logo" aria-hidden="true">
+                  <img src="image/razorpay-logo.svg" alt="" width="100" height="21">
+                </span>
+                <span class="portal-gateway-copy">
+                  <strong>Razorpay</strong>
+                  <small>UPI · Cards · Net Banking</small>
+                </span>
+              </button>
+            </div>
+          </section>
+
           <button type="submit" class="portal-submit" id="submitBtn" disabled>
             <span class="portal-submit-icon" aria-hidden="true">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -313,7 +342,7 @@
   <script src="js/orders.js"></script>
   <script src="js/transactions.js"></script>
   <script src="js/payment.js?v=5"></script>
-  <script src="js/pay-form.js?v=4"></script>
+  <script src="js/pay-form.js?v=5"></script>
   <script>
     document.getElementById('payYear').textContent = new Date().getFullYear();
 

@@ -102,7 +102,7 @@
 
   if (typeof global.location !== 'undefined') {
     var path = (global.location.pathname || '').toLowerCase();
-    if (/\/(pay|plans)(\.html)?$/.test(path) || path.endsWith('/pay') || path.endsWith('/plans')) {
+    if (/\/(pay|plans|experiences)(\.html)?$/.test(path) || path.endsWith('/pay') || path.endsWith('/plans') || path.endsWith('/experiences')) {
       loadRazorpayScript().catch(function () {});
     }
   }

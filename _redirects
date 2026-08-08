@@ -12,3 +12,4 @@ http://www.instahelp.in/*  https://instahelp.in/:splat  301!
 /plans  /plans.html  200
 /giftcards  /giftcards.html  200
 /shop  /shop.html  200
+/experiences  /experiences.html  200
