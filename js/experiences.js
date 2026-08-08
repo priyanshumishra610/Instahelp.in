@@ -18,6 +18,14 @@
   var budgetFilter = '';
   var resortsShown = PAGE_SIZE;
   var holidaysShown = PAGE_SIZE;
+  var failedResortImages = Object.create(null);
+  var failedHolidayImages = Object.create(null);
+  var failedImageUrls = Object.create(null);
+  var imageValidationCache = Object.create(null);
+  var gridRenderTokens = { resorts: 0, holidays: 0 };
+  var FAILED_URLS_KEY = 'ihExpFailedImageUrls';
+  var IMAGE_VALIDATE_TIMEOUT = 6500;
+  var IMAGE_VALIDATE_PARALLEL = 10;
 
   var destinationInput = document.getElementById('exp-destination');
   var searchClearBtn = document.getElementById('exp-search-clear');
@@ -38,6 +46,7 @@
   var resorts = typeof RESORTS !== 'undefined' ? RESORTS.slice() : [];
   var holidays = [];
   var holidaysLoadState = 'idle';
+  var holidaysLoadWaiters = [];
 
   function resolveHolidaysFromGlobals() {
     if (typeof HOLIDAYS !== 'undefined' && HOLIDAYS.length) return HOLIDAYS.slice();
@@ -60,32 +69,74 @@
   }
 
   function loadHolidayPackages(done) {
+    if (typeof done === 'function') holidaysLoadWaiters.push(done);
+
+    if (holidaysLoadState === 'ready' && holidays.length) {
+      flushHolidayLoadWaiters(true);
+      return;
+    }
+    if (holidaysLoadState === 'loading') return;
+
     var cached = resolveHolidaysFromGlobals();
     if (cached.length) {
       holidays = cached;
       holidaysLoadState = 'ready';
-      done(true);
+      flushHolidayLoadWaiters(true);
       return;
     }
 
     holidaysLoadState = 'loading';
     setHolidaysLoading(true);
 
+    function flushHolidayLoadWaiters(ok) {
+      var waiters = holidaysLoadWaiters.slice();
+      holidaysLoadWaiters = [];
+      waiters.forEach(function (cb) { cb(ok); });
+    }
+
     function finish(ok) {
       holidaysLoadState = ok ? 'ready' : 'error';
       setHolidaysLoading(false);
-      if (!ok) setHolidaysUnavailable(true);
-      done(ok);
+      if (!ok) {
+        setHolidaysUnavailable(true);
+      } else {
+        invalidateCache();
+        ensureHolidaySearchIndex();
+      }
+      flushHolidayLoadWaiters(ok);
     }
 
     function loadScriptFallback() {
+      var cached = resolveHolidaysFromGlobals();
+      if (cached.length) {
+        holidays = cached;
+        finish(true);
+        return;
+      }
+
       var existing = document.querySelector('script[data-holidays-loader]');
-      if (existing) return;
+      if (existing) {
+        if (existing.dataset.loaded === '1' || existing.getAttribute('data-loaded') === '1') {
+          holidays = resolveHolidaysFromGlobals();
+          finish(holidays.length > 0);
+          return;
+        }
+        existing.addEventListener('load', function () {
+          existing.dataset.loaded = '1';
+          holidays = resolveHolidaysFromGlobals();
+          finish(holidays.length > 0);
+        });
+        existing.addEventListener('error', function () {
+          finish(false);
+        });
+        return;
+      }
 
       var script = document.createElement('script');
       script.src = 'js/holidays-data.js';
       script.dataset.holidaysLoader = '1';
       script.onload = function () {
+        script.dataset.loaded = '1';
         holidays = resolveHolidaysFromGlobals();
         finish(holidays.length > 0);
       };
@@ -184,10 +235,24 @@
 
   function matchesTokens(text, tokens) {
     if (!tokens.length) return true;
+    var haystack = String(text || '');
     for (var i = 0; i < tokens.length; i++) {
-      if (text.indexOf(tokens[i]) === -1) return false;
+      if (haystack.indexOf(tokens[i]) === -1) return false;
     }
     return true;
+  }
+
+  function ensureHolidaySearchIndex() {
+    if (!holidays.length) return;
+    var needsIndex = holidays.some(function (h) { return !h._search; });
+    if (needsIndex) {
+      holidays.forEach(function (h) {
+        h._search = normalizeText([
+          h.title, h.country, h.region, h.theme, h.tags, h.style,
+          h.tier, h.flyFrom, h.days, (h.highlights || []).join(' ')
+        ].join(' '));
+      });
+    }
   }
 
   function matchesBudget(resort) {
@@ -224,6 +289,148 @@
     return !!(img && String(img).indexOf('http') === 0);
   }
 
+  function getResortImageUrl(resort) {
+    return hasResortImage(resort) ? String(resort.image) : '';
+  }
+
+  function getHolidayImageUrl(h) {
+    return hasHolidayImage(h) ? String(h.imgs[0]) : '';
+  }
+
+  function loadFailedUrlCache() {
+    try {
+      var raw = sessionStorage.getItem(FAILED_URLS_KEY);
+      if (!raw) return;
+      JSON.parse(raw).forEach(function (url) {
+        if (url) {
+          failedImageUrls[url] = true;
+          imageValidationCache[url] = false;
+        }
+      });
+    } catch (err) {
+      /* ignore storage errors */
+    }
+  }
+
+  function persistFailedUrl(url) {
+    if (!url || failedImageUrls[url]) return;
+    failedImageUrls[url] = true;
+    imageValidationCache[url] = false;
+    try {
+      var list = Object.keys(failedImageUrls);
+      if (list.length > 400) list = list.slice(-400);
+      sessionStorage.setItem(FAILED_URLS_KEY, JSON.stringify(list));
+    } catch (err) {
+      /* ignore storage errors */
+    }
+  }
+
+  function validateImageUrl(url) {
+    if (!url) return Promise.resolve(false);
+    if (imageValidationCache[url] === true) return Promise.resolve(true);
+    if (imageValidationCache[url] === false || failedImageUrls[url]) return Promise.resolve(false);
+
+    return new Promise(function (resolve) {
+      var settled = false;
+      var img = new Image();
+      var timer = setTimeout(function () {
+        if (settled) return;
+        settled = true;
+        persistFailedUrl(url);
+        resolve(false);
+      }, IMAGE_VALIDATE_TIMEOUT);
+
+      img.referrerPolicy = 'no-referrer';
+      img.onload = function () {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        var ok = img.naturalHeight > 0;
+        imageValidationCache[url] = ok;
+        if (!ok) persistFailedUrl(url);
+        resolve(ok);
+      };
+      img.onerror = function () {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        persistFailedUrl(url);
+        resolve(false);
+      };
+      img.src = url;
+    });
+  }
+
+  function fillValidatedFromPool(pool, count, getImageUrl, getId, failedMap) {
+    if (count <= 0) return Promise.resolve([]);
+
+    return new Promise(function (resolve) {
+      var result = [];
+      var idx = 0;
+      var inFlight = 0;
+      var settled = false;
+
+      function finish() {
+        if (settled) return;
+        if (result.length >= count || (idx >= pool.length && inFlight === 0)) {
+          settled = true;
+          resolve(result.slice(0, count));
+        }
+      }
+
+      function pump() {
+        while (inFlight < IMAGE_VALIDATE_PARALLEL && idx < pool.length && result.length < count) {
+          var item = pool[idx++];
+          var url = getImageUrl(item);
+          if (!url) continue;
+
+          if (imageValidationCache[url] === true) {
+            result.push(item);
+            continue;
+          }
+          if (imageValidationCache[url] === false || failedImageUrls[url]) {
+            continue;
+          }
+
+          inFlight++;
+          (function (currentItem, currentUrl) {
+            validateImageUrl(currentUrl).then(function (ok) {
+              inFlight--;
+              if (ok) {
+                if (result.length < count) result.push(currentItem);
+              } else {
+                failedMap[getId(currentItem)] = true;
+              }
+              pump();
+              finish();
+            });
+          })(item, url);
+        }
+        finish();
+      }
+
+      pump();
+    });
+  }
+
+  function resolveValidatedSlice(display, shown, isFiltered, getImageUrl, getId, failedMap) {
+    var maxItems = getDisplayLimit(display.all.length, shown, isFiltered);
+    var primaryLen = display.primary.length;
+
+    if (primaryLen === 0) {
+      if (!isFiltered && shown <= PAGE_SIZE) return Promise.resolve([]);
+      return Promise.resolve(display.secondary.slice(0, maxItems));
+    }
+
+    if (maxItems <= primaryLen) {
+      return fillValidatedFromPool(display.primary, maxItems, getImageUrl, getId, failedMap);
+    }
+
+    return fillValidatedFromPool(display.primary, primaryLen, getImageUrl, getId, failedMap).then(function (primarySlice) {
+      return primarySlice.concat(display.secondary.slice(0, maxItems - primaryLen));
+    });
+  }
+
   function sortByImagePriority(list, hasImageFn, secondarySort) {
     return list.slice().sort(function (a, b) {
       var aImg = hasImageFn(a) ? 1 : 0;
@@ -233,26 +440,90 @@
     });
   }
 
-  function moveCardToGridEnd(card) {
-    if (!card || card.classList.contains('has-broken-image')) return;
-    card.classList.add('has-broken-image');
+  function buildDisplayList(filtered, hasImageFn, failedMap, getId, getImageUrl) {
+    var primary = [];
+    var secondary = [];
+    filtered.forEach(function (item) {
+      if (!hasImageFn(item) || failedMap[getId(item)]) {
+        secondary.push(item);
+        return;
+      }
+      var url = getImageUrl(item);
+      if (url && failedImageUrls[url]) {
+        secondary.push(item);
+        return;
+      }
+      primary.push(item);
+    });
+    return {
+      primary: primary,
+      secondary: secondary,
+      all: primary.concat(secondary)
+    };
+  }
+
+  function getVisibleSlice(display, shown, isFiltered) {
+    var maxItems = getDisplayLimit(display.all.length, shown, isFiltered);
+    var primaryLen = display.primary.length;
+
+    if (primaryLen === 0) {
+      if (!isFiltered && shown <= PAGE_SIZE) return [];
+      return display.secondary.slice(0, maxItems);
+    }
+
+    if (maxItems <= primaryLen) {
+      return display.primary.slice(0, maxItems);
+    }
+
+    return display.primary.concat(display.secondary.slice(0, maxItems - primaryLen));
+  }
+
+  function registerFailedImage(img) {
+    if (!img || img.classList.contains('is-failed')) return false;
+    img.classList.add('is-failed');
+    var src = img.currentSrc || img.src || img.getAttribute('src');
+    if (src) persistFailedUrl(src);
+
+    var card = img.closest('.exp-card');
+    if (!card) return false;
+
+    var resortId = card.getAttribute('data-resort-id');
+    var holidayId = card.getAttribute('data-holiday-id');
+    if (resortId) {
+      if (failedResortImages[resortId]) return false;
+      failedResortImages[resortId] = true;
+      return true;
+    }
+    if (holidayId) {
+      if (failedHolidayImages[holidayId]) return false;
+      failedHolidayImages[holidayId] = true;
+      return true;
+    }
+    return false;
+  }
+
+  function removeFailedCard(card) {
+    if (!card) return;
     var grid = card.parentElement;
-    if (grid && grid.classList.contains('exp-grid')) {
-      grid.appendChild(card);
+    card.remove();
+    if (!grid) return;
+    var kind = grid.id === 'exp-resorts-grid' ? 'resorts' : 'holidays';
+    var wrap = document.querySelector('[data-load-more="' + kind + '"]');
+    if (!wrap) return;
+    var visible = grid.querySelectorAll('.exp-card').length;
+    var label = wrap.querySelector('.exp-load-more');
+    if (!label) return;
+    var match = label.textContent.match(/\((\d+) remaining\)/);
+    if (!match) return;
+    var remaining = parseInt(match[1], 10);
+    if (!isNaN(remaining)) {
+      label.textContent = 'Show more (' + (remaining + 1) + ' remaining)';
     }
   }
 
   function markImageFailed(img) {
-    if (!img || img.classList.contains('is-failed')) return;
-    img.classList.add('is-failed');
-    moveCardToGridEnd(img.closest('.exp-card'));
-  }
-
-  function resortBrokenCardsToEnd(grid) {
-    if (!grid) return;
-    grid.querySelectorAll('.exp-card.has-broken-image').forEach(function (card) {
-      grid.appendChild(card);
-    });
+    if (!registerFailedImage(img)) return;
+    removeFailedCard(img.closest('.exp-card'));
   }
 
   function auditGridImages(grid) {
@@ -263,9 +534,10 @@
         markImageFailed(img);
       } else {
         img.classList.add('is-loaded');
+        var src = img.currentSrc || img.src;
+        if (src) imageValidationCache[src] = true;
       }
     });
-    resortBrokenCardsToEnd(grid);
   }
 
   function scheduleImageAudit(grid) {
@@ -305,8 +577,14 @@
   }
 
   function getFilteredHolidays() {
+    if (!holidays.length) return [];
+
+    ensureHolidaySearchIndex();
+
     var key = filterCacheKey('holidays');
-    if (holidayFilterCache.key === key) return holidayFilterCache.list;
+    if (holidayFilterCache.key === key && holidayFilterCache.list.length) {
+      return holidayFilterCache.list;
+    }
 
     var list = holidays.filter(function (h) {
       return matchesTokens(h._search, searchTokens);
@@ -318,6 +596,12 @@
 
     holidayFilterCache = { key: key, list: list };
     return list;
+  }
+
+  function getHolidayResultsCount() {
+    if (holidaysLoadState !== 'ready' || !holidays.length) return 0;
+    if (!searchTokens.length && !searchQuery.trim()) return holidays.length;
+    return getFilteredHolidays().length;
   }
 
   function hasActiveFilters() {
@@ -1202,67 +1486,131 @@
     }
   }
 
-  function renderGrid(grid, emptyEl, kind, filtered, shown, renderCard) {
-    var isFiltered = hasActiveFilters();
-    var limit = getDisplayLimit(filtered.length, shown, isFiltered);
-    var slice = filtered.slice(0, limit);
+  function getSimpleSlice(list, shown, isFiltered) {
+    var maxItems = getDisplayLimit(list.length, shown, isFiltered);
+    return list.slice(0, maxItems);
+  }
+
+  function paintGrid(grid, emptyEl, kind, display, slice, isFiltered, totalCount) {
+    var total = totalCount != null ? totalCount : (display.all ? display.all.length : 0);
 
     if (!slice.length) {
       grid.innerHTML = '';
-      emptyEl.hidden = false;
+      grid.classList.remove('is-validating');
       removeLoadMore(kind);
+      if (total > 0) {
+        emptyEl.hidden = true;
+        renderLoadMore(kind, total, 0, isFiltered);
+        return 0;
+      }
+      emptyEl.hidden = false;
       return 0;
     }
 
     emptyEl.hidden = true;
     closeAllChallengeDrawers();
-    grid.innerHTML = slice.map(renderCard).join('');
-    renderLoadMore(kind, filtered.length, limit, isFiltered);
+    grid.innerHTML = slice.map(kind === 'resorts' ? renderResortCard : renderHolidayCard).join('');
+    grid.classList.remove('is-validating');
+    renderLoadMore(kind, total, slice.length, isFiltered);
     refreshIcons(grid);
     scheduleImageAudit(grid);
     return slice.length;
   }
 
+  function renderGrid(grid, emptyEl, kind, filtered, shown, hasImageFn, failedMap, getId, getImageUrl, validateImages, deferBrokenImages) {
+    var isFiltered = hasActiveFilters();
+    if (deferBrokenImages === false) {
+      var directSlice = getSimpleSlice(filtered, shown, isFiltered);
+      var directDisplay = { all: filtered, primary: filtered, secondary: [] };
+      return Promise.resolve(
+        paintGrid(grid, emptyEl, kind, directDisplay, directSlice, isFiltered, filtered.length)
+      );
+    }
+
+    var display = buildDisplayList(filtered, hasImageFn, failedMap, getId, getImageUrl);
+    var token = ++gridRenderTokens[kind];
+
+    if (!validateImages) {
+      var syncSlice = getVisibleSlice(display, shown, isFiltered);
+      return Promise.resolve(paintGrid(grid, emptyEl, kind, display, syncSlice, isFiltered));
+    }
+
+    grid.classList.add('is-validating');
+    return resolveValidatedSlice(display, shown, isFiltered, getImageUrl, getId, failedMap).then(function (slice) {
+      if (token !== gridRenderTokens[kind]) return 0;
+      return paintGrid(grid, emptyEl, kind, display, slice, isFiltered);
+    });
+  }
+
   function renderResorts(stayCount) {
     var filtered = stayCount != null ? getFilteredResorts() : getFilteredResorts();
     if (stayCount == null) stayCount = filtered.length;
-    var shown = renderGrid(
-      resortsGrid, resortsEmpty, 'resorts', filtered, resortsShown, renderResortCard
-    );
-    return { total: stayCount, shown: shown };
+    return renderGrid(
+      resortsGrid, resortsEmpty, 'resorts', filtered, resortsShown,
+      hasResortImage, failedResortImages, function (r) { return r.id; }, getResortImageUrl,
+      activeTab === 'stays', true
+    ).then(function (shown) {
+      return { total: stayCount, shown: shown };
+    });
   }
 
   function renderHolidays(holidayCount) {
     if (holidaysLoadState === 'loading') {
       setHolidaysLoading(true);
-      return { total: 0, shown: 0 };
+      if (holidaysEmpty) holidaysEmpty.hidden = true;
+      if (holidaysGrid) holidaysGrid.innerHTML = '';
+      return Promise.resolve({ total: 0, shown: 0 });
     }
     if (holidaysLoadState === 'error') {
       setHolidaysUnavailable(true);
-      return { total: 0, shown: 0 };
+      return Promise.resolve({ total: 0, shown: 0 });
     }
+    if (holidaysLoadState === 'idle' || !holidays.length) {
+      setHolidaysLoading(true);
+      if (holidaysEmpty) holidaysEmpty.hidden = true;
+      loadHolidayPackages(function () {
+        if (holidays.length) {
+          buildSearchIndex();
+          invalidateCache();
+          scheduleRender();
+        }
+      });
+      return Promise.resolve({ total: 0, shown: 0 });
+    }
+
+    setHolidaysLoading(false);
     setHolidaysUnavailable(false);
 
-    var filtered = holidayCount != null ? getFilteredHolidays() : getFilteredHolidays();
+    var filtered = getFilteredHolidays();
+    if (!filtered.length && holidays.length && !searchTokens.length) {
+      invalidateCache();
+      ensureHolidaySearchIndex();
+      filtered = getFilteredHolidays();
+    }
     if (holidayCount == null) holidayCount = filtered.length;
-    var shown = renderGrid(
-      holidaysGrid, holidaysEmpty, 'holidays', filtered, holidaysShown, renderHolidayCard
-    );
-    return { total: holidayCount, shown: shown };
+    return renderGrid(
+      holidaysGrid, holidaysEmpty, 'holidays', filtered, holidaysShown,
+      hasHolidayImage, failedHolidayImages, function (h) { return h.id; }, getHolidayImageUrl,
+      false, false
+    ).then(function (shown) {
+      return { total: holidayCount, shown: shown };
+    });
   }
 
   function renderAll() {
     var filteredStays = getFilteredResorts();
-    var filteredHolidays = getFilteredHolidays();
     var stayCount = filteredStays.length;
-    var holidayCount = filteredHolidays.length;
+    var holidayCount = getHolidayResultsCount();
 
     updateTabLabels(stayCount, holidayCount);
     maybeAutoSwitchTab(stayCount, holidayCount);
 
-    var stays = renderResorts(stayCount);
-    var hols = renderHolidays(holidayCount);
-    updateResultsMeta(stayCount, holidayCount, stays.shown, hols.shown);
+    Promise.all([
+      renderResorts(stayCount),
+      renderHolidays(holidayCount)
+    ]).then(function (results) {
+      updateResultsMeta(stayCount, getHolidayResultsCount(), results[0].shown, results[1].shown);
+    });
   }
 
   function scheduleRender() {
@@ -1389,7 +1737,19 @@
     closeAllChallengeDrawers();
 
     if (!silent) {
-      scheduleRender();
+      if (tab === 'holidays' && (!holidays.length || holidaysLoadState !== 'ready')) {
+        setHolidaysLoading(true);
+        if (holidaysEmpty) holidaysEmpty.hidden = true;
+        loadHolidayPackages(function () {
+          if (holidays.length) {
+            buildSearchIndex();
+            invalidateCache();
+          }
+          scheduleRender();
+        });
+      } else {
+        scheduleRender();
+      }
       var panel = tab === 'stays' ? document.getElementById('panel-stays') : document.getElementById('panel-holidays');
       if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -1465,7 +1825,6 @@
       var img = e.target;
       if (!img || !img.classList.contains('exp-card-photo')) return;
       markImageFailed(img);
-      resortBrokenCardsToEnd(img.closest('.exp-grid'));
     }
 
     function onGridImageLoad(e) {
@@ -1570,6 +1929,7 @@
   }
 
   function init() {
+    loadFailedUrlCache();
     if (window.InstaHelpAPI && window.InstaHelpAPI.warmupBackend) {
       window.InstaHelpAPI.warmupBackend();
     }
